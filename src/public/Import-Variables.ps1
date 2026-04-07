@@ -34,7 +34,6 @@ Sets variables from the fields returned by the web service: $current_user_url, $
 Then fetches the list of GitHub emojis.
 #>
 
-#Requires -Version 3
 [CmdletBinding()][OutputType([void])] Param(
 <#
 A hash of string names to any values to set as variables,

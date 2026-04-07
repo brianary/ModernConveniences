@@ -29,7 +29,6 @@ Pester     CurrentUser
 Pester     AllUsers
 #>
 
-#Requires -Version 7
 [CmdletBinding()][OutputType([string])] Param(
 # Specifies names or name patterns of modules that this cmdlet gets. Wildcard characters are permitted.
 [Parameter(Position=0,ValueFromPipelineByPropertyName=$true)][Alias('ModuleName')][string] $Name = '*'

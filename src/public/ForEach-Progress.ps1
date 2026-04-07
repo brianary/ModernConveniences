@@ -19,7 +19,6 @@ Provides a progress indicator for a script block.
 Same as previous example, but adds a progress indicator within an existing pipeline.
 #>
 
-#Requires -Version 3
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseProcessBlockForPipelineCommand','',
 Justification='This script uses $input within an End block.')]
 [CmdletBinding()] Param(

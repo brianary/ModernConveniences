@@ -85,7 +85,6 @@ Get-EnumValues.ps1 System.Web.Security.AntiXss.MidCodeCharts
 |536870912 Tifinagh
 #>
 
-#Requires -Version 3
 [CmdletBinding()][OutputType([Management.Automation.PSCustomObject])] Param(
 # The enumeration type name.
 [Parameter(Position=0,Mandatory=$true,ValueFromPipeline=$true)][Type]$Type

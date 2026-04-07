@@ -54,7 +54,6 @@ True
 True
 #>
 
-#Requires -Version 3
 [CmdletBinding()][OutputType([bool])] Param(
 	# A variable name to test the existence of.
 	[Parameter(Position = 0, Mandatory = $true, ValueFromPipeline = $true)][AllowEmptyString()][AllowNull()][string] $Name,

@@ -11,7 +11,6 @@ Uninstall-OldModules.ps1
 Cleans up redundant old modules.
 #>
 
-#Requires -Version 3
 [CmdletBinding(ConfirmImpact='High',SupportsShouldProcess=$true)] Param(
 # Indicates the modules should be forced to uninstall.
 [switch] $Force

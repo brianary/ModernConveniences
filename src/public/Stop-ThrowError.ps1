@@ -64,7 +64,6 @@ if(Test-Uri.ps1 $u) {[uri]$u} else {Stop-ThrowError.ps1 'Bad URL' -Format URL -I
 (Fails for non-uri values of $u.)
 #>
 
-#Requires -Version 3
 [CmdletBinding()][OutputType([void])] Param(
 # The type of a Exception class to instantiate as part of the error.
 [Parameter(ParameterSetName='CatchBlock',Position=0)]

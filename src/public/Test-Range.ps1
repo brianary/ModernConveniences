@@ -29,7 +29,6 @@ Merge-PSObject.ps1
 Merge-XmlSelections.ps1
 #>
 
-#Requires -Version 3
 [CmdletBinding()] Param(
 <#
 Latch: The initial condition which will begin the matching range.

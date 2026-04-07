@@ -11,7 +11,6 @@ Test-Administrator.ps1
 False
 #>
 
-#Requires -Version 2
 if($IsWindows)
 {
 	return ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).`

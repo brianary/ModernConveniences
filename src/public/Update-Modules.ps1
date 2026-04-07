@@ -14,7 +14,6 @@ Update-Modules.ps1
 Updates installed modules and purges old versions.
 #>
 
-#Requires -Version 3
 [CmdletBinding()] Param()
 Update-Module -Force
 Uninstall-OldModules.ps1

@@ -21,7 +21,6 @@ Get-RandomBytes.ps1 8
 152
 #>
 
-#Requires -Version 3
 [CmdletBinding()] Param(
 # The number of random bytes to return.
 [Parameter(Position=0,Mandatory=$true)][int] $Count

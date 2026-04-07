@@ -31,7 +31,6 @@ Variable           6
 Certificate        7
 #>
 
-#Requires -Version 3
 [CmdletBinding()][OutputType([psobject])] Param(
 # The name of the property to add.
 [Parameter(Position=0)][string] $PropertyName = 'Counter',

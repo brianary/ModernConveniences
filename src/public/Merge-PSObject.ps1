@@ -46,7 +46,6 @@ a b c
 }
 #>
 
-#Requires -Version 3
 [CmdletBinding()][OutputType([PSObject])] Param(
 # Initial PSObject to combine.
 [Parameter(Position=0)][PSObject] $ReferenceObject = [pscustomobject]@{},

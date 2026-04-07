@@ -29,7 +29,6 @@ Renders DataRows as an HTML table, right-aligns numeric cells, then adds a capti
 and alternates the rows between pale yellow and white.
 #>
 
-#Requires -Version 3
 [CmdletBinding()][OutputType([string])] Param(
 # The HTML table caption, a label for the table.
 [Parameter(Position=0)][string]$Caption,

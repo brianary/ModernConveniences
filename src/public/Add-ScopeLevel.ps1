@@ -41,7 +41,6 @@ Add-ScopeLevel.ps1 Global
 Global
 #>
 
-#Requires -Version 3
 [CmdletBinding()][OutputType([string])] Param(
 # The requested scope from the caller of the caller of this script.
 # Global, Local, Private, Script, or a positive integer.

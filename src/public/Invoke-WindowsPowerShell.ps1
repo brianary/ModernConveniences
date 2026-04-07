@@ -56,7 +56,6 @@ Taskmaster
 The Horne Section
 #>
 
-#Requires -Version 5
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidGlobalVars','',
 Justification='A global variable is used to cache values.')]
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingInvokeExpression','',

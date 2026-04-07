@@ -43,7 +43,6 @@ Difference     : True
 DifferentValue : {Alias}
 #>
 
-#Requires -Version 3
 [CmdletBinding()][OutputType([Management.Automation.PSCustomObject])] Param(
 # The base object to compare properties to.
 [Parameter(Position=0)][PSObject] $ReferenceObject,

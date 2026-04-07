@@ -6,7 +6,6 @@ Writes to the information stream, with color support and more.
 PowerShell
 #>
 
-#Requires -Version 5.1
 [CmdletBinding()] Param(
 # Message to write to the information stream.
 [Parameter(Position=0,Mandatory=$true,ValueFromPipeline=$true)] $Message,

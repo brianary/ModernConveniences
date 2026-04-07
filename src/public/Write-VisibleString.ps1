@@ -12,7 +12,6 @@ a 09 b 0A c
 (Formatting is not displayed in help.)
 #>
 
-#Requires -Version 7
 [CmdletBinding()][OutputType([void])] Param(
 # The string to show.
 [Parameter(Position=0,Mandatory=$true,ValueFromPipeline=$true)][object] $InputObject,

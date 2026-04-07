@@ -18,7 +18,6 @@ Add-NugetPackage.ps1 Serilog ; [Serilog.Core.Logger]::None -is [Serilog.ILogger]
 True
 #>
 
-#Requires -Version 7
 [CmdletBinding()] Param(
 # The name of the NuGet package to load.
 [Parameter(Position=0,Mandatory=$true)][string] $PackageName,

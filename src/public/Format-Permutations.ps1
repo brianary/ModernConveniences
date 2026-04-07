@@ -52,7 +52,6 @@ Format-Permutations.ps1 '{0}{1}{2}{3}' (0,1) (0,1) (0,1) (0,1)
 1111
 #>
 
-#Requires -Version 3
 [CmdletBinding()][OutputType([string[]])] Param(
 # A standard .NET format string as used with the PowerShell -f operator.
 [Parameter(Position=0,Mandatory=$true)][string] $Format,

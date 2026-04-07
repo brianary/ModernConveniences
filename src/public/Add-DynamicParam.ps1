@@ -15,7 +15,6 @@ PowerShell
 DynamicParam { Add-DynamicParam.ps1 Path string -Mandatory; $DynamicParams } Process { Import-Variables.ps1 $PSBoundParameters; ... }
 #>
 
-#Requires -Version 3
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseProcessBlockForPipelineCommand','',
 Justification='This script uses $input within an End block.')]
 [CmdletBinding()][OutputType([void])] Param(

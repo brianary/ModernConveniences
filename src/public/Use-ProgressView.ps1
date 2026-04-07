@@ -14,7 +14,6 @@ Use-ProgressView.ps1 Classic
 Restores the Windows PowerShell 5.x-style top progress banner for Write-Progress.
 #>
 
-#Requires -Version 7.2
 [CmdletBinding()] Param(
 # The progress view to use.
 [Parameter(Position=0,Mandatory=$true)][System.Management.Automation.ProgressView] $View

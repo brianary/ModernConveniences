@@ -33,7 +33,6 @@ ls *.log |measure -sum Length |select -exp Sum |Format-ByteUnits -dot 2 -si
 302.39 MiB
 #>
 
-#Requires -Version 2
 [CmdletBinding()][OutputType([string])] Param(
 # The number of bytes to express in larger units.
 [Parameter(Position=0,Mandatory=$true,ValueFromPipeline=$true)][bigint]$Bytes,

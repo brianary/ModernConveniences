@@ -3,7 +3,6 @@
 Assembles the module file.
 #>
 
-#Requires -Version 7
 [CmdletBinding()] Param()
 Begin
 {
@@ -27,8 +26,10 @@ $(Get-Content $FullName -Raw)
     {
         [CmdletBinding()] Param()
         $Local:OFS = [Environment]::NewLine
+        $public = Get-Item $PSScriptRoot\src\public\*.ps1
         return @"
-$(Get-Item $PSScriptRoot\src\public\*.ps1 |Format-Function)
+$($public |Format-Function)
+Export-ModuleMember -Function $($public.BaseName -join ',')
 "@ |Out-File ([io.path]::ChangeExtension($(git rev-parse --show-toplevel |Split-Path -Leaf),'psm1')) utf8BOM
     }
 

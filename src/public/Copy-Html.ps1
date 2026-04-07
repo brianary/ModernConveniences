@@ -21,7 +21,6 @@ Copies an HTML table with two columns to the clipboard as formatted text
 that can be pasted into emails or other formatted documents.
 #>
 
-#Requires -Version 7
 [CmdletBinding()][OutputType([void])] Param(
 # Columns to include in the copied table.
 [Parameter(Position=0)][array] $Property,

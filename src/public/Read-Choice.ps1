@@ -33,7 +33,6 @@ H - third thing
 &one
 #>
 
-#Requires -Version 3
 [CmdletBinding()][OutputType([string])] Param(
 # A list of choice strings. Use & in front of a letter to make it a hotkey.
 [Parameter(ParameterSetName='ChoicesArray',Position=0,Mandatory=$true,ValueFromPipeline=$true)]

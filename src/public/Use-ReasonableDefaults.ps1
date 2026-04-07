@@ -26,7 +26,6 @@ Sets default values:
 * Select-Xml -Namespace @{ a bunch of standard namespaces }
 #>
 
-#Requires -Version 3
 [CmdletBinding()][OutputType([void])] Param(
 # Use the greatest value of the System.Net.SecurityProtocolType enum.
 [switch] $LatestSecurityProtocol

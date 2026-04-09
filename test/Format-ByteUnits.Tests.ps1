@@ -7,10 +7,10 @@ $basename = "$(($MyInvocation.MyCommand.Name -split '\.',2)[0])."
 $skip = !(Test-Path .changes -Type Leaf) ? $false :
 	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)})
 if($skip) {Write-Information "No changes to $basename" -infa Continue}
+$module = Split-Path $PSScriptRoot |Get-ChildItem -Filter *.psm1
 Describe 'Format-ByteUnits' -Tag Format-ByteUnits -Skip:$skip {
 	BeforeAll {
-		$scriptsdir,$sep = (Split-Path $PSScriptRoot),[io.path]::PathSeparator
-		if($scriptsdir -notin ($env:Path -split $sep)) {$env:Path += "$sep$scriptsdir"}
+		Import-Module $module
 	}
 	Context 'Converts bytes to largest possible units, to improve readability' -Tag FormatByteUnits,Format,ByteUnits {
 		It "Formatting '<Bytes>', up to '<Precision>' digits after the decimal returns '<Result>', or '<SIResult> for SI'" -TestCases @(
@@ -60,4 +60,4 @@ Describe 'Format-ByteUnits' -Tag Format-ByteUnits -Skip:$skip {
 		}
 	}
 
-}
+}.GetNewClosure()

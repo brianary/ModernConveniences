@@ -7,10 +7,10 @@ $basename = "$(($MyInvocation.MyCommand.Name -split '\.',2)[0])."
 $skip = !(Test-Path .changes -Type Leaf) ? $false :
 	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)})
 if($skip) {Write-Information "No changes to $basename" -infa Continue}
+$module = Split-Path $PSScriptRoot |Get-ChildItem -Filter *.psm1
 Describe 'Add-ScopeLevel' -Tag Add-ScopeLevel -Skip:$skip {
 	BeforeAll {
-		$scriptsdir,$sep = (Split-Path $PSScriptRoot),[io.path]::PathSeparator
-		if($scriptsdir -notin ($env:Path -split $sep)) {$env:Path += "$sep$scriptsdir"}
+		Import-Module $module
 	}
 	Context 'Convert a scope level to account for another call stack level.' -Tag AddScopeLevel,Add,ScopeLevel {
 		It 'Should calculate local scope' {
@@ -23,4 +23,4 @@ Describe 'Add-ScopeLevel' -Tag Add-ScopeLevel -Skip:$skip {
 			Add-ScopeLevel.ps1 Global |Should -BeExactly Global -Because 'global is the top scope'
 		}
 	}
-}
+}.GetNewClosure()

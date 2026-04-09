@@ -7,10 +7,10 @@ $basename = "$(($MyInvocation.MyCommand.Name -split '\.',2)[0])."
 $skip = !(Test-Path .changes -Type Leaf) ? $false :
 	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)})
 if($skip) {Write-Information "No changes to $basename" -infa Continue}
+$module = Split-Path $PSScriptRoot |Get-ChildItem -Filter *.psm1
 Describe 'Compare-Properties' -Tag Compare-Properties -Skip:$skip {
 	BeforeAll {
-		$scriptsdir,$sep = (Split-Path $PSScriptRoot),[io.path]::PathSeparator
-		if($scriptsdir -notin ($env:Path -split $sep)) {$env:Path += "$sep$scriptsdir"}
+		Import-Module $module
 	}
 	Context 'Compares the properties of two objects' -Tag CompareProperties,Compare,Properties {
 		It 'Should find the difference between PSProviders' {
@@ -25,4 +25,4 @@ Describe 'Compare-Properties' -Tag Compare-Properties -Skip:$skip {
 			$name.DifferentValue |Should -BeExactly Alias
 		}
 	}
-}
+}.GetNewClosure()

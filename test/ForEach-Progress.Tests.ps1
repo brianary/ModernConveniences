@@ -7,10 +7,10 @@ $basename = "$(($MyInvocation.MyCommand.Name -split '\.',2)[0])."
 $skip = !(Test-Path .changes -Type Leaf) ? $false :
 	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)})
 if($skip) {Write-Information "No changes to $basename" -infa Continue}
+$module = Split-Path $PSScriptRoot |Get-ChildItem -Filter *.psm1
 Describe 'ForEach-Progress' -Tag ForEach-Progress -Skip:$skip {
 	BeforeAll {
-		$scriptsdir,$sep = (Split-Path $PSScriptRoot),[io.path]::PathSeparator
-		if($scriptsdir -notin ($env:Path -split $sep)) {$env:Path += "$sep$scriptsdir"}
+		Import-Module $module
 	}
 	Context 'Performs an operation against each item in a collection of input objects, with a progress bar' `
 		-Tag ForEachProgress,ForEach,Progress {
@@ -20,4 +20,4 @@ Describe 'ForEach-Progress' -Tag ForEach-Progress -Skip:$skip {
 			Assert-MockCalled -CommandName Write-Progress -Times 10
 		}
 	}
-}
+}.GetNewClosure()

@@ -7,10 +7,10 @@ $basename = "$(($MyInvocation.MyCommand.Name -split '\.',2)[0])."
 $skip = !(Test-Path .changes -Type Leaf) ? $false :
 	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)})
 if($skip) {Write-Information "No changes to $basename" -infa Continue}
+$module = Split-Path $PSScriptRoot |Get-ChildItem -Filter *.psm1
 Describe 'Add-DynamicParam' -Tag Add-DynamicParam -Skip:$skip {
 	BeforeAll {
-		$scriptsdir,$sep = (Split-Path $PSScriptRoot),[io.path]::PathSeparator
-		if($scriptsdir -notin ($env:Path -split $sep)) {$env:Path += "$sep$scriptsdir"}
+		Import-Module $module
 	}
 	Context 'Adding parameters' -Tag AddDynamicParam,Add,'DynamicParam' {
 		It "Should add a required string parameter" {
@@ -65,4 +65,4 @@ Describe 'Add-DynamicParam' -Tag Add-DynamicParam -Skip:$skip {
 	AfterEach {
 		Remove-Variable -Name DynamicParam -Force -ErrorAction Ignore
 	}
-}
+}.GetNewClosure()

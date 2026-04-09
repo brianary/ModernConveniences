@@ -7,10 +7,10 @@ $basename = "$(($MyInvocation.MyCommand.Name -split '\.',2)[0])."
 $skip = !(Test-Path .changes -Type Leaf) ? $false :
 	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)})
 if($skip) {Write-Information "No changes to $basename" -infa Continue}
+$module = Split-Path $PSScriptRoot |Get-ChildItem -Filter *.psm1
 Describe 'Add-NoteProperty' -Tag Add-NoteProperty -Skip:$skip {
 	BeforeAll {
-		$scriptsdir,$sep = (Split-Path $PSScriptRoot),[io.path]::PathSeparator
-		if($scriptsdir -notin ($env:Path -split $sep)) {$env:Path += "$sep$scriptsdir"}
+		Import-Module $module
 	}
 	Context 'Add a calculated property value' -Tag AddNoteProperty,Add,NoteProperty {
 		It "Should add a property with a static value calculated when added" {
@@ -30,4 +30,4 @@ Describe 'Add-NoteProperty' -Tag Add-NoteProperty -Skip:$skip {
 			$value.isNumeric |Should -BeTrue -Because 'the isNumeric property should be true'
 		}
 	}
-}
+}.GetNewClosure()

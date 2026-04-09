@@ -35,4 +35,4 @@ Describe 'Add-Counter' -Tag Add-Counter -Skip:$skip {
 	AfterAll {
 		Remove-Module $module.BaseName
 	}
-}
+}.GetNewClosure()

@@ -15,10 +15,13 @@ Describe 'Add-ParameterDefault' -Tag Add-ParameterDefault -Skip:$skip {
 	Context 'Appends or creates a value to use for the specified cmdlet parameter to use when one is not specified.' `
 		-Tag AddParameterDefault,Add,ParameterDefault {
 		It "Should set a simple default" {
-			Add-ParameterDefault.ps1 epcsv nti $true -Scope Global
-			$PSDefaultParameterValues.ContainsKey('Export-Csv:NoTypeInformation') |
+			$initialCount = $PSDefaultParameterValues.Count
+			Add-ParameterDefault.ps1 gcm Type All -Scope Script
+			$PSDefaultParameterValues.Count |Should -BeGreaterThan $initialCount `
+				-Because 'the number of defaults should increase after adding one'
+			$PSDefaultParameterValues.ContainsKey('Get-Command:CommandType') |
 				Should -BeTrue -Because 'defaults should be added after looking up cmdlet and param aliases'
-			$PSDefaultParameterValues['Export-Csv:NoTypeInformation'] |Should -BeTrue
+			$PSDefaultParameterValues['Get-Command:CommandType'] |Should -BeExactly All
 		}
 		It "Should set a hashtable default" {
 			Add-ParameterDefault.ps1 Select-Xml Namespace @{svg = 'http://www.w3.org/2000/svg'}

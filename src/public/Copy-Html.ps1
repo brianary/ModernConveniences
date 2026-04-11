@@ -29,6 +29,7 @@ that can be pasted into emails or other formatted documents.
 )
 Begin
 {
+	if(!$IsWindows) {Stop-ThrowError.ps1 'Only supported on Windows.' -OperationContext $PSVersionTable}
 	$data = @()
 }
 Process

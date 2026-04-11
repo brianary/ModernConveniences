@@ -69,6 +69,8 @@ Justification='Invoke-Expression is neccessary for the purpose of this script.')
 [Parameter(ParameterSetName='CommandText',Position=0,Mandatory=$true)][string] $CommandText
 )
 
+if(!$IsWindows) {Stop-ThrowError.ps1 'Only supported on Windows.' -OperationContext $PSVersionTable}
+
 if($PSVersionTable.PSEdition -eq 'Desktop')
 {
 	if($PSCmdlet.ParameterSetName -eq 'CommandText') {Invoke-Expression $CommandText}

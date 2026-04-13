@@ -1,0 +1,18 @@
+name: Publish module to PowerShell Gallery
+on:
+  push:
+    branches: [main]
+jobs:
+  publish:
+    if: 0
+    name: Publish to PowerShell Gallery
+    runs-on: windows-latest
+    steps:
+      - name: Build module
+        id: build
+        run: ./Build-Module.ps1
+      - name: Publish module
+        id: publish
+        env:
+            GALLERYKEY: ${{ secrets.gallerykey }}
+        run: Publish-Module -Path ./*.psd1 -NuGetApiKey $env:GALLERYKEY

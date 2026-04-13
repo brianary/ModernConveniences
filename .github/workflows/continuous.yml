@@ -10,13 +10,16 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
     steps:
-      - uses: actions/checkout@v6
+      - name: Check out script source
+        uses: actions/checkout@v6
       - name: Build module
         id: build
         run: ./Build-Module.ps1
-      - name: Analyze script
-        id: analyze
-        run: Invoke-ScriptAnalyzer *.psm1
+      - name: Analyze module style
+        uses: microsoft/psscriptanalyzer-action@v1.0
+        with:
+          settings: PSGallery
+          output: analysis.sarif
       - name: Test module
         id: test
         run: |

@@ -10,6 +10,15 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
     steps:
+      - uses: actions/checkout@v6
+      - name: Display working directory
+        id: showdir
+        run: |
+          "PWD: $PWD" >> "$GITHUB_OUTPUT"
+          'contents:' >> "$GITHUB_OUTPUT"
+          Get-ChildItem >> "$GITHUB_OUTPUT"
+          "PWD: $PWD"
+          "contents: $(Get-ChildItem)"
       - name: Build module
         id: build
         run: ./Build-Module.ps1

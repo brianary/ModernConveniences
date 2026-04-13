@@ -16,7 +16,7 @@ Describe 'ForEach-Progress' -Tag ForEach-Progress -Skip:$skip {
 		-Tag ForEachProgress,ForEach,Progress {
 		It "Displays progress" {
 			Mock Write-Progress {}
-			1..10 |ForEach-Progress.ps1 -Activity 'Processing' {"$_"} {"$_"}
+			1..10 |Show-Progress -Activity 'Processing' {"$_"} {"$_"}
 			Assert-MockCalled -CommandName Write-Progress -Times 10
 		}
 	}

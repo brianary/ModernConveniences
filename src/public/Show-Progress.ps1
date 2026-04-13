@@ -9,12 +9,12 @@ System.Management.Automation.PSObject to process.
 PowerShell
 
 .EXAMPLE
-1..10 |ForEach-Progress.ps1 -Activity 'Processing' {"$_"} {Write-Host "item: $_"; sleep 2}
+1..10 |Show-Progress.ps1 -Activity 'Processing' {"$_"} {Write-Host "item: $_"; sleep 2}
 
 Provides a progress indicator for a script block.
 
 .EXAMPLE
-1..10 |ForEach-Progress.ps1 |foreach {Write-Host "item: $_"; sleep 2}
+1..10 |Show-Progress.ps1 |foreach {Write-Host "item: $_"; sleep 2}
 
 Same as previous example, but adds a progress indicator within an existing pipeline.
 #>
@@ -36,17 +36,17 @@ End
 	[psobject[]] $values = $input
 	if(!$values) {$values = @($InputObject)}
 	$i,$max,$id = 0,($values.Length/100),(Get-Random)
-	try
+	foreach($value in $values)
 	{
-		foreach($value in $values)
-		{
-			[Collections.Generic.List[psvariable]] $ctx = New-Object PSVariable _,$value
-			$itemstatus = $Status.InvokeWithContext($null,$ctx,$value) |Select-Object -First 1
-			if(!$itemstatus) {$itemstatus = '?'}
-			Write-Progress $Activity $itemstatus -Id $id -PercentComplete ($i++/$max)
-			[Collections.Generic.List[psvariable]] $ctx = New-Object PSVariable _,$value
-			$Process.InvokeWithContext($null,$ctx,$value)
-		}
+		[Collections.Generic.List[psvariable]] $ctx = New-Object PSVariable _,$value
+		$itemstatus = $Status.InvokeWithContext($null,$ctx,$value) |Select-Object -First 1
+		if(!$itemstatus) {$itemstatus = '?'}
+		Write-Progress $Activity $itemstatus -Id $id -PercentComplete ($i++/$max)
+		[Collections.Generic.List[psvariable]] $ctx = New-Object PSVariable _,$value
+		$Process.InvokeWithContext($null,$ctx,$value)
 	}
-	finally {Write-Progress $Activity -Id $id -Completed}
+}
+Clean
+{
+	Write-Progress $Activity -Id $id -Completed
 }

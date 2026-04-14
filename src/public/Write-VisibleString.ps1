@@ -6,7 +6,7 @@ Displays a string, showing nonprintable characters.
 System.Object to serialize with nonprintable characters made visible as a hex pair.
 
 .EXAMPLE
-Write-VisibleString.ps1 "a`tb`nc"
+Write-VisibleString "a`tb`nc"
 
 a 09 b 0A c
 (Formatting is not displayed in help.)
@@ -72,6 +72,6 @@ Begin
 }
 Process
 {
-	if($AsRunes) {[convert]::ToString($InputObject).EnumerateRunes() |Write-Rune |Out-String -NoNewline |Write-Info.ps1}
-	else {[convert]::ToString($InputObject).ToCharArray() |Write-Char |Out-String -NoNewline |Write-Info.ps1}
+	if($AsRunes) {[convert]::ToString($InputObject).EnumerateRunes() |Write-Rune |Out-String -NoNewline |Write-Info}
+	else {[convert]::ToString($InputObject).ToCharArray() |Write-Char |Out-String -NoNewline |Write-Info}
 }

@@ -16,7 +16,7 @@ Describe 'Add-ParameterDefault' -Tag Add-ParameterDefault -Skip:$skip {
 		-Tag AddParameterDefault,Add,ParameterDefault {
 		It "Should set a simple default" {
 			$initialCount = $PSDefaultParameterValues.Count
-			Add-ParameterDefault.ps1 gcm Type All -Scope Script
+			Add-ParameterDefault gcm Type All -Scope Script
 			$PSDefaultParameterValues.Count |Should -BeGreaterThan $initialCount `
 				-Because 'the number of defaults should increase after adding one'
 			$PSDefaultParameterValues.ContainsKey('Get-Command:CommandType') |
@@ -24,7 +24,7 @@ Describe 'Add-ParameterDefault' -Tag Add-ParameterDefault -Skip:$skip {
 			$PSDefaultParameterValues['Get-Command:CommandType'] |Should -BeExactly All
 		}
 		It "Should set a hashtable default" {
-			Add-ParameterDefault.ps1 Select-Xml Namespace @{svg = 'http://www.w3.org/2000/svg'}
+			Add-ParameterDefault Select-Xml Namespace @{svg = 'http://www.w3.org/2000/svg'}
 			$PSDefaultParameterValues.ContainsKey('Select-Xml:Namespace') |Should -BeTrue
 			$PSDefaultParameterValues['Select-Xml:Namespace'].ContainsKey('svg') |Should -BeTrue
 			$PSDefaultParameterValues['Select-Xml:Namespace']['svg'] |Should -BeExactly 'http://www.w3.org/2000/svg'

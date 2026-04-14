@@ -6,16 +6,13 @@ Sets certain cmdlet parameter defaults to rational, useful values.
 PowerShell
 
 .LINK
-Use-NetMailConfig.ps1
+Set-ParameterDefault
 
 .LINK
-Set-ParameterDefault.ps1
-
-.LINK
-Get-EnumValues.ps1
+Get-EnumValues
 
 .EXAMPLE
-Use-ReasonableDefaults.ps1
+Use-ReasonableDefaults
 
 Sets the security protocol to TLS 1.2.
 
@@ -33,33 +30,31 @@ Sets default values:
 if(!$LatestSecurityProtocol)
 {
 	[Net.ServicePointManager]::SecurityProtocol = 'Tls12'
-	if($PSVersionTable.ContainsKey('CLRVersion')) {Use-NetMailConfig.ps1 -Scope Global}
 }
 else
 {
 	if($PSVersionTable.ContainsKey('CLRVersion'))
 	{
-		Use-NetMailConfig.ps1 -Scope Global
 		if($PSVersionTable.CLRVersion -lt '4.7.1')
 		{
 			if([Net.ServicePointManager]::SecurityProtocol -band [Net.SecurityProtocolType]'Ssl3')
 			{
 				[Net.ServicePointManager]::SecurityProtocol =
-					Get-EnumValues.ps1 Net.SecurityProtocolType |Select-Object -Last 1 -ExpandProperty Name
+					Get-EnumValues Net.SecurityProtocolType |Select-Object -Last 1 -ExpandProperty Name
 			}
 		}
 	}
 }
-Set-ParameterDefault.ps1 Out-File Width ([int]::MaxValue) -Scope Global
-Set-ParameterDefault.ps1 Out-File Encoding UTF8 -Scope Global
-Set-ParameterDefault.ps1 Get-ChildItem Force $true -Scope Global
-Set-ParameterDefault.ps1 Export-Csv NoTypeInformation $true -Scope Global
-Set-ParameterDefault.ps1 Invoke-WebRequest UseBasicParsing $true -Scope Global
+Set-ParameterDefault Out-File Width ([int]::MaxValue) -Scope Global
+Set-ParameterDefault Out-File Encoding UTF8 -Scope Global
+Set-ParameterDefault Get-ChildItem Force $true -Scope Global
+Set-ParameterDefault Export-Csv NoTypeInformation $true -Scope Global
+Set-ParameterDefault Invoke-WebRequest UseBasicParsing $true -Scope Global
 if((Get-Command Export-Csv -ParameterName UseQuotes -ErrorAction Ignore))
 {
-	Set-ParameterDefault.ps1 Export-Csv UseQuotes AsNeeded -Scope Global
+	Set-ParameterDefault Export-Csv UseQuotes AsNeeded -Scope Global
 }
-Set-ParameterDefault.ps1 Select-Xml Namespace -Scope Global -Value @{
+Set-ParameterDefault Select-Xml Namespace -Scope Global -Value @{
 xhtml    = 'http://www.w3.org/1999/xhtml'
 svg      = 'http://www.w3.org/2000/svg'
 xsl      = 'http://www.w3.org/1999/XSL/Transform'

@@ -12,7 +12,7 @@ PowerShell
 https://social.technet.microsoft.com/wiki/contents/articles/7855.powershell-using-the-f-format-operator.aspx
 
 .EXAMPLE
-Format-Permutations.ps1 'srv-{0}-{1:00}' 'dev','test','stage','live' (1..4)
+Format-Permutations 'srv-{0}-{1:00}' 'dev','test','stage','live' (1..4)
 
 srv-dev-01
 srv-dev-02
@@ -32,7 +32,7 @@ srv-live-03
 srv-live-04
 
 .EXAMPLE
-Format-Permutations.ps1 '{0}{1}{2}{3}' (0,1) (0,1) (0,1) (0,1)
+Format-Permutations '{0}{1}{2}{3}' (0,1) (0,1) (0,1) (0,1)
 
 0000
 0001

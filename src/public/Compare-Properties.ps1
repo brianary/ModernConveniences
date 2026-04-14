@@ -22,7 +22,7 @@ Properties
 https://docs.microsoft.com/dotnet/api/system.management.automation.psmemberset
 
 .EXAMPLE
-Compare-Properties.ps1 (Get-PSProvider variable) (Get-PSProvider alias)
+Compare-Properties (Get-PSProvider variable) (Get-PSProvider alias)
 
 PropertyName   : ImplementingType
 Reference      : True

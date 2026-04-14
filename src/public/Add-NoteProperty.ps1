@@ -21,7 +21,7 @@ Properties
 Add-Member
 
 .EXAMPLE
-Get-ChildItem Get-*.ps1 |Add-NoteProperty.ps1 Size {Format-ByteUnits.ps1 $Length -Precision 1} -Properties Length -PassThru |Format-Table Size,Name -AutoSize
+Get-ChildItem Get-*.ps1 |Add-NoteProperty Size {Format-ByteUnits.ps1 $Length -Precision 1} -Properties Length -PassThru |Format-Table Size,Name -AutoSize
 
 |  Size Name
 |  ---- ----
@@ -45,7 +45,7 @@ Get-ChildItem Get-*.ps1 |Add-NoteProperty.ps1 Size {Format-ByteUnits.ps1 $Length
 | 1.2KB Get-XmlNamespaces.ps1
 
 .EXAMPLE
-Get-ChildItem Get-*.ps1 |Add-NoteProperty.ps1 @{Size={Format-ByteUnits.ps1 $_.Length -Precision 1};Ext={$_ |Split-Path -Extension};Hat='Y'} -PassThru |Format-Table Size,Name,Ext,Hat -AutoSize
+Get-ChildItem Get-*.ps1 |Add-NoteProperty @{Size={Format-ByteUnits.ps1 $_.Length -Precision 1};Ext={$_ |Split-Path -Extension};Hat='Y'} -PassThru |Format-Table Size,Name,Ext,Hat -AutoSize
 
 |  Size Name                                   Ext  Hat
 |  ---- ----                                   ---  ---
@@ -107,6 +107,6 @@ Process
 			}
 			if($PassThru) {Write-Output $InputObject}
 		}
-		default {Stop-ThrowError.ps1 'Unknown parameter set' -TargetObject $PSBoundParameters}
+		default {Stop-ThrowError 'Unknown parameter set' -TargetObject $PSBoundParameters}
 	}
 }

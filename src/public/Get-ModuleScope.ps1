@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
 Returns the scope of an installed module.
 
@@ -14,14 +14,14 @@ System.Management.Automation.PSObject with the following properties:
 * Scope: The value "CurrentUser" if the module is found within $HOME\Documents\PowerShell\Modules, "AllUsers" if found anywhere else.
 
 .EXAMPLE
-Get-ModuleScope.ps1 Detextive
+Get-ModuleScope Detextive
 
 ModuleName Scope
 ---------- -----
 Detextive  CurrentUser
 
 .EXAMPLE
-Get-ModuleScope.ps1 Pester
+Get-ModuleScope Pester
 
 ModuleName Scope
 ---------- -----

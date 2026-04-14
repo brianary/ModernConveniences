@@ -9,7 +9,7 @@ PowerShell
 about_ANSI_Terminals
 
 .EXAMPLE
-Use-ProgressView.ps1 Classic
+Use-ProgressView Classic
 
 Restores the Windows PowerShell 5.x-style top progress banner for Write-Progress.
 #>

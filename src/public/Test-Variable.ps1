@@ -12,43 +12,40 @@ System.Boolean indicating whether the variable name is defined.
 PowerShell
 
 .LINK
-Add-ScopeLevel.ps1
-
-.LINK
 Get-Variable
 
 .EXAMPLE
-Test-Variable.ps1 true
+Test-Variable true
 
 True
 
 .EXAMPLE
-Test-Variable.ps1 ''
+Test-Variable ''
 
 False
 
 A variable can't have an empty string for a name.
 
 .EXAMPLE
-Test-Variable.ps1 $null
+Test-Variable $null
 
 False
 
 A variable can't have a null name.
 
 .EXAMPLE
-Test-Variable.ps1 null
+Test-Variable null
 
 True
 
 .EXAMPLE
-'PSVersionTable','false' |Test-Variable.ps1
+'PSVersionTable','false' |Test-Variable
 
 True
 True
 
 .EXAMPLE
-'PWD','PID' |Test-Variable.ps1 -Scope Global
+'PWD','PID' |Test-Variable -Scope Global
 
 True
 True
@@ -74,7 +71,7 @@ Process
 	}
 	else
 	{
-		$Scope = Add-ScopeLevel.ps1 $Scope
+		$Scope = Add-ScopeLevel $Scope
 		if (Get-Variable -Name $Name -Scope $Scope -ErrorAction Ignore) { return $true }
 		Write-Debug "$($MyInvocation.MyCommand.Name): $Name not found in $Scope scope"
 		return $false

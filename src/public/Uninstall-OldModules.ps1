@@ -6,7 +6,7 @@ Uninstalls old module versions (ignoring old Windows PowerShell modules).
 PowerShell Modules
 
 .EXAMPLE
-Uninstall-OldModules.ps1
+Uninstall-OldModules
 
 Cleans up redundant old modules.
 #>

@@ -14,12 +14,12 @@ Describe 'Add-NoteProperty' -Tag Add-NoteProperty -Skip:$skip {
 	}
 	Context 'Add a calculated property value' -Tag AddNoteProperty,Add,NoteProperty {
 		It "Should add a property with a static value calculated when added" {
-			$value = [pscustomobject]@{x=8} |Add-NoteProperty.ps1 bits {[math]::Log2($_.x)} -PassThru
+			$value = [pscustomobject]@{x=8} |Add-NoteProperty bits {[math]::Log2($_.x)} -PassThru
 			$value.x = 16 # this should not change the pow property
 			$value.bits |Should -Be 3 -Because 'the bits property value should have been determined only when added'
 		}
 		It "Should add multiple properties with a mix of value types" {
-			$value = [pscustomobject]@{x=8} |Add-NoteProperty.ps1 @{
+			$value = [pscustomobject]@{x=8} |Add-NoteProperty @{
 				bits = {[math]::Log2($_.x)}
 				format = {'<{0:X}>' -f ($_.x*4)}
 				isNumeric = $true

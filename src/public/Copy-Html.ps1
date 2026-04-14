@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
 Copies objects as an HTML table.
 
@@ -6,16 +6,16 @@ Copies objects as an HTML table.
 System.Management.Automation.PSObject to be turned into a table row.
 
 .LINK
-Format-HtmlDataTable.ps1
+Format-HtmlDataTable
 
 .LINK
-ConvertTo-SafeEntities.ps1
+ConvertTo-SafeEntities
 
 .LINK
-Invoke-WindowsPowerShell.ps1
+Invoke-WindowsPowerShell
 
 .EXAMPLE
-Get-PSDrive |Copy-Html.ps1 Name,Description
+Get-PSDrive |Copy-Html Name,Description
 
 Copies an HTML table with two columns to the clipboard as formatted text
 that can be pasted into emails or other formatted documents.
@@ -29,7 +29,7 @@ that can be pasted into emails or other formatted documents.
 )
 Begin
 {
-	if(!$IsWindows) {Stop-ThrowError.ps1 'Only supported on Windows.' -OperationContext $PSVersionTable}
+	if(!$IsWindows) {Stop-ThrowError 'Only supported on Windows.' -OperationContext $PSVersionTable}
 	$data = @()
 }
 Process
@@ -41,9 +41,9 @@ End
 	$data |
 		Select-Object -Property $Property |
 		ConvertTo-Html -Fragment |
-		Format-HtmlDataTable.ps1 |
-		ConvertTo-SafeEntities.ps1 |
+		Format-HtmlDataTable |
+		ConvertTo-SafeEntities |
 		Out-String |
 		Set-Clipboard
-	Invoke-WindowsPowerShell.ps1 { Get-Clipboard |Set-Clipboard -AsHtml }
+	Invoke-WindowsPowerShell { Get-Clipboard |Set-Clipboard -AsHtml }
 }

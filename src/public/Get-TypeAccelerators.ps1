@@ -9,7 +9,7 @@ Collections.Generic.Dictionary[string,type]
 PowerShell
 
 .EXAMPLE
-Get-TypeAccelerators.ps1
+Get-TypeAccelerators
 
 
 Alias                        Type                                                                Suffix

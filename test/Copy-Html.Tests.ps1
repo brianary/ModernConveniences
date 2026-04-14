@@ -24,10 +24,10 @@ Describe 'Copy-Html' -Tag Copy-Html -Skip:$skip {
 '@ }
 		) {
 			Param([object] $InputObject, [object] $Result)
-			$InputObject |Copy-Html.ps1 Id,Name
+			$InputObject |Copy-Html Id,Name
 			powershell -nol -noni -nop -c "Get-Clipboard -TextFormatType Html" |Out-String |
 				Should -BeLikeExactly $Result -Because 'pipeline should work'
-			Copy-Html.ps1 Id,Name -InputObject $InputObject
+			Copy-Html Id,Name -InputObject $InputObject
 			powershell -nol -noni -nop -c "Get-Clipboard -TextFormatType Html" |Out-String |
 				Should -BeLikeExactly $Result -Because 'parameter should work'
 		}

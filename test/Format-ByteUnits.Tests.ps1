@@ -49,13 +49,13 @@ Describe 'Format-ByteUnits' -Tag Format-ByteUnits -Skip:$skip {
 			@{ Bytes = 9685059; Precision = 1; Result = '9.2MB'; SIResult = '9.2 MiB' }
 		) {
 			Param([bigint] $Bytes, [byte] $Precision, [string] $Result, [string] $SIResult)
-			Format-ByteUnits.ps1 -Bytes $Bytes -Precision $Precision |
+			Format-ByteUnits -Bytes $Bytes -Precision $Precision |
 				Should -BeExactly $Result -Because 'parameter should work'
-			$Bytes |Format-ByteUnits.ps1 -Precision $Precision |
+			$Bytes |Format-ByteUnits -Precision $Precision |
 				Should -BeExactly $Result -Because 'pipeline should work'
-			Format-ByteUnits.ps1 -Bytes $Bytes -Precision $Precision -UseSI |
+			Format-ByteUnits -Bytes $Bytes -Precision $Precision -UseSI |
 				Should -BeExactly $SIResult -Because 'SI parameter should work'
-			$Bytes |Format-ByteUnits.ps1 -Precision $Precision -UseSI |
+			$Bytes |Format-ByteUnits -Precision $Precision -UseSI |
 				Should -BeExactly $SIResult -Because 'SI pipeline should work'
 		}
 	}

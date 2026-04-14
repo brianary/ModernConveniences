@@ -6,7 +6,7 @@ Checks whether the current session has administrator privileges.
 PowerShell
 
 .EXAMPLE
-Test-Administrator.ps1
+Test-Administrator
 
 False
 #>

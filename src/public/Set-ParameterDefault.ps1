@@ -9,10 +9,7 @@ System.Object containing the default value to assign.
 Parameters
 
 .LINK
-Add-ScopeLevel.ps1
-
-.LINK
-Stop-ThrowError.ps1
+Stop-ThrowError
 
 .LINK
 Get-Command
@@ -21,13 +18,13 @@ Get-Command
 about_Scopes
 
 .EXAMPLE
-Set-ParameterDefault.ps1 epcsv nti $true -Scope Global
+Set-ParameterDefault epcsv nti $true -Scope Global
 
 Establishes that the -NoTypeInformation param of the Export-Csv cmdlet will be true if not otherwise specified,
 globally for the PowerShell session.
 
 .EXAMPLE
-Set-ParameterDefault.ps1 Select-Xml Namespace @{svg = 'http://www.w3.org/2000/svg'}
+Set-ParameterDefault Select-Xml Namespace @{svg = 'http://www.w3.org/2000/svg'}
 
 Uses only the SVG namespace for Select-Xml when none are given explicitly.
 #>
@@ -45,15 +42,15 @@ Uses only the SVG namespace for Select-Xml when none are given explicitly.
 )
 Begin
 {
-	$Scope = Add-ScopeLevel.ps1 $Scope
+	$Scope = Add-ScopeLevel $Scope
 	$cmd = Get-Command $CommandName -ErrorAction Ignore
-	if(!$cmd) {Stop-ThrowError.ps1 "Could not find command '$CommandName'" -Argument CommandName}
+	if(!$cmd) {Stop-ThrowError "Could not find command '$CommandName'" -Argument CommandName}
 	if($cmd.CommandType -eq 'Alias') {$cmd = Get-Command $cmd.ResolvedCommandName}
 	if($cmd.CommandType -notin 'Cmdlet','ExternalScript','Function','Script')
-	{Stop-ThrowError.ps1 "Command '$CommandName' ($($cmd.CommandType)) not supported" -Argument CommandName}
+	{Stop-ThrowError "Command '$CommandName' ($($cmd.CommandType)) not supported" -Argument CommandName}
 	$name =
 		try {"$($cmd.Name):$($cmd.ResolveParameter($ParameterName).Name)"}
-		catch {Stop-ThrowError.ps1 "Could not find parameter '$ParameterName' for cmdlet '$CommandName'" -Argument ParameterName}
+		catch {Stop-ThrowError "Could not find parameter '$ParameterName' for cmdlet '$CommandName'" -Argument ParameterName}
 	$defaults = Get-Variable PSDefaultParameterValues -Scope $Scope -ErrorAction Ignore
 	if(!$defaults)
 	{

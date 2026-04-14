@@ -9,7 +9,7 @@ System.Byte[] of random bytes.
 https://docs.microsoft.com/dotnet/api/system.security.cryptography.rngcryptoserviceprovider
 
 .EXAMPLE
-Get-RandomBytes.ps1 8
+Get-RandomBytes 8
 
 103
 235

@@ -9,12 +9,12 @@ System.Management.Automation.PSObject to process.
 PowerShell
 
 .EXAMPLE
-1..10 |Show-Progress.ps1 -Activity 'Processing' {"$_"} {Write-Host "item: $_"; sleep 2}
+1..10 |Show-Progress -Activity 'Processing' {"$_"} {Write-Host "item: $_"; sleep 2}
 
 Provides a progress indicator for a script block.
 
 .EXAMPLE
-1..10 |Show-Progress.ps1 |foreach {Write-Host "item: $_"; sleep 2}
+1..10 |Show-Progress |foreach {Write-Host "item: $_"; sleep 2}
 
 Same as previous example, but adds a progress indicator within an existing pipeline.
 #>

@@ -9,26 +9,23 @@ or System.Management.Automation.PSCustomObject with properties to import as vari
 .FUNCTIONALITY
 PowerShell
 
-.LINK
-Add-ScopeLevel.ps1
-
 .EXAMPLE
-if($line -match '\AProject\("(?<TypeGuid>[^"]+)"\)') {Import-Variables.ps1 $Matches}
+if($line -match '\AProject\("(?<TypeGuid>[^"]+)"\)') {Import-Variables $Matches}
 
 Copies $Matches.TypeGuid to $TypeGuid if a match is found.
 
 .EXAMPLE
-Import-Csv |ForEach-Object {$_ |Import-Variables.ps1; Write-Host "Properties: $Name $Id $Description"}
+Import-Csv |ForEach-Object {$_ |Import-Variables; Write-Host "Properties: $Name $Id $Description"}
 
 Copies field values into $ProductID, $Name, and $ListPrice.
 
 .EXAMPLE
-if($env:ComSpec -match '^(?<ComPath>.*?\\)(?<ComExe>[^\\]+$)'){Import-Variables.ps1 $Matches -Verbose}
+if($env:ComSpec -match '^(?<ComPath>.*?\\)(?<ComExe>[^\\]+$)'){Import-Variables $Matches -Verbose}
 
 Sets $ComPath and $ComExe from the regex captures if the regex matches.
 
 .EXAMPLE
-Invoke-RestMethod https://api.github.com/ |Import-Variables.ps1 ; Invoke-RestMethod $emojis_url
+Invoke-RestMethod https://api.github.com/ |Import-Variables ; Invoke-RestMethod $emojis_url
 
 Sets variables from the fields returned by the web service: $current_user_url, $emojis_url, &c.
 Then fetches the list of GitHub emojis.
@@ -50,7 +47,7 @@ Works with DataRows.
 )
 Begin
 {
-	$Scope = Add-ScopeLevel.ps1 $Scope
+	$Scope = Add-ScopeLevel $Scope
 	$sv = if($Private) {@{Scope=$Scope;Option='Private'}} else {@{Scope=$Scope}}
 }
 Process

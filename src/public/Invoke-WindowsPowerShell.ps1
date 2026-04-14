@@ -6,18 +6,15 @@ Runs commands in Windows PowerShell (typically from PowerShell Core).
 PowerShell
 
 .LINK
-Use-Command.ps1
-
-.LINK
-Stop-ThrowError.ps1
+Stop-ThrowError
 
 .EXAMPLE
-Invoke-WindowsPowerShell.ps1 '$PSVersionTable.PSEdition'
+Invoke-WindowsPowerShell '$PSVersionTable.PSEdition'
 
 Desktop
 
 .EXAMPLE
-Invoke-WindowsPowerShell.ps1 {Param($n); Get-WmiObject Win32_Process -Filter "Name like '$n'" |foreach ProcessName} power%
+Invoke-WindowsPowerShell {Param($n); Get-WmiObject Win32_Process -Filter "Name like '$n'" |foreach ProcessName} power%
 
 PowerToys.exe
 PowerToys.Awake.exe
@@ -28,7 +25,7 @@ powershell.exe
 powershell.exe
 
 .EXAMPLE
-Invoke-WindowsPowerShell.ps1 { Get-ADDefaultDomainPasswordPolicy }
+Invoke-WindowsPowerShell { Get-ADDefaultDomainPasswordPolicy }
 
 ComplexityEnabled           : True
 DistinguishedName           : DC=fabrikam,DC=com
@@ -44,13 +41,13 @@ PasswordHistoryCount        : 5
 ReversibleEncryptionEnabled : False
 
 .EXAMPLE
-Invoke-WindowsPowerShell.ps1 { Get-ADGroupMembers Taskmaster |Select-Object -ExpandProperty Name }
+Invoke-WindowsPowerShell { Get-ADGroupMembers Taskmaster |Select-Object -ExpandProperty Name }
 
 Greg Davies
 Alex Horne
 
 .EXAMPLE
-Invoke-WindowsPowerShell.ps1 { Get-ADPrincipalGroupMembership  alexh |Select-Object -ExpandProperty Name }
+Invoke-WindowsPowerShell { Get-ADPrincipalGroupMembership  alexh |Select-Object -ExpandProperty Name }
 
 Taskmaster
 The Horne Section
@@ -69,7 +66,7 @@ Justification='Invoke-Expression is neccessary for the purpose of this script.')
 [Parameter(ParameterSetName='CommandText',Position=0,Mandatory=$true)][string] $CommandText
 )
 
-if(!$IsWindows) {Stop-ThrowError.ps1 'Only supported on Windows.' -OperationContext $PSVersionTable}
+if(!$IsWindows) {Stop-ThrowError 'Only supported on Windows.' -OperationContext $PSVersionTable}
 
 if($PSVersionTable.PSEdition -eq 'Desktop')
 {
@@ -78,7 +75,16 @@ if($PSVersionTable.PSEdition -eq 'Desktop')
 	return
 }
 
-Use-Command.ps1 powershell "$env:SystemRoot\system32\windowspowershell\v1.0\powershell.exe" -Fail
+if(!(Get-Command powershell -CommandType Application -ErrorAction Ignore))
+{
+	${powershell.exe} = "$env:SystemRoot\system32\windowspowershell\v1.0\powershell.exe"
+	if(!(Test-Path ${powershell.exe} -Type Leaf))
+	{
+		Stop-ThrowError 'powershell.exe was not found' -OperationContext ${powershell.exe}
+	}
+	Set-Alias -Name powershell -Value ${powershell.exe} -Scope Script -Option Private `
+		-Description "PowerShell 5 application"
+}
 
 if(!(Get-Variable WPSModulePath -Scope Global -ValueOnly -ErrorAction Ignore))
 {
@@ -99,7 +105,7 @@ else
 {
 	if($Host.Name -eq 'Visual Studio Code Host')
 	{
-		Stop-ThrowError.ps1 'ScriptBlocks not supported by VSCode prompt' -OperationContext $CommandBlock
+		Stop-ThrowError 'ScriptBlocks not supported by VSCode prompt' -OperationContext $CommandBlock
 	}
 	& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -NonInteractive `
 		-Command $CommandBlock -args $BlockArgs

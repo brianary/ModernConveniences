@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
 Loads a NuGet package DLL, downloading as needed.
 
@@ -13,7 +13,7 @@ PowerShell
 https://www.nuget.org/
 
 .EXAMPLE
-Add-NugetPackage.ps1 Serilog ; [Serilog.Core.Logger]::None -is [Serilog.ILogger]
+Add-NugetPackage Serilog ; [Serilog.Core.Logger]::None -is [Serilog.ILogger]
 
 True
 #>

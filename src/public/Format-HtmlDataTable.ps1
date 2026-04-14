@@ -18,12 +18,12 @@ ConvertTo-Html
 https://www.w3.org/Bugs/Public/show_bug.cgi?id=18026
 
 .EXAMPLE
-Import-Csv file.csv |ConvertTo-Html |Format-HtmlDataTable.ps1
+Import-Csv file.csv |ConvertTo-Html |Format-HtmlDataTable
 
 Runs the query, parses each row into an HTML row, then fixes the alignment of numeric cells.
 
 .EXAMPLE
-$rows |ConvertTo-Html -Fragment |Format-HtmlDataTable.ps1 'Products' '#F99' '#FFF'
+$rows |ConvertTo-Html -Fragment |Format-HtmlDataTable 'Products' '#F99' '#FFF'
 
 Renders DataRows as an HTML table, right-aligns numeric cells, then adds a caption ("Products"),
 and alternates the rows between pale yellow and white.

@@ -18,21 +18,21 @@ Get-Member
 Add-Member
 
 .EXAMPLE
-Merge-PSObject.ps1 ([pscustomobject]@{a=1;b=2}) ([pscustomobject]@{b=0;c=3})
+Merge-PSObject ([pscustomobject]@{a=1;b=2}) ([pscustomobject]@{b=0;c=3})
 
 a b c
 - - -
 1 2 3
 
 .EXAMPLE
-Merge-PSObject.ps1 ([pscustomobject]@{a=1;b=2}) ([pscustomobject]@{b=0;c=3}) -Force
+Merge-PSObject ([pscustomobject]@{a=1;b=2}) ([pscustomobject]@{b=0;c=3}) -Force
 
 a b c
 - - -
 1 0 3
 
 .EXAMPLE
-'{"a":1,"b":{"u":3},"c":{"v":5}}','{"a":{"w":8},"b":2,"c":{"x":6}}' |ConvertFrom-Json |Merge-PSObject.ps1 -Accumulate -Force |select -Last 1 |ConvertTo-Json
+'{"a":1,"b":{"u":3},"c":{"v":5}}','{"a":{"w":8},"b":2,"c":{"x":6}}' |ConvertFrom-Json |Merge-PSObject -Accumulate -Force |select -Last 1 |ConvertTo-Json
 
 {
   "a": {
@@ -76,11 +76,11 @@ Process
 			$currentvalue = $value.$name
 			$value.$name =
 				if($currentvalue -isnot [PSObject] -or $newvalue -isnot [PSObject]) {$newvalue}
-				else {Merge-PSObject.ps1 $currentvalue $newvalue}
+				else {Merge-PSObject $currentvalue $newvalue}
 		}
 		elseif($value.$name -is [PSObject] -and $newvalue -is [PSObject])
 		{
-			$value.$name = Merge-PSObject.ps1 $value.$name $newvalue
+			$value.$name = Merge-PSObject $value.$name $newvalue
 		}
 	}
 	return $value

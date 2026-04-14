@@ -6,14 +6,14 @@ Cleans up old modules.
 PowerShell Modules
 
 .LINK
-Uninstall-OldModules.ps1
+Uninstall-OldModules
 
 .EXAMPLE
-Update-Modules.ps1
+Update-Modules
 
 Updates installed modules and purges old versions.
 #>
 
 [CmdletBinding()] Param()
 Update-Module -Force
-Uninstall-OldModules.ps1
+Uninstall-OldModules

@@ -1,10 +1,11 @@
-name: Publish module to PowerShell Gallery
+﻿name: Publish module to PowerShell Gallery
 on:
-  push:
+  workflow_run:
+    workflows: ["Continuous integration"]
+    types: [completed]
     branches: [main]
 jobs:
   publish:
-    if: 0
     name: Publish to PowerShell Gallery
     runs-on: windows-latest
     steps:

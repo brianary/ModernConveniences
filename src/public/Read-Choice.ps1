@@ -15,14 +15,14 @@ PowerShell
 https://msdn.microsoft.com/library/system.management.automation.host.pshostuserinterface.promptforchoice.aspx
 
 .EXAMPLE
-Read-Choice.ps1 one,two,three
+Read-Choice one,two,three
 
 Please select:
 [] one  [] two  [] three  [?] Help (default is "one"):
 one
 
 .EXAMPLE
-Read-Choice.ps1 ([ordered]@{'&one'='first thing';'&two'='second thing';'t&hree'='third thing'}) -Message 'Pick:'
+Read-Choice ([ordered]@{'&one'='first thing';'&two'='second thing';'t&hree'='third thing'}) -Message 'Pick:'
 
 Pick:
 [O] one  [T] two  [H] three  [?] Help (default is "O"): ?

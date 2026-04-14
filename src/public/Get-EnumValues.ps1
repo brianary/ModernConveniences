@@ -47,7 +47,7 @@ Get-EnumValues ConsoleColor
 |   15 White
 
 .EXAMPLE
-Get-EnumValues.ps1 System.Web.Security.AntiXss.MidCodeCharts
+Get-EnumValues System.Web.Security.AntiXss.MidCodeCharts
 
 |   Value Name
 |    ----- ----

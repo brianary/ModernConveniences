@@ -14,7 +14,7 @@ Describe 'Add-DynamicParam' -Tag Add-DynamicParam -Skip:$skip {
 	}
 	Context 'Adding parameters' -Tag AddDynamicParam,Add,'DynamicParam' {
 		It "Should add a required string parameter" {
-			Add-DynamicParam.ps1 -Name Path -Type string -Mandatory
+			Add-DynamicParam -Name Path -Type string -Mandatory
 			$DynamicParams.Count |Should -Be 1 -Because 'one should have been added'
 			$DynamicParams.Keys |Should -Contain Path -Because 'the right one should have been added'
 			$DynamicParams['Path'].ParameterType |Should -Be string -Because 'it should be the right type'
@@ -26,11 +26,11 @@ Describe 'Add-DynamicParam' -Tag Add-DynamicParam -Skip:$skip {
 			$DynamicParams['Path'].Attributes[0].ValueFromRemainingArguments |Should -BeFalse -Because 'it shouldn''t accept the rest of the unnamed params'
 		}
 		It "Should add several alternative parameters" {
-			Add-DynamicParam.ps1 -Name Document -Type Xml.XmlDocument -ParameterSetName Document `
+			Add-DynamicParam -Name Document -Type Xml.XmlDocument -ParameterSetName Document `
 				-Position 0 -Mandatory -ValueFromPipeline
-			Add-DynamicParam.ps1 -Name Element -Type Xml.XmlElement -Parameter Element `
+			Add-DynamicParam -Name Element -Type Xml.XmlElement -Parameter Element `
 				-Position 0 -Mandatory -ValueFromPipeline
-			Add-DynamicParam.ps1 -Name SelectXmlInfo -Type Microsoft.PowerShell.Commands.SelectXmlInfo `
+			Add-DynamicParam -Name SelectXmlInfo -Type Microsoft.PowerShell.Commands.SelectXmlInfo `
 				-ParameterSetName SelectXmlInfo -Position 0 -Mandatory -ValueFromPipeline
 			$DynamicParams.Count |Should -Be 3 -Because 'three should''ve been added'
 			$DynamicParams.Keys |Should -Contain Document

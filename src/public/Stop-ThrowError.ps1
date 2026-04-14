@@ -48,7 +48,7 @@ Get-Variable
 New-Object
 
 .EXAMPLE
-Stop-ThrowError.ps1 'Unable to remove root node' -Argument SelectXmlInfo
+Stop-ThrowError 'Unable to remove root node' -Argument SelectXmlInfo
 
 C:\Scripts\PS5\Remove-Xml.ps1 : Unable to remove root node
 Parameter name: SelectXmlInfo
@@ -59,7 +59,7 @@ At C:\Scripts\Test-Error.ps1:2 char:23
     + FullyQualifiedErrorId : SelectXmlInfo,Remove-Xml.ps1
 
 .EXAMPLE
-if(Test-Uri.ps1 $u) {[uri]$u} else {Stop-ThrowError.ps1 'Bad URL' -Format URL -InputString $u}
+if(Test-Uri.ps1 $u) {[uri]$u} else {Stop-ThrowError 'Bad URL' -Format URL -InputString $u}
 
 (Fails for non-uri values of $u.)
 #>

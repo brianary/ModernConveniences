@@ -13,12 +13,12 @@ System.Boolean indicating at least one matching NoteProperty was found.
 Properties
 
 .EXAMPLE
-$r = Invoke-RestMethod @args; if(Test-NoteProperty.ps1 -Name Status -InputObject $r) { … }
+$r = Invoke-RestMethod @args; if(Test-NoteProperty -Name Status -InputObject $r) { … }
 
 Executes the "if" block if there is a status NoteProperty present.
 
 .EXAMPLE
-Get-Content records.json |ConvertFrom-Json |? {$_ |Test-NoteProperty.ps1 *Addr*} |…
+Get-Content records.json |ConvertFrom-Json |? {$_ |Test-NoteProperty *Addr*} |…
 
 Passes objects through the pipeline that have a property containing "Addr" in the name.
 #>

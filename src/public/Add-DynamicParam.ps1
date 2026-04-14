@@ -12,7 +12,7 @@ System.Object[] a list of possible values for this parameter to validate against
 PowerShell
 
 .EXAMPLE
-DynamicParam { Add-DynamicParam.ps1 Path string -Mandatory; $DynamicParams } Process { Import-Variables.ps1 $PSBoundParameters; ... }
+DynamicParam { Add-DynamicParam Path string -Mandatory; $DynamicParams } Process { Import-Variables $PSBoundParameters; ... }
 #>
 
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseProcessBlockForPipelineCommand','',

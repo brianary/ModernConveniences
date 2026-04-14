@@ -14,7 +14,7 @@ System.String containing the desired level.
 System.String containing the calculated level (Global or an integer).
 
 .LINK
-Stop-ThrowError.ps1
+Stop-ThrowError
 
 .LINK
 Get-PSCallStack
@@ -26,17 +26,17 @@ about_Scopes
 PowerShell
 
 .EXAMPLE
-Add-ScopeLevel.ps1 Local
+Add-ScopeLevel Local
 
 1
 
 .EXAMPLE
-Add-ScopeLevel.ps1 3
+Add-ScopeLevel 3
 
 4
 
 .EXAMPLE
-Add-ScopeLevel.ps1 Global
+Add-ScopeLevel Global
 
 Global
 #>
@@ -61,7 +61,7 @@ Process
 			{
 				if($stack[$i].Command -and $stack[$i].FunctionName -like '<ScriptBlock>*') {return "$($i-1)"}
 			}
-			Stop-ThrowError.ps1 'Unable to find Script scope' -Argument Scope
+			Stop-ThrowError 'Unable to find Script scope' -Argument Scope
 		}
 	}
 }

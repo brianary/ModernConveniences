@@ -12,7 +12,7 @@ Describe 'Copy-Html' -Tag Copy-Html -Skip:$skip {
 	BeforeAll {
 		Import-Module $module
 	}
-	Context 'Copies objects as an HTML table' -Tag CopyHtml,Copy,Html {
+	Context 'Copies objects as an HTML table' -Tag Copy-Html,Copy,Html {
 		It "Should copy objects as HTML" -TestCases @(
 			@{ InputObject = '[{Id: 1, Name: "First"}, {Id: 2, Name: "Second"}, {Id: 3, Name: "Third"}]' |ConvertFrom-Json
 				Result = @'

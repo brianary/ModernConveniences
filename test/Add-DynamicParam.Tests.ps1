@@ -13,7 +13,7 @@ Describe 'Add-DynamicParam' -Tag Add-DynamicParam -Skip:$skip {
 		Set-StrictMode -Version Latest
 		Import-Module $module
 	}
-	Context 'Adding parameters' -Tag AddDynamicParam,Add,'DynamicParam' {
+	Context 'Adding parameters' -Tag Add-DynamicParam,Add,'DynamicParam' {
 		It "Should add a required string parameter" {
 			Get-Variable DynamicParams -ValueOnly -EA Ignore |Should -BeNullOrEmpty -Because 'it should start empty or null'
 			Add-DynamicParam -Name Path -Type string -Mandatory -db

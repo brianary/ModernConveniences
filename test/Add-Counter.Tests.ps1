@@ -12,7 +12,7 @@ Describe 'Add-Counter' -Tag Add-Counter -Skip:$skip {
 	BeforeAll {
 		Import-Module $module
 	}
-	Context 'Adds a counter property' -Tag AddCounter,Add,Counter {
+	Context 'Adds a counter property' -Tag Add-Counter,Add,Counter {
 		It "Should number providers" {
 			[psobject[]] $providers = Get-PSProvider |Add-Counter -PropertyName Position -InitialValue 0 -Force
 			foreach($i in 0..($providers.Count -1))

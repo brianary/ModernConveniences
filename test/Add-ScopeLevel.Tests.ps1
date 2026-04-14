@@ -8,7 +8,7 @@ $skip = !(Test-Path .changes -Type Leaf) ? $false :
 	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)})
 if($skip) {Write-Information "No changes to $basename" -infa Continue}
 $module = Split-Path $PSScriptRoot |Get-ChildItem -Filter *.psd1
-Describe 'Add-ScopeLevel' -Tag Add-ScopeLevel -Skip:$skip {
+Describe 'Add-ScopeLevel' -Tag Add-ScopeLevel,Add,ScopeLevel -Skip:$skip {
 	BeforeAll {
 		Import-Module $module
 	}

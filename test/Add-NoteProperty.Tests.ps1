@@ -8,11 +8,11 @@ $skip = !(Test-Path .changes -Type Leaf) ? $false :
 	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)})
 if($skip) {Write-Information "No changes to $basename" -infa Continue}
 $module = Split-Path $PSScriptRoot |Get-ChildItem -Filter *.psd1
-Describe 'Add-NoteProperty' -Tag Add-NoteProperty -Skip:$skip {
+Describe 'Add-NoteProperty' -Tag Add-NoteProperty,Add,NoteProperty -Skip:$skip {
 	BeforeAll {
 		Import-Module $module
 	}
-	Context 'Add a calculated property value' -Tag AddNoteProperty,Add,NoteProperty {
+	Context 'Add a calculated property value' -Tag Add-NoteProperty,Add,NoteProperty {
 		It "Should add a property with a static value calculated when added" {
 			$value = [pscustomobject]@{x=8} |Add-NoteProperty bits {[math]::Log2($_.x)} -PassThru
 			$value.x = 16 # this should not change the pow property

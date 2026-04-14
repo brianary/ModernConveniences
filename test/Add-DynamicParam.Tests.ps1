@@ -7,16 +7,21 @@ $basename = "$(($MyInvocation.MyCommand.Name -split '\.',2)[0])."
 $skip = !(Test-Path .changes -Type Leaf) ? $false :
 	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)})
 if($skip) {Write-Information "No changes to $basename" -infa Continue}
-$module = Split-Path $PSScriptRoot |Get-ChildItem -Filter *.psm1
+$module = Split-Path $PSScriptRoot |Get-ChildItem -Filter *.psd1
 Describe 'Add-DynamicParam' -Tag Add-DynamicParam -Skip:$skip {
 	BeforeAll {
+		Set-StrictMode -Version Latest
 		Import-Module $module
 	}
 	Context 'Adding parameters' -Tag AddDynamicParam,Add,'DynamicParam' {
 		It "Should add a required string parameter" {
-			Add-DynamicParam -Name Path -Type string -Mandatory
+			Get-Variable DynamicParams -ValueOnly -EA Ignore |Should -BeNullOrEmpty -Because 'it should start empty or null'
+			Add-DynamicParam -Name Path -Type string -Mandatory -db
+			Get-Variable -Name DynamicParams |Should -BeTrue -Becausem 'it should exist now'
+			Get-Variable DynamicParams -ValueOnly -EA Ignore |Should -Not -BeNullOrEmpty -Because 'it should be created'
 			$DynamicParams.Count |Should -Be 1 -Because 'one should have been added'
-			$DynamicParams.Keys |Should -Contain Path -Because 'the right one should have been added'
+			$DynamicParams.Keys |Should -Contain Path -Because 'the Path name should be in the keys'
+			$DynamicParams.ContainsKey('Path') |Should -BeTrue -Because 'the Path param should have been added'
 			$DynamicParams['Path'].ParameterType |Should -Be string -Because 'it should be the right type'
 			$DynamicParams['Path'].Attributes.Count |Should -Be 1 -Because 'one attribute should exist'
 			$DynamicParams['Path'].Attributes[0].ParameterSetName |Should -BeExactly __AllParameterSets -Because 'the parameter set should be the default'

@@ -25,8 +25,8 @@ Describe 'ConvertTo-SafeEntities' -Tag ConvertTo-SafeEntities -Skip:$skip {
 			@{ Value = "$([char]0xD83E)$([char]0xDDEA) new test"; Result = '&#x1F9EA; new test' }
 		) {
 			Param([string] $Value, [string] $Result)
-			$Value |ConvertTo-SafeEntities.ps1 |Should -BeExactly $Result -Because 'pipeline should work'
-			ConvertTo-SafeEntities.ps1 $Value |Should -BeExactly $Result -Because 'parameter should work'
+			$Value |ConvertTo-SafeEntities |Should -BeExactly $Result -Because 'pipeline should work'
+			ConvertTo-SafeEntities $Value |Should -BeExactly $Result -Because 'parameter should work'
 		}
 	}
 }

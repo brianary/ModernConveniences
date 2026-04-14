@@ -18,7 +18,7 @@ https://docs.microsoft.com/dotnet/api/system.char.issurrogatepair
 https://docs.microsoft.com/dotnet/api/system.char.converttoutf32
 
 .EXAMPLE
-"$([char]0xD83D)$([char]0xDCA1) File $([char]0x2192) Save" |ConvertTo-SafeEntities.ps1
+"$([char]0xD83D)$([char]0xDCA1) File $([char]0x2192) Save" |ConvertTo-SafeEntities
 
 &#x1F4A1; File &#x2192; Save
 
@@ -26,7 +26,7 @@ This shows a UTF-16 surrogate pair, used internally by .NET strings, which is co
 into a single entity reference.
 
 .EXAMPLE
-"ETA: $([char]0xBD) hour" |ConvertTo-SafeEntities.ps1
+"ETA: $([char]0xBD) hour" |ConvertTo-SafeEntities
 
 ETA: &#xBD; hour
 #>

@@ -8,13 +8,12 @@ $basename = "$(($MyInvocation.MyCommand.Name -split '\.',2)[0])."
 $skip = !(Test-Path .changes -Type Leaf) ? $false :
 	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)})
 if($skip) {Write-Information "No changes to $basename" -infa Continue}
-Describe 'ConvertTo-SafeEntities' -Tag ConvertTo-SafeEntities,ConvertTo,SafeEntities -Skip:$skip {
+Describe 'ConvertTo-SafeEntities' -Tag ConvertTo-SafeEntities,ConvertTo,Convert,SafeEntities,Entities,HTML,XML -Skip:$skip {
 	BeforeAll {
 		$scriptsdir,$sep = (Split-Path $PSScriptRoot),[io.path]::PathSeparator
 		if($scriptsdir -notin ($env:Path -split $sep)) {$env:Path += "$sep$scriptsdir"}
 	}
-	Context 'Encode text as XML/HTML, escaping all characters outside 7-bit ASCII' `
-		-Tag Convert,ConvertTo,ConvertToSafeEntities,SafeEntities,Entities,HTML,XML {
+	Context 'Encode text as XML/HTML, escaping all characters outside 7-bit ASCII' {
 		It "Should convert '<Value>' to '<Result>'" -TestCases @(
 			@{ Value = "$([Text.Rune]0x1F4A1) File $([char]0x2192) Save"; Result = '&#x1F4A1; File &#x2192; Save' }
 			@{ Value = "$([char]0xD83D)$([char]0xDCA1) File $([char]0x2192) Save"; Result = '&#x1F4A1; File &#x2192; Save' }

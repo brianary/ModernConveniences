@@ -12,7 +12,7 @@ Describe 'Add-NoteProperty' -Tag Add-NoteProperty,Add,NoteProperty -Skip:$skip {
 	BeforeAll {
 		Import-Module $module
 	}
-	Context 'Add a calculated property value' -Tag Add-NoteProperty,Add,NoteProperty {
+	Context 'Add a calculated property value' {
 		It "Should add a property with a static value calculated when added" {
 			$value = [pscustomobject]@{x=8} |Add-NoteProperty bits {[math]::Log2($_.x)} -PassThru
 			$value.x = 16 # this should not change the pow property

@@ -12,8 +12,7 @@ Describe 'Add-ParameterDefault' -Tag Add-ParameterDefault,Add,ParameterDefault -
 	BeforeAll {
 		Import-Module $module
 	}
-	Context 'Appends or creates a value to use for the specified cmdlet parameter to use when one is not specified.' `
-		-Tag Add-ParameterDefault,Add,ParameterDefault {
+	Context 'Appends or creates a value to use for the specified cmdlet parameter to use when one is not specified.' {
 		It "Should set a simple default" {
 			$initialCount = $PSDefaultParameterValues.Count
 			Add-ParameterDefault gcm Type All -Scope Script

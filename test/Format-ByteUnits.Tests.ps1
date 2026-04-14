@@ -12,7 +12,7 @@ Describe 'Format-ByteUnits' -Tag Format-ByteUnits,Format,ByteUnits -Skip:$skip {
 	BeforeAll {
 		Import-Module $module
 	}
-	Context 'Converts bytes to largest possible units, to improve readability' -Tag FormatByteUnits,Format,ByteUnits {
+	Context 'Converts bytes to largest possible units, to improve readability' {
 		It "Formatting '<Bytes>', up to '<Precision>' digits after the decimal returns '<Result>', or '<SIResult> for SI'" -TestCases @(
 			@{ Bytes = 0; Precision = 16; Result = '0'; SIResult = '0' }
 			@{ Bytes = 1; Precision = 16; Result = '1'; SIResult = '1 B' }

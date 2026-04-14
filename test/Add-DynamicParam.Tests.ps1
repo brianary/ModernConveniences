@@ -8,12 +8,12 @@ $skip = !(Test-Path .changes -Type Leaf) ? $false :
 	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)})
 if($skip) {Write-Information "No changes to $basename" -infa Continue}
 $module = Split-Path $PSScriptRoot |Get-ChildItem -Filter *.psd1
-Describe 'Add-DynamicParam' -Tag Add-DynamicParam -Skip:$skip {
+Describe 'Add-DynamicParam' -Tag Add-DynamicParam,Add,'DynamicParam' -Skip:$skip {
 	BeforeAll {
 		Set-StrictMode -Version Latest
 		Import-Module $module
 	}
-	Context 'Adding parameters' -Tag Add-DynamicParam,Add,'DynamicParam' {
+	Context 'Adding parameters' {
 		It "Should add a required string parameter" {
 			Get-Variable DynamicParams -ValueOnly -EA Ignore |Should -BeNullOrEmpty -Because 'it should start empty or null'
 			Add-DynamicParam -Name Path -Type string -Mandatory -db

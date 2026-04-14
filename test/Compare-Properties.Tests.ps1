@@ -12,7 +12,7 @@ Describe 'Compare-Properties' -Tag Compare-Properties,Compare,Properties -Skip:$
 	BeforeAll {
 		Import-Module $module
 	}
-	Context 'Compares the properties of two objects' -Tag CompareProperties,Compare,Properties {
+	Context 'Compares the properties of two objects' {
 		It 'Should find the difference between PSProviders' {
 			$diff = Compare-Properties (Get-PSProvider variable) (Get-PSProvider alias) |Sort-Object PropertyName
 			$diff.Reference |Should -BeTrue

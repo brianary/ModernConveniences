@@ -12,7 +12,7 @@ Describe 'Add-ScopeLevel' -Tag Add-ScopeLevel,Add,ScopeLevel -Skip:$skip {
 	BeforeAll {
 		Import-Module $module
 	}
-	Context 'Convert a scope level to account for another call stack level.' -Tag AddScopeLevel,Add,ScopeLevel {
+	Context 'Convert a scope level to account for another call stack level.' {
 		It 'Should calculate local scope' {
 			Add-ScopeLevel Local |Should -BeExactly '1' -Because 'local is zero scope'
 		}

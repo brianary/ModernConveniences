@@ -1,4 +1,4 @@
-# see https://docs.microsoft.com/powershell/scripting/developer/module/how-to-write-a-powershell-module-manifest
+﻿# see https://docs.microsoft.com/powershell/scripting/developer/module/how-to-write-a-powershell-module-manifest
 # and https://docs.microsoft.com/powershell/module/microsoft.powershell.core/new-modulemanifest
 @{
 RootModule = 'ModernConveniences.psm1'
@@ -15,7 +15,7 @@ FunctionsToExport = @('*') # '*'
 CmdletsToExport = @() # '*'
 VariablesToExport = @() # '*'
 # AliasesToExport = @()
-FileList = 'ModernConveniences.psm1'
+FileList = @('ModernConveniences.psd1','ModernConveniences.psm1')
 PrivateData = @{
 	PSData = @{
 		Tags = 'Extensions', 'Utility'

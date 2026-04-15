@@ -11,14 +11,15 @@ $module = Split-Path $PSScriptRoot |Get-ChildItem -Filter *.psd1
 Write-Information "Testing **$srcname from $module" -infa Continue
 Describe 'Show-Progress' -Tag Show-Progress,Show,Progress -Skip:$skip {
 	BeforeAll {
-		Mock Write-Progress
 		Import-Module $module
+		# see https://pester.dev/docs/usage/modules#-modulename
+		Mock Write-Progress -ModuleName ModernConveniences
 	}
 	Context 'Performs an operation against each item in a collection of input objects, with a progress bar' `
 		-Tag Show-Progress,Show,Progress {
 		It "Displays progress" {
 			1..10 |Show-Progress -Activity 'Processing' |Out-Null
-			Should -Invoke -CommandName Write-Progress -Times 10
+			Should -Invoke -ModuleName ModernConveniences -CommandName Write-Progress -Times 10
 		}
 	}
 	AfterAll {

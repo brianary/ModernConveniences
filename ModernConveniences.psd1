@@ -2,7 +2,7 @@
 # and https://docs.microsoft.com/powershell/module/microsoft.powershell.core/new-modulemanifest
 @{
 RootModule = 'ModernConveniences.psm1'
-ModuleVersion = '0.0.1'
+ModuleVersion = '0.0.1.1'
 CompatiblePSEditions = @('Core')
 GUID = 'd81982a2-0e28-463f-b63d-1d26c49a6b9b'
 Author = 'Brian Lalonde'

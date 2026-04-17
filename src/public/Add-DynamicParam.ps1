@@ -76,11 +76,19 @@ parameter name or alias.
 )
 End
 {
+	Write-CallInfo.ps1 *>&1 |Write-Debug
 	$DynamicParams = Get-Variable DynamicParams -Scope 1 -ErrorAction Ignore
 	if($null -eq $DynamicParams)
 	{
+		Write-Debug 'Creating DynamicParams'
 		$DynamicParams = New-Object Management.Automation.RuntimeDefinedParameterDictionary
 		$DynamicParams = New-Variable DynamicParams $DynamicParams -Scope 1 -PassThru
+		$DynamicParams |ConvertTo-Json -Depth 5 |Write-Debug
+	}
+	elseif($DynamicParams.ContainsKey($Name))
+	{
+		Write-Debug 'Key exists'
+		$DynamicParams |ConvertTo-Json -Depth 5 |Write-Debug
 	}
 	$atts = New-Object Collections.ObjectModel.Collection[System.Attribute]
 	foreach($set in $ParameterSetName)
@@ -112,10 +120,12 @@ End
 	if($ValidatePattern) {$atts.Add((New-Object Management.Automation.ValidatePatternAttribute $ValidatePattern))}
 	if($ValidateRange) {$atts.Add((New-Object Management.Automation.ValidateRangeAttribute $ValidateRange))}
 	if($ValidateScript) {$atts.Add((New-Object Management.Automation.ValidateScriptAttribute $ValidateScript))}
-	if($input) {$ValidateSet = $input}
+	[psobject[]] $ValidateSet = $input
 	if($ValidateSet) {$atts.Add((New-Object Management.Automation.ValidateSetAttribute $ValidateSet))}
 	if($TrustedData) {$atts.Add((New-Object Management.Automation.ValidateTrustedDataAttribute))}
 	if($UserDrive) {$atts.Add((New-Object Management.Automation.ValidateUserDriveAttribute))}
 	$param = New-Object Management.Automation.RuntimeDefinedParameter ($Name,$Type,$atts)
+	Write-Debug 'About to add param'
+	$DynamicParams |ConvertTo-Json -Depth 5 |Write-Debug
 	$DynamicParams.Value.Add($Name,$param)
 }

@@ -10,7 +10,7 @@ if((Test-Path .changes -Type Leaf) -and
 BeforeAll {
 	Set-StrictMode -Version Latest
 	$module = Get-Item "$PSScriptRoot/../src/*.psd1"
-	Import-Module $module
+	Import-Module $module -Force
 }
 Describe 'Copy-Html' -Tag Copy-Html,Copy,HTML {
 	Context 'Copies objects as an HTML table' {
@@ -36,5 +36,5 @@ Describe 'Copy-Html' -Tag Copy-Html,Copy,HTML {
 
 }
 AfterAll {
-	Remove-Module $module.BaseName
+	Remove-Module $module.BaseName -Force
 }

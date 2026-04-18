@@ -10,7 +10,7 @@ if((Test-Path .changes -Type Leaf) -and
 BeforeAll {
 	Set-StrictMode -Version Latest
 	$module = Get-Item "$PSScriptRoot/../src/*.psd1"
-	Import-Module $module
+	Import-Module $module -Force
 }
 Describe 'Add-DynamicParam' -Tag Add-DynamicParam,Add,'DynamicParam' {
 	Context 'Adding parameters' {
@@ -72,5 +72,5 @@ Describe 'Add-DynamicParam' -Tag Add-DynamicParam,Add,'DynamicParam' {
 	}
 }
 AfterAll {
-	Remove-Module $module.BaseName
+	Remove-Module $module.BaseName -Force
 }

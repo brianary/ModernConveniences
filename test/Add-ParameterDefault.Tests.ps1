@@ -10,7 +10,7 @@ if((Test-Path .changes -Type Leaf) -and
 BeforeAll {
 	Set-StrictMode -Version Latest
 	$module = Get-Item "$PSScriptRoot/../src/*.psd1"
-	Import-Module $module
+	Import-Module $module -Force
 }
 Describe 'Add-ParameterDefault' -Tag Add-ParameterDefault,Add,ParameterDefault {
 	Context 'Appends or creates a value to use for the specified cmdlet parameter to use when one is not specified.' {
@@ -32,5 +32,5 @@ Describe 'Add-ParameterDefault' -Tag Add-ParameterDefault,Add,ParameterDefault {
 	}
 }
 AfterAll {
-	Remove-Module $module.BaseName
+	Remove-Module $module.BaseName -Force
 }

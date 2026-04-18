@@ -9,7 +9,7 @@ if((Test-Path .changes -Type Leaf) -and
 BeforeAll {
 	Set-StrictMode -Version Latest
 	$module = Get-Item "$PSScriptRoot/../src/*.psd1"
-	Import-Module $module
+	Import-Module $module -Force
 }
 Describe 'ConvertTo-SafeEntities' -Tag ConvertTo-SafeEntities,ConvertTo,Convert,SafeEntities,Entities,HTML,XML {
 	Context 'Encode text as XML/HTML, escaping all characters outside 7-bit ASCII' {
@@ -29,5 +29,5 @@ Describe 'ConvertTo-SafeEntities' -Tag ConvertTo-SafeEntities,ConvertTo,Convert,
 	}
 }
 AfterAll {
-	Remove-Module $module.BaseName
+	Remove-Module $module.BaseName -Force
 }

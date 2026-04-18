@@ -9,7 +9,7 @@ if((Test-Path .changes -Type Leaf) -and
 BeforeAll {
 	Set-StrictMode -Version Latest
 	$module = Get-Item "$PSScriptRoot/../src/*.psd1"
-	Import-Module $module
+	Import-Module $module -Force
 }
 Describe 'Format-ByteUnits' -Tag Format-ByteUnits,Format,ByteUnits {
 	Context 'Converts bytes to largest possible units, to improve readability' {
@@ -62,5 +62,5 @@ Describe 'Format-ByteUnits' -Tag Format-ByteUnits,Format,ByteUnits {
 
 }
 AfterAll {
-	Remove-Module $module.BaseName
+	Remove-Module $module.BaseName -Force
 }

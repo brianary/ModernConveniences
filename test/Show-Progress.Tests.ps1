@@ -9,7 +9,7 @@ if((Test-Path .changes -Type Leaf) -and
 BeforeAll {
 	Set-StrictMode -Version Latest
 	$module = Get-Item "$PSScriptRoot/../src/*.psd1"
-	Import-Module $module
+	Import-Module $module -Force
 }
 Describe 'Show-Progress' -Tag Show-Progress,Show,Progress {
 	BeforeEach {
@@ -25,5 +25,5 @@ Describe 'Show-Progress' -Tag Show-Progress,Show,Progress {
 	}
 }
 AfterAll {
-	Remove-Module $module.BaseName
+	Remove-Module $module.BaseName -Force
 }

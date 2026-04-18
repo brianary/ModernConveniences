@@ -30,7 +30,7 @@ jobs:
       - name: Test module
         id: test
         run: |
-          Import-Module ./*.psd1
+          Import-Module ./src/*.psd1
           Invoke-Pester -Configuration @{TestResult=@{Enabled=$true}}
       - name: Upload SARIF results file
         uses: github/codeql-action/upload-sarif@v3

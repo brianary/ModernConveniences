@@ -16,4 +16,4 @@ jobs:
         id: publish
         env:
             GALLERYKEY: ${{ secrets.gallerykey }}
-        run: Publish-Module -Path ./*.psd1 -NuGetApiKey $env:GALLERYKEY
+        run: Publish-Module -Path ./src/*.psd1 -NuGetApiKey $env:GALLERYKEY

@@ -9,6 +9,8 @@ jobs:
     name: Publish to PowerShell Gallery
     runs-on: windows-latest
     steps:
+      - name: Check out script source
+        uses: actions/checkout@v6
       - name: Build module
         id: build
         run: ./Build-Module.ps1

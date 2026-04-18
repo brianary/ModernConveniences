@@ -29,10 +29,9 @@ jobs:
           output: analysis.sarif
       - name: Test module
         id: test
-        run: |
-          Import-Module ./src/*.psd1
-          Invoke-Pester -Configuration @{TestResult=@{Enabled=$true}}
-      - name: Upload SARIF results file
-        uses: github/codeql-action/upload-sarif@v3
+        run: Invoke-Pester -Configuration @{TestResult=@{Enabled=$true}}
+      - name: Upload test results
+        uses: actions/upload-artifact@v7
         with:
-          sarif_file: results.sarif
+          name: Pester test results
+          path: ./testResults.xml

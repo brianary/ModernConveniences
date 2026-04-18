@@ -3,15 +3,15 @@
 Tests conversion of a scope level to account for another call stack level.
 #>
 
-$basename = "$(($MyInvocation.MyCommand.Name -split '\.',2)[0])."
-$skip = !(Test-Path .changes -Type Leaf) ? $false :
-	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)})
-if($skip) {Write-Information "No changes to $basename" -infa Continue}
-$module = Split-Path $PSScriptRoot |Get-ChildItem -Filter *.psd1
-Describe 'Add-ScopeLevel' -Tag Add-ScopeLevel,Add,ScopeLevel -Skip:$skip {
-	BeforeAll {
-		Import-Module $module
-	}
+if((Test-Path .changes -Type Leaf) -and
+	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)}))
+{return}
+BeforeAll {
+	Set-StrictMode -Version Latest
+	$module = Get-Item "$PSScriptRoot/../src/*.psd1"
+	Import-Module $module
+}
+Describe 'Add-ScopeLevel' -Tag Add-ScopeLevel,Add,ScopeLevel {
 	Context 'Convert a scope level to account for another call stack level.' {
 		It 'Should calculate local scope' {
 			Add-ScopeLevel Local |Should -BeExactly '1' -Because 'local is zero scope'
@@ -23,4 +23,7 @@ Describe 'Add-ScopeLevel' -Tag Add-ScopeLevel,Add,ScopeLevel -Skip:$skip {
 			Add-ScopeLevel Global |Should -BeExactly Global -Because 'global is the top scope'
 		}
 	}
-}.GetNewClosure()
+}
+AfterAll {
+	Remove-Module $module.BaseName
+}

@@ -3,15 +3,15 @@
 Tests converting bytes to largest possible units, to improve readability.
 #>
 
-$basename = "$(($MyInvocation.MyCommand.Name -split '\.',2)[0])."
-$skip = !(Test-Path .changes -Type Leaf) ? $false :
-	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)})
-if($skip) {Write-Information "No changes to $basename" -infa Continue}
-$module = Split-Path $PSScriptRoot |Get-ChildItem -Filter *.psd1
-Describe 'Format-ByteUnits' -Tag Format-ByteUnits,Format,ByteUnits -Skip:$skip {
-	BeforeAll {
-		Import-Module $module
-	}
+if((Test-Path .changes -Type Leaf) -and
+	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)}))
+{return}
+BeforeAll {
+	Set-StrictMode -Version Latest
+	$module = Get-Item "$PSScriptRoot/../src/*.psd1"
+	Import-Module $module
+}
+Describe 'Format-ByteUnits' -Tag Format-ByteUnits,Format,ByteUnits {
 	Context 'Converts bytes to largest possible units, to improve readability' {
 		It "Formatting '<Bytes>', up to '<Precision>' digits after the decimal returns '<Result>', or '<SIResult> for SI'" -TestCases @(
 			@{ Bytes = 0; Precision = 16; Result = '0'; SIResult = '0' }
@@ -60,4 +60,7 @@ Describe 'Format-ByteUnits' -Tag Format-ByteUnits,Format,ByteUnits -Skip:$skip {
 		}
 	}
 
-}.GetNewClosure()
+}
+AfterAll {
+	Remove-Module $module.BaseName
+}

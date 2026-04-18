@@ -3,15 +3,16 @@
 Tests performing an operation against each item in a collection of input objects, with a progress bar.
 #>
 
-$srcname = "$([io.path]::DirectorySeparatorChar)$(($MyInvocation.MyCommand.Name -split '\.',2)[0]).ps1"
-$skip = !(Test-Path .changes -Type Leaf) ? $false :
-	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.EndsWith($basename)})
-if($skip) {Write-Information "No changes to **$srcname" -infa Continue}
-$module = Split-Path $PSScriptRoot |Get-ChildItem -Filter *.psd1
-Write-Information "Testing **$srcname from $module" -infa Continue
-Describe 'Show-Progress' -Tag Show-Progress,Show,Progress -Skip:$skip {
-	BeforeAll {
-		Import-Module $module
+if((Test-Path .changes -Type Leaf) -and
+	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)}))
+{return}
+BeforeAll {
+	Set-StrictMode -Version Latest
+	$module = Get-Item "$PSScriptRoot/../src/*.psd1"
+	Import-Module $module
+}
+Describe 'Show-Progress' -Tag Show-Progress,Show,Progress {
+	BeforeEach {
 		# see https://pester.dev/docs/usage/modules#-modulename
 		Mock Write-Progress -ModuleName ModernConveniences
 	}
@@ -22,7 +23,7 @@ Describe 'Show-Progress' -Tag Show-Progress,Show,Progress -Skip:$skip {
 			Should -Invoke -ModuleName ModernConveniences -CommandName Write-Progress -Times 10
 		}
 	}
-	AfterAll {
-		Remove-Module $module.BaseName
-	}
-}.GetNewClosure()
+}
+AfterAll {
+	Remove-Module $module.BaseName
+}

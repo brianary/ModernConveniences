@@ -4,15 +4,15 @@ Tests copying objects as an HTML table.
 #>
 
 if(!$IsWindows) {return}
-$basename = "$(($MyInvocation.MyCommand.Name -split '\.',2)[0])."
-$skip = !(Test-Path .changes -Type Leaf) ? $false :
-	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)})
-if($skip) {Write-Information "No changes to $basename" -infa Continue}
-$module = Split-Path $PSScriptRoot |Get-ChildItem -Filter *.psd1
-Describe 'Copy-Html' -Tag Copy-Html,Copy,HTML -Skip:$skip {
-	BeforeAll {
-		Import-Module $module
-	}
+if((Test-Path .changes -Type Leaf) -and
+	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)}))
+{return}
+BeforeAll {
+	Set-StrictMode -Version Latest
+	$module = Get-Item "$PSScriptRoot/../src/*.psd1"
+	Import-Module $module
+}
+Describe 'Copy-Html' -Tag Copy-Html,Copy,HTML {
 	Context 'Copies objects as an HTML table' {
 		It "Should copy objects as HTML" -TestCases @(
 			@{ InputObject = '[{Id: 1, Name: "First"}, {Id: 2, Name: "Second"}, {Id: 3, Name: "Third"}]' |ConvertFrom-Json
@@ -34,4 +34,7 @@ Describe 'Copy-Html' -Tag Copy-Html,Copy,HTML -Skip:$skip {
 		}
 	}
 
-}.GetNewClosure()
+}
+AfterAll {
+	Remove-Module $module.BaseName
+}

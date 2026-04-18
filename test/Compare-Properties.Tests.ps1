@@ -3,15 +3,15 @@
 Tests comparing the properties of two objects.
 #>
 
-$basename = "$(($MyInvocation.MyCommand.Name -split '\.',2)[0])."
-$skip = !(Test-Path .changes -Type Leaf) ? $false :
-	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)})
-if($skip) {Write-Information "No changes to $basename" -infa Continue}
-$module = Split-Path $PSScriptRoot |Get-ChildItem -Filter *.psd1
-Describe 'Compare-Properties' -Tag Compare-Properties,Compare,Properties -Skip:$skip {
-	BeforeAll {
-		Import-Module $module
-	}
+if((Test-Path .changes -Type Leaf) -and
+	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)}))
+{return}
+BeforeAll {
+	Set-StrictMode -Version Latest
+	$module = Get-Item "$PSScriptRoot/../src/*.psd1"
+	Import-Module $module
+}
+Describe 'Compare-Properties' -Tag Compare-Properties,Compare,Properties {
 	Context 'Compares the properties of two objects' {
 		It 'Should find the difference between PSProviders' {
 			$diff = Compare-Properties (Get-PSProvider variable) (Get-PSProvider alias) |Sort-Object PropertyName
@@ -25,4 +25,7 @@ Describe 'Compare-Properties' -Tag Compare-Properties,Compare,Properties -Skip:$
 			$name.DifferentValue |Should -BeExactly Alias
 		}
 	}
-}.GetNewClosure()
+}
+AfterAll {
+	Remove-Module $module.BaseName
+}

@@ -3,15 +3,15 @@
 Tests adding a NoteProperty to a PSObject, calculating the value with the object in context.
 #>
 
-$basename = "$(($MyInvocation.MyCommand.Name -split '\.',2)[0])."
-$skip = !(Test-Path .changes -Type Leaf) ? $false :
-	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)})
-if($skip) {Write-Information "No changes to $basename" -infa Continue}
-$module = Split-Path $PSScriptRoot |Get-ChildItem -Filter *.psd1
-Describe 'Add-NoteProperty' -Tag Add-NoteProperty,Add,NoteProperty -Skip:$skip {
-	BeforeAll {
-		Import-Module $module
-	}
+if((Test-Path .changes -Type Leaf) -and
+	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)}))
+{return}
+BeforeAll {
+	Set-StrictMode -Version Latest
+	$module = Get-Item "$PSScriptRoot/../src/*.psd1"
+	Import-Module $module
+}
+Describe 'Add-NoteProperty' -Tag Add-NoteProperty,Add,NoteProperty {
 	Context 'Add a calculated property value' {
 		It "Should add a property with a static value calculated when added" {
 			$value = [pscustomobject]@{x=8} |Add-NoteProperty bits {[math]::Log2($_.x)} -PassThru
@@ -30,4 +30,7 @@ Describe 'Add-NoteProperty' -Tag Add-NoteProperty,Add,NoteProperty -Skip:$skip {
 			$value.isNumeric |Should -BeTrue -Because 'the isNumeric property should be true'
 		}
 	}
-}.GetNewClosure()
+}
+AfterAll {
+	Remove-Module $module.BaseName
+}

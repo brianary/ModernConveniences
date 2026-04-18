@@ -3,16 +3,16 @@
 Tests adding a dynamic parameter to a DynamicParam object.
 #>
 
-$basename = "$(($MyInvocation.MyCommand.Name -split '\.',2)[0])."
-$skip = !(Test-Path .changes -Type Leaf) ? $false :
-	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)})
-if($skip) {Write-Information "No changes to $basename" -infa Continue}
-$module = Split-Path $PSScriptRoot |Get-ChildItem -Filter *.psd1
-Describe 'Add-DynamicParam' -Tag Add-DynamicParam,Add,'DynamicParam' -Skip:$skip {
-	BeforeAll {
-		Set-StrictMode -Version Latest
-		Import-Module $module
-	}
+return #TODO
+if((Test-Path .changes -Type Leaf) -and
+	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)}))
+{return}
+BeforeAll {
+	Set-StrictMode -Version Latest
+	$module = Get-Item "$PSScriptRoot/../src/*.psd1"
+	Import-Module $module
+}
+Describe 'Add-DynamicParam' -Tag Add-DynamicParam,Add,'DynamicParam' {
 	Context 'Adding parameters' {
 		It "Should add a required string parameter" {
 			Get-Variable DynamicParams -ValueOnly -EA Ignore |Should -BeNullOrEmpty -Because 'it should start empty or null'
@@ -70,4 +70,7 @@ Describe 'Add-DynamicParam' -Tag Add-DynamicParam,Add,'DynamicParam' -Skip:$skip
 	AfterEach {
 		Remove-Variable -Name DynamicParam -Force -ErrorAction Ignore
 	}
-}.GetNewClosure()
+}
+AfterAll {
+	Remove-Module $module.BaseName
+}

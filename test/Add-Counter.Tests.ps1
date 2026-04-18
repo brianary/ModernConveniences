@@ -3,15 +3,15 @@
 Tests adding an incrementing integer property to each pipeline object.
 #>
 
-$basename = "$(($MyInvocation.MyCommand.Name -split '\.',2)[0])."
-$skip = !(Test-Path .changes -Type Leaf) ? $false :
-	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)})
-if($skip) {Write-Information "No changes to $basename" -infa Continue}
-$module = Split-Path $PSScriptRoot |Get-ChildItem -Filter *.psd1
-Describe 'Add-Counter' -Tag Add-Counter,Add,Counter -Skip:$skip {
-	BeforeAll {
-		Import-Module $module
-	}
+if((Test-Path .changes -Type Leaf) -and
+	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)}))
+{return}
+BeforeAll {
+	Set-StrictMode -Version Latest
+	$module = Get-Item "$PSScriptRoot/../src/*.psd1"
+	Import-Module $module
+}
+Describe 'Add-Counter' -Tag Add-Counter,Add,Counter {
 	Context 'Adds a counter property' {
 		It "Should number providers" {
 			[psobject[]] $providers = Get-PSProvider |Add-Counter -PropertyName Position -InitialValue 0 -Force
@@ -32,7 +32,7 @@ Describe 'Add-Counter' -Tag Add-Counter,Add,Counter -Skip:$skip {
 				Should -BeExactly $JsonOutput -Because 'an incrementing id property should have been added'
 		}
 	}
-	AfterAll {
-		Remove-Module $module.BaseName
-	}
-}.GetNewClosure()
+}
+AfterAll {
+	Remove-Module $module.BaseName
+}

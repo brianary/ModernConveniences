@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
 Prints caller name and parameters to the host for debugging purposes.
 #>

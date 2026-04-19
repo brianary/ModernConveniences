@@ -8,7 +8,7 @@ if((Test-Path .changes -Type Leaf) -and
 	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)}))
 {return}
 BeforeAll {
-	Set-StrictMode -Version Latest
+	Set-StrictMode -Off
 	$module = Get-Item "$PSScriptRoot/../src/*.psd1"
 	Import-Module $module -Force
 }

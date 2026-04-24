@@ -23,4 +23,4 @@ jobs:
             Get-Item src/public/*.ps1 |Split-Path -LeafBase)
           # see bug https://github.com/PowerShell/PSResourceGet/issues/1806#issuecomment-2992975199
           Get-PSResourceRepository -Name PSGallery
-          Publish-PSResource -Path src/*.psd1 -Repository PSGallery -NuGetApiKey $env:GALLERYKEY
+          Publish-PSResource -Path src/*.psd1 -Repository PSGallery -ApiKey $env:GALLERYKEY

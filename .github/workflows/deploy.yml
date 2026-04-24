@@ -21,4 +21,4 @@ jobs:
         run: |
           Update-ModuleManifest -Path src/*.psd1 -FunctionsToExport (
             Get-Item src/public/*.ps1 |Split-Path -LeafBase)
-          Publish-PSResource -Path src/*.psd1 -NuGetApiKey $env:GALLERYKEY
+          Publish-PSResource -Path src/*.psd1 -Repository PSGallery -NuGetApiKey $env:GALLERYKEY

@@ -16,7 +16,6 @@ jobs:
         run: ./Build-Module.ps1
       - name: Publish module
         id: publish
-        if: 0
         env:
             GALLERYKEY: ${{ secrets.gallerykey }}
         run: Import-Module -Path ./src/*.psd1 -Force; Publish-Module ModernConveniences -NuGetApiKey $env:GALLERYKEY

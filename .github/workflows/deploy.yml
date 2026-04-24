@@ -19,5 +19,6 @@ jobs:
         env:
             GALLERYKEY: ${{ secrets.gallerykey }}
         run: |
-          Get-Item ./src/*.psd1 |Import-Module -Force
-          Publish-Module -Name ModernConveniences -NuGetApiKey $env:GALLERYKEY
+          Update-ModuleManifest -Path src/*.psd1 -FunctionsToExport (
+            Get-Item src/public/*.ps1 |Split-Path -LeafBase)
+          Publish-PSResource -Path src/*.psd1 -NuGetApiKey $env:GALLERYKEY

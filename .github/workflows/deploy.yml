@@ -20,4 +20,4 @@ jobs:
             GALLERYKEY: ${{ secrets.gallerykey }}
         run: |
           Get-Item ./src/*.psd1 |Import-Module -Force
-          Publish-Module ModernConveniences -NuGetApiKey $env:GALLERYKEY
+          Publish-Module -Name ModernConveniences -NuGetApiKey $env:GALLERYKEY

@@ -18,4 +18,6 @@ jobs:
         id: publish
         env:
             GALLERYKEY: ${{ secrets.gallerykey }}
-        run: Import-Module -Path ./src/*.psd1 -Force; Publish-Module ModernConveniences -NuGetApiKey $env:GALLERYKEY
+        run: |
+          Get-Item ./src/*.psd1 |Import-Module -Force
+          Publish-Module ModernConveniences -NuGetApiKey $env:GALLERYKEY

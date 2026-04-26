@@ -2,7 +2,7 @@
 ==================
 
 <!-- To publish to PowerShell Gallery, commit an update to the .psd1 file -->
-<img src="images/ModernConveniences.svg" alt="ModernConveniences icon" align="right" height="256" width="256" />
+<img src="images/ModernConveniences.svg" alt="ModernConveniences icon" align="right" height="200" width="200" />
 
 [![PowerShell Gallery Version](https://img.shields.io/powershellgallery/v/ModernConveniences)](https://www.powershellgallery.com/packages/ModernConveniences/)
 [![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/ModernConveniences)](https://www.powershellgallery.com/packages/ModernConveniences/)

@@ -1,5 +1,7 @@
 ﻿name: Continuous integration
-on: push
+on:
+  push:
+    paths: ['src/**','test/**']
 defaults:
   run:
     shell: pwsh

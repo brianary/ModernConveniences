@@ -5,7 +5,7 @@ on:
     types: [completed]
     branches: [main]
 jobs:
-  publish:
+  on-success:
     name: Publish to PowerShell Gallery
     runs-on: windows-latest
     steps:
@@ -13,14 +13,9 @@ jobs:
         uses: actions/checkout@v6
       - name: Build module
         id: build
-        run: ./Build-Module.ps1
+        run: ./scripts/Build-Module.ps1
       - name: Publish module
         id: publish
         env:
             GALLERYKEY: ${{ secrets.gallerykey }}
-        run: |
-          Update-ModuleManifest -Path src/*.psd1 -FunctionsToExport (
-            Get-Item src/public/*.ps1 |Split-Path -LeafBase)
-          # see bug https://github.com/PowerShell/PSResourceGet/issues/1806#issuecomment-2992975199
-          Get-PSResourceRepository -Name PSGallery
-          Publish-PSResource -Path src/*.psd1 -Repository PSGallery -ApiKey $env:GALLERYKEY
+        run: ./scripts/Publish-ThisModule.ps1

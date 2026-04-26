@@ -28,7 +28,7 @@ Begin
 		Write-Information "Updated $psd1 to v$version"
 	}
 
-	Push-Location "$PSScriptRoot/src"
+	Push-Location "$PSScriptRoot/../src"
 }
 Process
 {

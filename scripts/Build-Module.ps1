@@ -35,7 +35,7 @@ Export-ModuleMember -Function $($public.BaseName -join ',')
 "@ |Out-File ([io.path]::ChangeExtension($(git rev-parse --show-toplevel |Split-Path -Leaf),'psm1')) utf8BOM
     }
 
-	Push-Location "$PSScriptRoot/src"
+	Push-Location "$PSScriptRoot/../src"
 }
 Process
 {

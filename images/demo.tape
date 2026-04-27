@@ -17,4 +17,22 @@ Enter
 Sleep 7s
 Type "Get-EnumValues DateTimeKind"
 Enter
-Sleep 3s
+Sleep 2s
+Type "Write-Info 'Completed ' -ForegroundColor Cyan -NoNewline ; Write-Info '#1' -fg Blue"
+Enter
+Sleep 2s
+Type "17179869184 |Format-ByteUnits"
+Enter
+Sleep 2s
+Type "Get-RandomBytes 16 |Format-Hex"
+Enter
+Sleep 2s
+Type "Test-Administrator"
+Enter
+Sleep 2s
+Type "Format-Permutations 'srv-{0}-{1}' dev,test,prod (1..3)"
+Enter
+Sleep 2s
+Type "'📟️ pager' |ConvertTo-SafeEntities"
+Enter
+Sleep 2s

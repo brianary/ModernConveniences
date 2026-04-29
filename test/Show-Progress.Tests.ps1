@@ -4,11 +4,11 @@ Tests performing an operation against each item in a collection of input objects
 #>
 
 if((Test-Path .changes -Type Leaf) -and
-	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)}))
-{return}
+	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |
+		Where-Object {$_.StartsWith("$(($MyInvocation.MyCommand.Name -split '\.',2)[0]).")})) {return}
 BeforeAll {
 	Set-StrictMode -Version Latest
-	$module = Get-Item "$PSScriptRoot/../src/*.psd1"
+	$module = Get-Item "$PSScriptRoot/../src/.publish/*.psd1"
 	Import-Module $module -Force
 }
 Describe 'Show-Progress' -Tag Show-Progress,Show,Progress {

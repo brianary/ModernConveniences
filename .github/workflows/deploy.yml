@@ -1,9 +1,8 @@
 ﻿name: Publish module to PowerShell Gallery
 on:
-  workflow_run:
-    workflows: ["Continuous integration"]
-    types: [completed]
-    branches: [main]
+  push:
+    tags:
+      - v[0-9]*
 jobs:
   on-success:
     name: Publish to PowerShell Gallery
@@ -14,8 +13,19 @@ jobs:
       - name: Build module
         id: build
         run: ./scripts/Build-Module.ps1
+      - name: Create release
+        id: release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
       - name: Publish module
         id: publish
         env:
             GALLERYKEY: ${{ secrets.gallerykey }}
+            MODULEVERSION: ${{ github.ref }}
         run: ./scripts/Publish-ThisModule.ps1

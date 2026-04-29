@@ -32,7 +32,6 @@ Add-ParameterDefault Select-Xml Namespace @{svg = 'http://www.w3.org/2000/svg'}
 Adds the SVG namespace to any existing namespaces used by Select-Xml when none are given explicitly.
 #>
 
-#Requires -Version 3
 [CmdletBinding()][OutputType([void])] Param(
 # The name of a cmdlet, function, script, or alias to include a default parameter value for.
 [Parameter(Position=0,Mandatory=$true)][ValidateNotNullOrEmpty()][Alias('CmdletName')][string] $CommandName,

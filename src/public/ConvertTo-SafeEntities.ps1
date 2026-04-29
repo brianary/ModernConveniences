@@ -31,7 +31,6 @@ into a single entity reference.
 ETA: &#xBD; hour
 #>
 
-#Requires -Version 3
 [CmdletBinding()][OutputType([string])] Param(
 <#
 An HTML or XML string that may include emoji or other Unicode characters outside

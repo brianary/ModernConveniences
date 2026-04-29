@@ -4,11 +4,11 @@ Tests adding an incrementing integer property to each pipeline object.
 #>
 
 if((Test-Path .changes -Type Leaf) -and
-	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)}))
-{return}
+	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |
+		Where-Object {$_.StartsWith("$(($MyInvocation.MyCommand.Name -split '\.',2)[0]).")})) {return}
 BeforeAll {
 	Set-StrictMode -Version Latest
-	$module = Get-Item "$PSScriptRoot/../src/*.psd1"
+	$module = Get-Item "$PSScriptRoot/../src/.publish/*.psd1"
 	Import-Module $module -Force
 }
 Describe 'Add-Counter' -Tag Add-Counter,Add,Counter {

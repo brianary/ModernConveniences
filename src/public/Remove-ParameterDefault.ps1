@@ -29,7 +29,6 @@ Remove-ParameterDefault Select-Xml Namespace
 Removes any namespaces used by Select-Xml when none are given explicitly.
 #>
 
-#Requires -Version 3
 [CmdletBinding()] Param(
 # The name of a cmdlet, function, script, or alias to remove a default parameter value from.
 [Parameter(Position=0,Mandatory=$true)][ValidateNotNullOrEmpty()][Alias('CmdletName')][string] $CommandName,

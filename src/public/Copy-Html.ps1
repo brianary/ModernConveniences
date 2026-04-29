@@ -6,13 +6,16 @@ Copies objects as an HTML table.
 System.Management.Automation.PSObject to be turned into a table row.
 
 .LINK
+Set-Clip
+
+.LINK
 Format-HtmlDataTable
 
 .LINK
 ConvertTo-SafeEntities
 
 .LINK
-Invoke-WindowsPowerShell
+ConvertTo-Html
 
 .EXAMPLE
 Get-PSDrive |Copy-Html Name,Description
@@ -27,23 +30,15 @@ that can be pasted into emails or other formatted documents.
 # The objects to turn into table rows.
 [Parameter(ValueFromPipeline=$true)][psobject] $InputObject
 )
-Begin
-{
-	if(!$IsWindows) {Stop-ThrowError 'Only supported on Windows.' -OperationContext $PSVersionTable}
-	$data = @()
-}
-Process
-{
-	$data += $InputObject
-}
 End
 {
+	$data = @($input)
+	if(!$data) {$data = @($InputObject)}
 	$data |
 		Select-Object -Property $Property |
 		ConvertTo-Html -Fragment |
 		Format-HtmlDataTable |
 		ConvertTo-SafeEntities |
 		Out-String |
-		Set-Clipboard
-	Invoke-WindowsPowerShell { Get-Clipboard |Set-Clipboard -AsHtml }
+		Set-Clip -AsHtml
 }

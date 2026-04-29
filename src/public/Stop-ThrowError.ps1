@@ -7,7 +7,7 @@ The PowerShell "throw" keyword doesn't do a good job of providing actionable
 detail or context:
 
 Unable to remove root node.
-At C:\Scripts\PS5\Remove-Xml.ps1:34 char:37
+At C:\Scripts\PS5\Remove-Xml:34 char:37
 + ...  if($node.ParentNode -eq $null) {throw 'Unable to remove root node.'}
 +                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     + CategoryInfo          : OperationStopped: (Unable to remove root node.:String) [], RuntimeException
@@ -17,13 +17,13 @@ It only shows where the "throw" was used in the called script!
 
 Using $PSCmdlet.ThrowTerminatingError() does a much better job:
 
-C:\Scripts\PS5\Remove-Xml.ps1 : Unable to remove root node
+C:\Scripts\PS5\Remove-Xml : Unable to remove root node
 Parameter name: SelectXmlInfo
-At C:\Scripts\Test-Error.ps1:2 char:23
-+ '<a/>' |Select-Xml / |Remove-Xml.ps1
+At C:\Scripts\Test-Error:2 char:23
++ '<a/>' |Select-Xml / |Remove-Xml
 +                       ~~~~~~~~~~~~~~
-    + CategoryInfo          : InvalidArgument: (<a />:SelectXmlInfo) [Remove-Xml.ps1], ArgumentException
-    + FullyQualifiedErrorId : RootRequired,Remove-Xml.ps1
+    + CategoryInfo          : InvalidArgument: (<a />:SelectXmlInfo) [Remove-Xml], ArgumentException
+    + FullyQualifiedErrorId : RootRequired,Remove-Xml
 
 Now you can see where the trouble is in the calling script!
 
@@ -50,16 +50,16 @@ New-Object
 .EXAMPLE
 Stop-ThrowError 'Unable to remove root node' -Argument SelectXmlInfo
 
-C:\Scripts\PS5\Remove-Xml.ps1 : Unable to remove root node
+C:\Scripts\PS5\Remove-Xml : Unable to remove root node
 Parameter name: SelectXmlInfo
-At C:\Scripts\Test-Error.ps1:2 char:23
-+ '<a/>' |Select-Xml / |Remove-Xml.ps1
+At C:\Scripts\Test-Error:2 char:23
++ '<a/>' |Select-Xml / |Remove-Xml
 +                       ~~~~~~~~~~~~~~
-    + CategoryInfo          : InvalidArgument: (<a />:SelectXmlInfo) [Remove-Xml.ps1], ArgumentException
-    + FullyQualifiedErrorId : SelectXmlInfo,Remove-Xml.ps1
+    + CategoryInfo          : InvalidArgument: (<a />:SelectXmlInfo) [Remove-Xml], ArgumentException
+    + FullyQualifiedErrorId : SelectXmlInfo,Remove-Xml
 
 .EXAMPLE
-if(Test-Uri.ps1 $u) {[uri]$u} else {Stop-ThrowError 'Bad URL' -Format URL -InputString $u}
+if(Test-Uri $u) {[uri]$u} else {Stop-ThrowError 'Bad URL' -Format URL -InputString $u}
 
 (Fails for non-uri values of $u.)
 #>

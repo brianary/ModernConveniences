@@ -1,0 +1,32 @@
+﻿<#
+.SYNOPSIS
+Removes dictionary entries with null vaules.
+
+.INPUTS
+System.Collections.IDictionary to remove nulls from.
+
+.OUTPUTS
+System.Collections.IDictionary with null-valued entries removed.
+
+.FUNCTIONALITY
+Dictionary
+
+.EXAMPLE
+@{ a = 1; b = $null; c = 3 } |Remove-NullValues
+
+Name                           Value
+----                           -----
+c                              3
+a                              1
+#>
+
+[CmdletBinding()][OutputType([Collections.IDictionary])] Param(
+# A dictionary to remove the nulls from.
+[Parameter(Position=0,Mandatory=$true,ValueFromPipeline=$true)][Collections.IDictionary] $InputObject
+)
+Process
+{
+    $nullvaluekeys = $InputObject.Keys |Where-Object {$InputObject[$_] -eq $null}
+    $nullvaluekeys |ForEach-Object {$InputObject.Remove($_)}
+    return $InputObject
+}

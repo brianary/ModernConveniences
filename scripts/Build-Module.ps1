@@ -3,7 +3,7 @@
 Assembles the module file.
 #>
 
-#Requires -Version 7.3
+using namespace System.IO
 [CmdletBinding()] Param()
 Begin
 {
@@ -28,14 +28,17 @@ $(Get-Content $FullName -Raw)
         [CmdletBinding()] Param()
         $Local:OFS = [Environment]::NewLine
         $public = Get-Item public/*.ps1
+		$psm1 = [path]::ChangeExtension((Resolve-Path .publish/*.psd1),'psm1')
         return @"
 $(Get-Item private/*.ps1 |Format-Function)
 $($public |Format-Function)
 Export-ModuleMember -Function $($public.BaseName -join ',')
-"@ |Out-File ([io.path]::ChangeExtension($(git rev-parse --show-toplevel |Split-Path -Leaf),'psm1')) utf8BOM
+"@ |Out-File $psm1 utf8BOM
     }
 
 	Push-Location "$PSScriptRoot/../src"
+	New-Item .publish -Type Directory -ErrorAction Ignore |Out-Null
+	Copy-Item *.psd1 .publish
 }
 Process
 {

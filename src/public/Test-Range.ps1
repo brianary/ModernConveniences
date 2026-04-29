@@ -16,17 +16,17 @@ Get-Item *.ps1 |Test-Range {$_.Name -like 'Join-*.ps1'} {$_.Name -like 'New-*.ps
 
 Name
 ----
-Join-FileName.ps1
-Join-Keys.ps1
-Measure-DbColumn.ps1
-Measure-DbColumnValues.ps1
-Measure-DbTable.ps1
-Measure-Indents.ps1
-Measure-StandardDeviation.ps1
-Measure-TextFile.ps1
-Merge-Json.ps1
-Merge-PSObject.ps1
-Merge-XmlSelections.ps1
+Join-FileName
+Join-Keys
+Measure-DbColumn
+Measure-DbColumnValues
+Measure-DbTable
+Measure-Indents
+Measure-StandardDeviation
+Measure-TextFile
+Merge-Json
+Merge-PSObject
+Merge-XmlSelections
 #>
 
 [CmdletBinding()] Param(

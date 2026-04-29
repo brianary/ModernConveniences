@@ -1,0 +1,34 @@
+﻿<#
+.SYNOPSIS
+Tests converting bytes or text to base64-encoded text.
+#>
+
+if((Test-Path .changes -Type Leaf) -and
+	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |
+		Where-Object {$_.StartsWith("$(($MyInvocation.MyCommand.Name -split '\.',2)[0]).")})) {return}
+BeforeAll {
+	Set-StrictMode -Version Latest
+	$module = Get-Item "$PSScriptRoot/../src/.publish/*.psd1"
+	Import-Module $module -Force
+}
+Describe 'ConvertTo-Base64' -Tag ConvertTo-Base64 {
+	Context 'Converts bytes or text to base64-encoded text.' -Tag ConvertToBase64,Convert,ConvertTo,Base64 {
+		It "Should encode a string parameter as a standard base-64 string" {
+			ConvertTo-Base64 'username:BadP@ssword' -Encoding utf8 |
+				Should -BeExactly 'dXNlcm5hbWU6QmFkUEBzc3dvcmQ='
+		}
+		It "Should encode a string from pipeline to a URI-style base-64 string" {
+			'{"alg":"HS256","typ":"JWT"}' |
+				ConvertTo-Base64 -UriStyle |
+				Should -BeExactly 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'
+		}
+		It "Should encode a byte array from pipeline to a base-64 string from pipeline" {
+			,([byte[]]@(0xEF,0xBB,0xBF,0x74,0x72,0x75,0x65,0x0D,0x0A)) |
+				ConvertTo-Base64 |
+				Should -BeExactly '77u/dHJ1ZQ0K'
+		}
+	}
+}
+AfterAll {
+	Remove-Module $module.BaseName -Force
+}

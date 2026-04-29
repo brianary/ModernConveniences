@@ -4,11 +4,11 @@ Tests comparing the properties of two objects.
 #>
 
 if((Test-Path .changes -Type Leaf) -and
-	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)}))
-{return}
+	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |
+		Where-Object {$_.StartsWith("$(($MyInvocation.MyCommand.Name -split '\.',2)[0]).")})) {return}
 BeforeAll {
 	Set-StrictMode -Version Latest
-	$module = Get-Item "$PSScriptRoot/../src/*.psd1"
+	$module = Get-Item "$PSScriptRoot/../src/.publish/*.psd1"
 	Import-Module $module -Force
 }
 Describe 'Compare-Properties' -Tag Compare-Properties,Compare,Properties {

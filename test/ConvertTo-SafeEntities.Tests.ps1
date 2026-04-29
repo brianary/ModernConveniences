@@ -4,11 +4,11 @@ Tests encoding text as XML/HTML, escaping all characters outside 7-bit ASCII.
 #>
 
 if((Test-Path .changes -Type Leaf) -and
-	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)}))
-{return}
+	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |
+		Where-Object {$_.StartsWith("$(($MyInvocation.MyCommand.Name -split '\.',2)[0]).")})) {return}
 BeforeAll {
 	Set-StrictMode -Version Latest
-	$module = Get-Item "$PSScriptRoot/../src/*.psd1"
+	$module = Get-Item "$PSScriptRoot/../src/.publish/*.psd1"
 	Import-Module $module -Force
 }
 Describe 'ConvertTo-SafeEntities' -Tag ConvertTo-SafeEntities,ConvertTo,Convert,SafeEntities,Entities,HTML,XML {

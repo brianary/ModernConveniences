@@ -3,16 +3,16 @@
 Tests copying objects as an HTML table.
 #>
 
-if(!$IsWindows) {return}
 if((Test-Path .changes -Type Leaf) -and
-	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)}))
-{return}
+	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |
+		Where-Object {$_.StartsWith("$(($MyInvocation.MyCommand.Name -split '\.',2)[0]).")})) {return}
 BeforeAll {
 	Set-StrictMode -Version Latest
-	$module = Get-Item "$PSScriptRoot/../src/*.psd1"
+	$module = Get-Item "$PSScriptRoot/../src/.publish/*.psd1"
 	Import-Module $module -Force
 }
-Describe 'Copy-Html' -Tag Copy-Html,Copy,HTML {
+$linuxClip = $IsLinux ? (Get-Command wl-copy,xclip -Type Application -ErrorAction Ignore) : $false
+Describe 'Copy-Html' -Tag Copy-Html,Copy,HTML,Clipboard -Skip:$(!$linuxClip) {
 	Context 'Copies objects as an HTML table' {
 		It "Should copy objects as HTML" -TestCases @(
 			@{ InputObject = '[{Id: 1, Name: "First"}, {Id: 2, Name: "Second"}, {Id: 3, Name: "Third"}]' |ConvertFrom-Json
@@ -24,13 +24,13 @@ Describe 'Copy-Html' -Tag Copy-Html,Copy,HTML {
 </table>*
 '@ }
 		) {
-			Param([object] $InputObject, [object] $Result)
+			Param([psobject[]] $InputObject, [object] $Result)
 			$InputObject |Copy-Html Id,Name
-			powershell -nol -noni -nop -c "Get-Clipboard -TextFormatType Html" |Out-String |
-				Should -BeLikeExactly $Result -Because 'pipeline should work'
+			(Get-Clip -AsHtml |Out-String) -replace '\r' |
+				Should -BeLike ($Result -replace '\r') -Because 'pipeline should work'
 			Copy-Html Id,Name -InputObject $InputObject
-			powershell -nol -noni -nop -c "Get-Clipboard -TextFormatType Html" |Out-String |
-				Should -BeLikeExactly $Result -Because 'parameter should work'
+			(Get-Clip -AsHtml |Out-String) -replace '\r' |
+				Should -BeLike ($Result -replace '\r') -Because 'parameter should work'
 		}
 	}
 

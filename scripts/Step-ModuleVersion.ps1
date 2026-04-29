@@ -3,7 +3,6 @@
 Increments the module version in the module manifest.
 #>
 
-#Requires -Version 7.3
 [CmdletBinding()] Param()
 Begin
 {

@@ -4,10 +4,10 @@ Tests conversion of a scope level to account for another call stack level.
 #>
 
 if((Test-Path .changes -Type Leaf) -and
-	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)}))
-{return}
+	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |
+		Where-Object {$_.StartsWith("$(($MyInvocation.MyCommand.Name -split '\.',2)[0]).")})) {return}
 Set-StrictMode -Version Latest
-$module = Get-Item "$PSScriptRoot/../src/*.psd1"
+$module = Get-Item "$PSScriptRoot/../src/.publish/*.psd1"
 Import-Module $module -Force
 InModuleScope ModernConveniences {
 	Describe 'Add-ScopeLevel' -Tag Add-ScopeLevel,Add,ScopeLevel {

@@ -12,7 +12,8 @@ Publishes the module if it has been updated.
 Process
 {
 	Push-Location "$PSScriptRoot/../src/.publish"
-	[version] $publishedVersion = (Find-PSResource -Name Detextive -Repository PSGallery -EA 4 |
+	$name = Get-Item src/.publish/*.psd1 |Test-ModuleManifest |Select-Object -ExpandProperty Name
+	[version] $publishedVersion = (Find-PSResource -Name $name -Repository PSGallery -ErrorAction Ignore |
 		Select-Object -ExpandProperty Version) ?? '0.0.0.0'
 	if($ModuleVersion -le $publishedVersion)
 	{

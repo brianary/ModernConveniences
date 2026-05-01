@@ -3,6 +3,8 @@ on:
   push:
     tags:
       - v[0-9]*
+permissions:
+  contents: write
 jobs:
   on-success:
     name: Publish to PowerShell Gallery
@@ -15,7 +17,7 @@ jobs:
         run: ./scripts/Build-Module.ps1
       - name: Create release
         id: release
-        uses: actions/create-release@latest
+        uses: actions/create-release@v1.1.4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:

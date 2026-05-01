@@ -2,7 +2,8 @@
   "markdownlint.config": {
     "header-style": {
       "style": "setext_with_atx"
-    }
+    },
+	"no-inline-html": false
   },
   "pester.autoRunOnSave": false,
   "powershell.codeFormatting.addWhitespaceAroundPipe": true,

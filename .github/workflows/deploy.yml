@@ -23,6 +23,12 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
+      - name: Generate wiki pages
+        id: docs
+        run: ./scripts/Write-Wiki.ps1
+      - name: Publish wiki
+        id: wiki
+        uses: spenserblack/actions-wiki@0.3.0
       - name: Publish module
         id: publish
         env:

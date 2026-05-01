@@ -34,7 +34,7 @@ Get-Content index.html |Set-Clip -AsHtml
 (copies file contents as HTML for pasting formatted into a document or email)
 #>
 
-[CmdletBinding()] Param(
+[CmdletBinding()][OutputType([string])] Param(
 # Indicates that the cmdlet should add to the clipboard instead of replacing it.
 [switch] $Append,
 # Indicates that the cmdlet renders the content as formatted HTML to the clipboard.

@@ -18,8 +18,7 @@ Process
 			$cmdlet,$file = $_.BaseName,$_.FullName
 			try
 			{
-				'- [{0}]({1}): {2}' -f $cmdlet,
-					(Resolve-Path $file -RelativeBasePath "$PSScriptRoot/.." -Relative),
+				'- [{0}](https://github.com/brianary/ModernConveniences/wiki/{0}): {1}' -f $cmdlet,
 					(Get-Help $file -ErrorAction Stop).Synopsis
 			}
 			catch

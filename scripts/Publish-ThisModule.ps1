@@ -5,7 +5,7 @@ Publishes the module if it has been updated.
 
 [CmdletBinding()] Param(
 # The version to publish.
-[version] $ModuleVersion = ($env:MODULEVERSION -replace '\Av'),
+[version] $ModuleVersion = ($env:MODULEVERSION -replace '\A(?:\w+/)*v'),
 # The PowerShell Gallery publish key.
 [string] $GalleryKey = $env:GALLERYKEY
 )

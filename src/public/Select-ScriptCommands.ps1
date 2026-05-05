@@ -44,17 +44,12 @@ Where-Object            Cmdlet {Where-Object, Where-Object}
 )
 Begin
 {
-    $Script:parseErrors = [Management.Automation.Language.ParseError[]]@()
-    $Script:tokens = [Management.Automation.Language.Token[]]@()
     filter Get-ScriptCommands
     {
         [CmdletBinding()] Param(
         [Parameter(Mandatory=$true,ValueFromPipelineByPropertyName=$true)][string] $Path
         )
-		Write-Debug "$($MyInvocation.MyCommand.Name): Scanning '$Path'"
-        [Management.Automation.Language.Parser]::ParseFile($Path,
-            [ref]$Script:tokens, [ref]$Script:parseErrors) |Out-Null
-        $commands = $Script:tokens |
+        $commands = Get-ScriptTokens $Path |
             Where-Object {$_.TokenFlags -band [Management.Automation.Language.TokenFlags]::CommandName} |
             Group-Object Text |
 			ForEach-Object {

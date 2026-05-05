@@ -56,6 +56,7 @@ A collection of general-purpose functions for objects, properties, and more.
 - [Get-ModuleScope](https://github.com/brianary/ModernConveniences/wiki/Get-ModuleScope): Returns the scope of an installed module.
 - [Get-OutdatedModules](https://github.com/brianary/ModernConveniences/wiki/Get-OutdatedModules): Returns a list of modules that have upgrades available.
 - [Get-RandomBytes](https://github.com/brianary/ModernConveniences/wiki/Get-RandomBytes): Returns random bytes.
+- [Get-ScriptTokens](https://github.com/brianary/ModernConveniences/wiki/Get-ScriptTokens): Returns the parsed PowerShell tokens from a script file.
 - [Get-TypeAccelerators](https://github.com/brianary/ModernConveniences/wiki/Get-TypeAccelerators): Returns the list of PowerShell type accelerators.
 - [Import-ClipboardTsv](https://github.com/brianary/ModernConveniences/wiki/Import-ClipboardTsv): Parses TSV clipboard data into objects.
 - [Import-Variables](https://github.com/brianary/ModernConveniences/wiki/Import-Variables): Creates local variables from a data row or dictionary (hashtable).

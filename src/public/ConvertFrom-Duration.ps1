@@ -73,7 +73,7 @@ Process
         {
             Stop-ThrowError "Could not parse '$o' as an ISO8601 duration." -Argument InputObject
         }
-        Import-Variables $Matches
+        $Matches.GetEnumerator() |ForEach-Object {Set-Variable -Name $_.Name -Value $_.Value -Scope Local}
         [timespan]$value = 0
         if(Test-Variable Years)
         {

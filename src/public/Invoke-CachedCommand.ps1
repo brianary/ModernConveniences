@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
 Caches the output of a command for recall if called again.
 
@@ -81,12 +81,14 @@ Begin
             $cacheFile = Get-Item $cacheFileName
             if($now -gt $cacheFile.LastWriteTime -or $Force)
             {
-                $ScriptBlock.InvokeReturnAsIs(@($BlockArgs)) |Export-Clixml $cacheFileName -Force
+				try {$ScriptBlock.InvokeReturnAsIs(@($BlockArgs)) |Export-Clixml $cacheFileName -Force}
+				catch {Stop-ThrowError "Error: $_ in $ScriptBlock" -OperationContext $ScriptBlock}
             }
         }
         else
         {
-            $ScriptBlock.InvokeReturnAsIs(@($BlockArgs)) |Export-Clixml $cacheFileName
+            try {$ScriptBlock.InvokeReturnAsIs(@($BlockArgs)) |Export-Clixml $cacheFileName}
+			catch {Stop-ThrowError "Error: $_ in $ScriptBlock" -OperationContext $ScriptBlock}
             $cacheFile = Get-Item $cacheFileName
         }
         $cacheFile.LastWriteTime = $Expires
@@ -105,7 +107,8 @@ Process
             $key = Get-ScriptBlockHash $Expression -BlockArgs $BlockArgs
             if($Force -or !$Script:SessionCache.Value.ContainsKey($key))
             {
-                $Script:SessionCache.Value[$key] = $Expression.InvokeReturnAsIs(@($BlockArgs))
+                try{$Script:SessionCache.Value[$key] = $Expression.InvokeReturnAsIs(@($BlockArgs))}
+				catch {Stop-ThrowError "Error: $_ in $Expression" -OperationContext $ScriptBlock}
             }
             return $Script:SessionCache.Value[$key]
         }

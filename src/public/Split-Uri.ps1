@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
 Splits a URI into component parts.
 
@@ -7,7 +7,6 @@ System.Uri containing a URI to extract a part of.
 
 .OUTPUTS
 System.String for various URI parts that are extracted (usually), or
-System.Boolean for various tests of the URI parts, or
 System.Int32 to identify the port number if requsted, or
 System.UriHostNameType to identify the type of hostname if requested, or
 System.Collections.Hashtable containing the querystring name and value pairs if requested, or
@@ -20,11 +19,6 @@ Data formats
 Split-Uri https://webcoder.info/wps-to-psc.html -Leaf
 
 wps-to-psc.html
-
-.EXAMPLE
-Split-Uri https://webcoder.info/wps-to-psc.html -IsAbsoluteUri
-
-True
 
 .EXAMPLE
 Split-Uri https://webcoder.info/wps-to-psc.html -Authority
@@ -46,11 +40,6 @@ two   second
 [OutputType([string],ParameterSetName='Extension')]
 [OutputType([string],ParameterSetName='Filename')]
 [OutputType([UriHostNameType],ParameterSetName='HostNameType')]
-[OutputType([bool],ParameterSetName='IsAbsoluteUri')]
-[OutputType([bool],ParameterSetName='IsDefaultPort')]
-[OutputType([bool],ParameterSetName='IsFile')]
-[OutputType([bool],ParameterSetName='IsLoopback')]
-[OutputType([bool],ParameterSetName='IsUnc')]
 [OutputType([string],ParameterSetName='Leaf')]
 [OutputType([string],ParameterSetName='LeafBase')]
 [OutputType([string],ParameterSetName='ParentPath')]
@@ -83,16 +72,6 @@ Justification='The data source is plaintext. SecureString benefits may be in dis
 [Parameter(ParameterSetName='Filename')][string] $Filename,
 # Indicates the type of the hostname of the URI should be returned: Basic, Dns, IPv4, IPv6, Unknown.
 [Parameter(ParameterSetName='HostNameType')][switch] $HostNameType,
-# Indicates $true should be returned if the URI is absolute, $false otherwise.
-[Parameter(ParameterSetName='IsAbsoluteUri')][switch] $IsAbsoluteUri,
-# Indicates $true should be returned if the URI specifies a default port, $false otherwise.
-[Parameter(ParameterSetName='IsDefaultPort')][switch] $IsDefaultPort,
-# Indicates $true should be returned if the URI is a file: URI, $false otherwise.
-[Parameter(ParameterSetName='IsFile')][switch] $IsFile,
-# Indicates $true should be returned if the URI references the localhost, $false otherwise.
-[Parameter(ParameterSetName='IsLoopback')][switch] $IsLoopback,
-# Indicates $true should be returned if the URI is a UNC path, $false otherwise.
-[Parameter(ParameterSetName='IsUnc')][switch] $IsUnc,
 # Indicates the final segment of the URI should be returned.
 [Parameter(ParameterSetName='Leaf')][switch] $Leaf,
 # Indicates the final segment of the URI should be returned, without any filename extension.
@@ -156,11 +135,6 @@ Process
 		Extension {return Split-Path $Uri.LocalPath -Extension}
 		Filename {switch -Wildcard ($Uri.Segments[-1]) { '*/' {return $Filename -f (Get-Date),(New-Guid)} default {return $_} }}
 		HostNameType {return $Uri.HostNameType}
-		IsAbsoluteUri {return $Uri.IsAbsoluteUri}
-		IsDefaultPort {return $Uri.IsDefaultPort}
-		IsFile {return $Uri.IsFile}
-		IsLoopback {return $Uri.IsLoopback}
-		IsUnc {return $Uri.IsUnc}
 		Leaf {return $Uri.Segments[-1]}
 		LeafBase {return Split-Path ($Uri.Segments[-1]) -LeafBase}
 		ParentPath {return ($Uri.Segments |Select-Object -SkipLast 1) -join ''}

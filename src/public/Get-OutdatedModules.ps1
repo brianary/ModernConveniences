@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
 Returns a list of modules that have upgrades available.
 
@@ -27,7 +27,9 @@ Get-Module -ListAvailable |
             Name             = $name
             Scope            = Get-ModuleScope $name |Select-Object -ExpandProperty Scope
             CurrentVersion   = $group |Measure-Object Version -Maximum |Select-Object -ExpandProperty Maximum
-            AvailableVersion = Find-Module $name -infa Ignore -ErrorAction Stop |Select-Object -ExpandProperty Version
+            AvailableVersion = Find-Module $name -infa Ignore -ErrorAction Stop |
+				Measure-Object -Maximum Version |
+				Select-Object -ExpandProperty Maximum
         }}
         catch{}
     } |

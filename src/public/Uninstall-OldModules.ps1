@@ -15,6 +15,13 @@ Cleans up redundant old modules.
 # Indicates the modules should be forced to uninstall.
 [switch] $Force
 )
+filter Get-ThisModuleScope
+{
+	[CmdletBinding()] Param(
+	[Parameter(ValueFromPipelineByPropertyName=$true)][string] $ModuleBase
+	)
+	return $ModuleBase.StartsWith($HOME) ? 'CurrentUser' : 'AllUsers'
+}
 if(Get-Command Uninstall-PSResource -ErrorAction Ignore)
 {
 	Get-Module -ListAvailable |
@@ -23,7 +30,7 @@ if(Get-Command Uninstall-PSResource -ErrorAction Ignore)
 		Where-Object Count -gt 1 |
 		ForEach-Object {$_.Group |Sort-Object Version -Descending |Select-Object -Skip 1} |
 		Where-Object {$Force -or $PSCmdlet.ShouldProcess("$($_.Name) v$($_.Version)",'Uninstall-PSResource')} |
-		ForEach-Object {Uninstall-PSResource $_.Name -Version $_.Version -Confirm:$false}
+		ForEach-Object {Uninstall-PSResource $_.Name -Version $_.Version -Scope ($_ |Get-ThisModuleScope) -Confirm:$false}
 }
 elseif($PSVersionTable.PSVersion -lt [version]'6.0')
 {

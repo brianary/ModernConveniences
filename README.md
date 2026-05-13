@@ -20,6 +20,7 @@ A collection of general-purpose functions for objects, properties, and more.
 - [Add-NugetPackage](https://github.com/brianary/ModernConveniences/wiki/Add-NugetPackage): Loads a NuGet package DLL, downloading as needed.
 - [Add-ParameterDefault](https://github.com/brianary/ModernConveniences/wiki/Add-ParameterDefault): Appends or creates a value to use for the specified cmdlet parameter to use when one is not specified.
 - [Add-TimeSpan](https://github.com/brianary/ModernConveniences/wiki/Add-TimeSpan): Adds a timespan to DateTime values.
+- [Compare-Hashset](https://github.com/brianary/ModernConveniences/wiki/Compare-Hashset): Returns differences between sets.
 - [Compare-Keys](https://github.com/brianary/ModernConveniences/wiki/Compare-Keys): Returns the differences between two dictionaries.
 - [Compare-Properties](https://github.com/brianary/ModernConveniences/wiki/Compare-Properties): Compares the properties of two objects.
 - [Convert-ClipboardTsvToHtml](https://github.com/brianary/ModernConveniences/wiki/Convert-ClipboardTsvToHtml): Parses TSV clipboard data into HTML table data which is copied back to the clipboard as formatted HTML.
@@ -32,6 +33,7 @@ A collection of general-purpose functions for objects, properties, and more.
 - [ConvertTo-Base64](https://github.com/brianary/ModernConveniences/wiki/ConvertTo-Base64): Converts bytes or text to base64-encoded text.
 - [ConvertTo-EpochTime](https://github.com/brianary/ModernConveniences/wiki/ConvertTo-EpochTime): Converts a DateTime value into an integer Unix (POSIX) time, seconds since Jan 1, 1970.
 - [ConvertTo-FileName](https://github.com/brianary/ModernConveniences/wiki/ConvertTo-FileName): Returns a valid and safe filename from a given string.
+- [ConvertTo-Hashset](https://github.com/brianary/ModernConveniences/wiki/ConvertTo-Hashset): Reduces a collection to unique items that can be used for mathematical set operations.
 - [ConvertTo-OrderedDictionary](https://github.com/brianary/ModernConveniences/wiki/ConvertTo-OrderedDictionary): Converts an object to an ordered dictionary of properties and values.
 - [ConvertTo-PowerShell](https://github.com/brianary/ModernConveniences/wiki/ConvertTo-PowerShell): Serializes complex content into PowerShell literals.
 - [ConvertTo-RomanNumeral](https://github.com/brianary/ModernConveniences/wiki/ConvertTo-RomanNumeral): Convert a number to a Roman numeral.

@@ -40,7 +40,7 @@ End
 		InputObject {@($input)}
 		FromCollection {@($FromCollection.GetEnumerator())}
 	}
-	$type = [Collections.Generic.HashSet`1].MakeGenericType($values[0].GetType())
+	$type = [System.Collections.Generic.HashSet`1].MakeGenericType($values[0].GetType())
 	$set = $CaseInsensitive ?
 		[activator]::CreateInstance($type,@([StringComparer]::OrdinalIgnoreCase)) :
 		[activator]::CreateInstance($type)

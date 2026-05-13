@@ -17,6 +17,6 @@ Process
 {
 	& './scripts/Build-Module.ps1'
 	Import-Module (Get-Item src/.publish/*.psd1)
-	New-MarkdownHelp -Module ModernConveniences -OutputFolder .github/wiki
+	New-MarkdownHelp -Module ModernConveniences -OutputFolder .github/wiki -ErrorAction Ignore
 }
 Clean {Pop-Location}

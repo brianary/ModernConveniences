@@ -22,7 +22,7 @@ Format-Date Iso8601WeekDate 2021-01-20
 [CmdletBinding()][OutputType([string])] Param(
 # The format to serialize the date as.
 [Parameter(Position=0,Mandatory=$true)]
-[ValidateSet('FrenchRepublicanDateTime','Iso8601','Iso8601Date','Iso8601OrdinalDate',
+[ValidateSet('EmojiTime','FrenchRepublicanDateTime','Iso8601','Iso8601Date','Iso8601OrdinalDate',
 'Iso8601Week','Iso8601WeekDate','Iso8601Z','LocalLongDate','LocalLongDateTime','Rfc1123','Rfc1123Gmt')]
 [string] $Format,
 # The date/time value to format.
@@ -32,6 +32,8 @@ Process
 {
 	switch($Format)
 	{
+		EmojiTime {"$([char]::ConvertFromUtf32(0x1F54F+((($Date.Hour+11)%12)+1)+
+			([math]::Round($Date.Minute/30)%2?1:0)))$([char]0xFE0F)"}
 		FrenchRepublicanDateTime {"$(Get-FrenchRepublicanDate $Date)"}
 		Iso8601 {Get-Date $Date -f "yyyy'-'MM'-'dd'T'HH':'mm':'sszzzz"}
 		Iso8601Date {Get-Date $Date -uf %Y-%m-%d} # PS5 doesn't support %F

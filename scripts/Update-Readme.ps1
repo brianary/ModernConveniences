@@ -11,6 +11,7 @@ Begin
 }
 Process
 {
+	$ModuleName = Get-Item src/*.psd1 |Split-Path -LeafBase
 	$readme = Get-Content README.md -Raw
 	$cmdlets = (Get-Item src/public/*.ps1 |
 		Show-Progress 'Listing cmdlets' {$_.BaseName} |
@@ -18,7 +19,7 @@ Process
 			$cmdlet,$file = $_.BaseName,$_.FullName
 			try
 			{
-				'- [{0}](https://github.com/brianary/ModernConveniences/wiki/{0}): {1}' -f $cmdlet,
+				'- [{1}](https://github.com/brianary/{0}/wiki/{1}): {2}' -f $ModuleName,$cmdlet,
 					(Get-Help $file -ErrorAction Stop).Synopsis
 			}
 			catch

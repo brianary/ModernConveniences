@@ -12,10 +12,6 @@ BeforeAll {
 	Import-Module $module -Force
 }
 Describe 'ConvertFrom-EpochTime' -Tag ConvertFrom-EpochTime {
-	BeforeAll {
-		$scriptsdir,$sep = (Split-Path $PSScriptRoot),[io.path]::PathSeparator
-		if($scriptsdir -notin ($env:Path -split $sep)) {$env:Path += "$sep$scriptsdir"}
-	}
 	Context 'Converts an integer Unix (POSIX) time (seconds since Jan 1, 1970) into a DateTime value' `
 		-Tag ConvertFromEpochTime,ConvertFrom,Convert,EpochTime {
 		It "Epoch time '<EpochTime>' is converted to '<Result>'" -TestCases @(

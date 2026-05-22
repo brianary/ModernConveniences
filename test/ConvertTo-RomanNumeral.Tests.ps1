@@ -12,11 +12,6 @@ BeforeAll {
 	Import-Module $module -Force
 }
 Describe 'ConvertTo-RomanNumeral' -Tag ConvertTo-RomanNumeral {
-	BeforeAll {
-		if(!(Get-Module -List PSScriptAnalyzer)) {Install-Module PSScriptAnalyzer -Force}
-		$scriptsdir,$sep = (Split-Path $PSScriptRoot),[io.path]::PathSeparator
-		if($scriptsdir -notin ($env:Path -split $sep)) {$env:Path += "$sep$scriptsdir"}
-	}
 	Context 'Convert a number to a Roman numeral' -Tag Convert,ConvertTo,ConvertToRomanNumeral,RomanNumeral {
 		It "Should convert '<Value>' to '<Result>' (ASCII)" -TestCases @(
 			@{ Value = 1; Result = 'I' }

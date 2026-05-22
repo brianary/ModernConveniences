@@ -12,10 +12,6 @@ BeforeAll {
 	Import-Module $module -Force
 }
 Describe 'ConvertFrom-Hex' -Tag ConvertFrom-Hex {
-	BeforeAll {
-		$scriptsdir,$sep = (Split-Path $PSScriptRoot),[io.path]::PathSeparator
-		if($scriptsdir -notin ($env:Path -split $sep)) {$env:Path += "$sep$scriptsdir"}
-	}
 	Context 'Convert a string of hexadecimal digits into a byte array' -Tag ConvertFromHex,Convert,ConvertFrom,Hex {
 		It "The value '<Value>' should return '<Result>'" -TestCases @(
 			@{ Value = 'EF BB BF'; Result = 0xEF,0xBB,0xBF }

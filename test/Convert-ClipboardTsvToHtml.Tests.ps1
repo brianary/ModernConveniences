@@ -16,7 +16,7 @@ StartSelection:000000285{0}
 '@ -f (' '*6)
 BeforeAll {
 	Set-StrictMode -Version Latest
-	$module = Get-Item "$PSScriptRoot/../src/.publish/*.psd1"
+	$module = Join-Path ($PSScriptRoot |Split-Path) src .publish *.psd1 |Get-Item
 	Import-Module $module -Force
 }
 #TODO: Need to figure out why the testing fails.

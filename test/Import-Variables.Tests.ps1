@@ -10,7 +10,7 @@ $PesterPreference = [PesterConfiguration]::Default
 $PesterPreference.Debug.WriteDebugMessages = $true
 BeforeAll {
 	Set-StrictMode -Version Latest
-	$module = Get-Item "$PSScriptRoot/../src/.publish/*.psd1"
+	$module = Join-Path ($PSScriptRoot |Split-Path) src .publish *.psd1 |Get-Item
 	Import-Module $module -Force
 }
 Describe 'Import-Variables' -Tag Import-Variables,Import,Variables {

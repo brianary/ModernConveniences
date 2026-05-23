@@ -8,7 +8,7 @@ if((Test-Path .changes -Type Leaf) -and
 		Where-Object {$_.StartsWith("$(($MyInvocation.MyCommand.Name -split '\.',2)[0]).")})) {return}
 BeforeAll {
 	Set-StrictMode -Version Latest
-	$module = Get-Item "$PSScriptRoot/../src/.publish/*.psd1"
+	$module = Join-Path ($PSScriptRoot |Split-Path) src .publish *.psd1 |Get-Item
 	Import-Module $module -Force
 }
 Describe 'Add-CapturesToMatches' -Tag Add-CapturesToMatches,Select-Xml {

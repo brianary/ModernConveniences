@@ -4,13 +4,10 @@ Tests appending or creating a value to use for the specified cmdlet parameter to
 #>
 
 return #TODO
-if((Test-Path .changes -Type Leaf) -and
-	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |
-		Where-Object {$_.StartsWith("$(($MyInvocation.MyCommand.Name -split '\.',2)[0]).")})) {return}
+if(!(&"$PSScriptRoot/../scripts/Test-RelevantTest.ps1")) {return}
 BeforeAll {
 	Set-StrictMode -Version Latest
-	$module = Join-Path ($PSScriptRoot |Split-Path) src .publish *.psd1 |Get-Item
-	Import-Module $module -Force
+	&"$PSScriptRoot/../scripts/Import-ThisModule.ps1"
 }
 Describe 'Add-ParameterDefault' -Tag Add-ParameterDefault,Add,ParameterDefault {
 	Context 'Appends or creates a value to use for the specified cmdlet parameter to use when one is not specified.' {
@@ -32,5 +29,5 @@ Describe 'Add-ParameterDefault' -Tag Add-ParameterDefault,Add,ParameterDefault {
 	}
 }
 AfterAll {
-	Remove-Module $module.BaseName -Force
+	&"$PSScriptRoot/../scripts/Remove-ThisModule.ps1"
 }

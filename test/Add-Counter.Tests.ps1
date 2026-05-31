@@ -3,13 +3,10 @@
 Tests adding an incrementing integer property to each pipeline object.
 #>
 
-if((Test-Path .changes -Type Leaf) -and
-	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |
-		Where-Object {$_.StartsWith("$(($MyInvocation.MyCommand.Name -split '\.',2)[0]).")})) {return}
+if(!(&"$PSScriptRoot/../scripts/Test-RelevantTest.ps1")) {return}
 BeforeAll {
 	Set-StrictMode -Version Latest
-	$module = Join-Path ($PSScriptRoot |Split-Path) src .publish *.psd1 |Get-Item
-	Import-Module $module -Force
+	&"$PSScriptRoot/../scripts/Import-ThisModule.ps1"
 }
 Describe 'Add-Counter' -Tag Add-Counter,Add,Counter {
 	Context 'Adds a counter property' {
@@ -34,5 +31,5 @@ Describe 'Add-Counter' -Tag Add-Counter,Add,Counter {
 	}
 }
 AfterAll {
-	Remove-Module $module.BaseName -Force
+	&"$PSScriptRoot/../scripts/Remove-ThisModule.ps1"
 }

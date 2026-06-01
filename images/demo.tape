@@ -2,7 +2,7 @@
 Output demo.gif
 Hide
 Set Shell pwsh
-Type "Import-Module ../src/ModernConveniences.psd1"
+Type "Import-Module ../.publish/ModernConveniences.psd1"
 Enter
 # don't start with $data or the history will display later
 Type "; $data = 1..5; function Process-Data { Param([Parameter(ValueFromPipeline)][int]$i); Process { Start-Sleep -Seconds 1 } End {Write-Host 'Done'} }"

@@ -44,26 +44,23 @@ Global
 [CmdletBinding()][OutputType([string])] Param(
 # The requested scope from the caller of the caller of this script.
 # Global, Local, Private, Script, or a positive integer.
-[Parameter(Position=0,Mandatory=$true,ValueFromPipeline=$true)][string] $Scope,
-# The scope will be used within the module, rather than the module's caller.
-[switch] $Internal
+[Parameter(Position=0,Mandatory=$true,ValueFromPipeline=$true)][string] $Scope
 )
 Process
 {
-	$offset = $Internal ? 1 : 2
-	if($Scope -match '\A\d+\z') {return "$($offset+[int]$Scope)"}
+	if($Scope -match '\A\d+\z') {return "$(1+[int]$Scope)"}
 	switch($Scope)
 	{
 		Global  {return 'Global'}
 		# the module scope seems to implicitly add a level
-		Local   {return "$offset"}
-		Private {return "$offset"}
+		Local   {return "1"}
+		Private {return "1"}
 		Script
 		{
 			$stack = Get-PSCallStack
-			for($i = $offset+1; $i -lt $stack.Length; $i++)
+			for($i = 2; $i -lt $stack.Length; $i++)
 			{
-				if($stack[$i].Command -and $stack[$i].FunctionName -like '<ScriptBlock>*') {return "$($offset+$i-2)"}
+				if($stack[$i].Command -and $stack[$i].FunctionName -like '<ScriptBlock>*') {return "$($i-1)"}
 			}
 			Stop-ThrowError 'Unable to find Script scope' -Argument Scope
 		}

@@ -24,7 +24,7 @@ $set = Get-Values |ConvertTo-Hashset
 Returns a hashset of values from the pipeline.
 #>
 
-[CmdletBinding()][OutputType([HashSet`1])] Param(
+[CmdletBinding()][OutputType([System.Collections.Generic.HashSet`1])] Param(
 # A collection to build a HashSet from.
 [Parameter(ParameterSetName='FromCollection',Position=0,Mandatory=$true)][Collections.IEnumerable] $FromCollection,
 # Values from pipeline to build a HashSet from.

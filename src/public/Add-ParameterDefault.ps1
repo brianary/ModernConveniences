@@ -44,7 +44,7 @@ Adds the SVG namespace to any existing namespaces used by Select-Xml when none a
 )
 Begin
 {
-	$Scope = Add-ScopeLevel $Scope |Add-ScopeLevel
+	$Scope = Add-ScopeLevel $Scope
 	$cmd = Get-Command $CommandName -ErrorAction Ignore
 	if(!$cmd) {Stop-ThrowError "Could not find command '$CommandName'" -Argument CommandName}
 	if($cmd.CommandType -eq 'Alias') {$cmd = Get-Command $cmd.ResolvedCommandName}

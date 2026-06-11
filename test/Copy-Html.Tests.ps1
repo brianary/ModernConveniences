@@ -8,7 +8,8 @@ BeforeAll {
 	Set-StrictMode -Version Latest
 	&"$PSScriptRoot/../scripts/Import-ThisModule.ps1"
 }
-Describe 'Copy-Html' -Tag Copy-Html,Copy,HTML,Clipboard {
+$linuxClip = $IsLinux ? (Get-Command wl-copy,xclip -Type Application -ErrorAction Ignore) : $false
+Describe 'Copy-Html' -Tag Copy-Html,Copy,HTML,Clipboard -Skip:$(!$linuxClip) {
 	Context 'Copies objects as an HTML table' {
 		It "Should copy objects as HTML" -TestCases @(
 			@{ InputObject = '[{Id: 1, Name: "First"}, {Id: 2, Name: "Second"}, {Id: 3, Name: "Third"}]' |ConvertFrom-Json

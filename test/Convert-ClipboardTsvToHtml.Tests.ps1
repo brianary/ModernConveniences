@@ -8,7 +8,8 @@ BeforeAll {
 	Set-StrictMode -Version Latest
 	&"$PSScriptRoot/../scripts/Import-ThisModule.ps1"
 }
-Describe 'Convert-ClipboardTsvToHtml (Linux)' -Tag Convert-ClipboardTsvToHtml {
+$linuxClip = $IsLinux ? (Get-Command wl-copy,xclip -Type Application -ErrorAction Ignore) : $false
+Describe 'Convert-ClipboardTsvToHtml (Linux)' -Tag Convert-ClipboardTsvToHtml -Skip:$(!$linuxClip) {
 	Context 'Parses TSV clipboard data into HTML table data which is copied back to the clipboard' `
 		-Tag ConvertClipboardTsvToHtml,Convert,ClipboardTsv,Clipboard,Tsv,Html {
 		It "Should convert '<TsvData>' to '<HtmlData>'" -TestCases @(

@@ -7,6 +7,7 @@ if(!(&"$PSScriptRoot/../scripts/Test-RelevantTest.ps1")) {return}
 BeforeAll {
 	Set-StrictMode -Version Latest
 	&"$PSScriptRoot/../scripts/Import-ThisModule.ps1"
+	$PSStyle.OutputRendering = 'PlainText'
 }
 Describe 'Compare-Keys' -Tag Compare-Keys {
 	Context 'Returns the differences between two dictionaries' -Tag CompareKeys,Compare,Keys {
@@ -36,4 +37,5 @@ D       Added                6
 }
 AfterAll {
 	&"$PSScriptRoot/../scripts/Remove-ThisModule.ps1"
+	$PSStyle.OutputRendering = 'Ansi'
 }

@@ -47,7 +47,7 @@ Works with DataRows.
 )
 Begin
 {
-	$Scope = Add-ScopeLevel $Scope
+	$Scope = Add-ScopeLevel $Scope |Add-ScopeLevel
 	$sv = if($Private) {@{Scope=$Scope;Option='Private'}} else {@{Scope=$Scope}}
 }
 Process

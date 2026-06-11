@@ -71,7 +71,7 @@ Process
 	}
 	else
 	{
-		$Scope = Add-ScopeLevel $Scope
+		$Scope = Add-ScopeLevel $Scope |Add-ScopeLevel
 		if (Get-Variable -Name $Name -Scope $Scope -ErrorAction Ignore) { return $true }
 		Write-Debug "$($MyInvocation.MyCommand.Name): $Name not found in $Scope scope"
 		return $false

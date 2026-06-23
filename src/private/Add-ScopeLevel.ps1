@@ -57,7 +57,6 @@ Process
 		Private {return "1"}
 		Script
 		{
-			$stack = Get-PSCallStack
 			for($i = 2; $i -lt $stack.Length; $i++)
 			{
 				if($stack[$i].Command -and $stack[$i].FunctionName -like '<ScriptBlock>*') {return "$($i-1)"}

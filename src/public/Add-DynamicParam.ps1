@@ -12,16 +12,19 @@ System.Object[] a list of possible values for this parameter to validate against
 PowerShell
 
 .EXAMPLE
-DynamicParam { Add-DynamicParam Path string -Mandatory; $DynamicParams } Process { Import-Variables $PSBoundParameters; ... }
+DynamicParam { $p = Add-DynamicParam Path string -Mandatory; $p } Process { $Path = $PSBoundParameters['Path']; ... }
 #>
 
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseProcessBlockForPipelineCommand','',
 Justification='This script uses $input within an End block.')]
-[CmdletBinding()][OutputType([void])] Param(
+[CmdletBinding()][OutputType([Management.Automation.RuntimeDefinedParameterDictionary])] Param(
 # The name of the parameter.
 [Parameter(Position=0,Mandatory=$true)][string] $Name,
 # The data type of the parameter.
 [Parameter(Position=1)][type] $Type,
+# The collection of dynamic parameters.
+[Parameter(Position=2)][Management.Automation.RuntimeDefinedParameterDictionary] $DynamicParams =
+	(New-Object Management.Automation.RuntimeDefinedParameterDictionary),
 # The position of the parameter when not specifying the parameter names.
 [int] $Position = -2147483648,
 # The name of the set of parameters this parameter belongs to.
@@ -76,12 +79,6 @@ parameter name or alias.
 )
 End
 {
-	$DynamicParams = Get-Variable DynamicParams -Scope 1 -ErrorAction Ignore
-	if($null -eq $DynamicParams)
-	{
-		$DynamicParams = New-Object Management.Automation.RuntimeDefinedParameterDictionary
-		$DynamicParams = New-Variable DynamicParams $DynamicParams -Scope 1 -PassThru
-	}
 	$atts = New-Object Collections.ObjectModel.Collection[System.Attribute]
 	foreach($set in $ParameterSetName)
 	{
@@ -117,5 +114,6 @@ End
 	if($TrustedData) {$atts.Add((New-Object Management.Automation.ValidateTrustedDataAttribute))}
 	if($UserDrive) {$atts.Add((New-Object Management.Automation.ValidateUserDriveAttribute))}
 	$param = New-Object Management.Automation.RuntimeDefinedParameter ($Name,$Type,$atts)
-	$DynamicParams.Value.Add($Name,$param)
+	$DynamicParams.Add($Name,$param)
+	return $DynamicParams
 }

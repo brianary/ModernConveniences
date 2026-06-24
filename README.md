@@ -20,6 +20,7 @@ A collection of general-purpose functions for objects, properties, and more.
 - [Add-NugetPackage](https://github.com/brianary/ModernConveniences/wiki/Add-NugetPackage): Loads a NuGet package DLL, downloading as needed.
 - [Add-ParameterDefault](https://github.com/brianary/ModernConveniences/wiki/Add-ParameterDefault): Appends or creates a value to use for the specified cmdlet parameter to use when one is not specified.
 - [Add-TimeSpan](https://github.com/brianary/ModernConveniences/wiki/Add-TimeSpan): Adds a timespan to DateTime values.
+- [Backup-File](https://github.com/brianary/ModernConveniences/wiki/Backup-File): Create a backup as a sibling to a file, with date and time values in the name.
 - [Compare-Hashset](https://github.com/brianary/ModernConveniences/wiki/Compare-Hashset): Returns differences between sets.
 - [Compare-Keys](https://github.com/brianary/ModernConveniences/wiki/Compare-Keys): Returns the differences between two dictionaries.
 - [Compare-Properties](https://github.com/brianary/ModernConveniences/wiki/Compare-Properties): Compares the properties of two objects.
@@ -96,7 +97,6 @@ A collection of general-purpose functions for objects, properties, and more.
 - [Test-Range](https://github.com/brianary/ModernConveniences/wiki/Test-Range): Returns true from an initial condition until a terminating condition; a latching test.
 - [Test-Uri](https://github.com/brianary/ModernConveniences/wiki/Test-Uri): Determines whether a string is a valid URI.
 - [Test-USFederalHoliday](https://github.com/brianary/ModernConveniences/wiki/Test-USFederalHoliday): Returns true if the given date is a U.S. federal holiday.
-- [Test-Variable](https://github.com/brianary/ModernConveniences/wiki/Test-Variable): Indicates whether a variable has been defined.
 - [Trace-VariableScope](https://github.com/brianary/ModernConveniences/wiki/Trace-VariableScope): Returns details about a variable by name in all available scopes.
 - [Uninstall-OldModules](https://github.com/brianary/ModernConveniences/wiki/Uninstall-OldModules): Uninstalls old module versions (ignoring old Windows PowerShell modules).
 - [Update-Files](https://github.com/brianary/ModernConveniences/wiki/Update-Files): Copies specified source files that exist in the destination directory.

@@ -2,12 +2,19 @@
 .SYNOPSIS
 Creates local variables from a data row or dictionary (hashtable).
 
+.NOTES
+Due to a limitation of PowerShell modules, variables may only be imported
+into the global namespace.
+
 .INPUTS
 System.Collections.IDictionary with keys and values to import as variables,
 or System.Management.Automation.PSCustomObject with properties to import as variables.
 
 .FUNCTIONALITY
 PowerShell
+
+.LINK
+https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_scopes#modules
 
 .EXAMPLE
 if($line -match '\AProject\("(?<TypeGuid>[^"]+)"\)') {Import-Variables $Matches}
@@ -40,15 +47,12 @@ Works with DataRows.
 [Parameter(Position=0,Mandatory=$true,ValueFromPipeline=$true)][PSObject] $InputObject,
 # The type of object members to convert to variables.
 [Alias('Type')][Management.Automation.PSMemberTypes] $MemberType = 'Properties',
-# The scope of the variables to create.
-[string] $Scope = 'Local',
 # Indicates that created variables should be hidden from child scopes.
 [switch] $Private
 )
 Begin
 {
-	$Scope = Add-ScopeLevel $Scope |Add-ScopeLevel
-	$sv = if($Private) {@{Scope=$Scope;Option='Private'}} else {@{Scope=$Scope}}
+	$sv = if($Private) {@{Scope='2';Option='Private'}} else {@{Scope='2'}}
 }
 Process
 {

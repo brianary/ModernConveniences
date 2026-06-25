@@ -21,7 +21,7 @@ Get-Command
 about_Scopes
 
 .EXAMPLE
-Add-ParameterDefault epcsv nti $true -Scope Global
+Add-ParameterDefault $Local:PSDefaultParameterValues epcsv nti $true
 
 Establishes that the -NoTypeInformation param of the Export-Csv cmdlet will be true if not otherwise specified,
 globally for the PowerShell session.
@@ -32,19 +32,18 @@ Add-ParameterDefault Select-Xml Namespace @{svg = 'http://www.w3.org/2000/svg'}
 Adds the SVG namespace to any existing namespaces used by Select-Xml when none are given explicitly.
 #>
 
-[CmdletBinding()][OutputType([void])] Param(
+[CmdletBinding()][OutputType([System.Management.Automation.DefaultParameterDictionary])] Param(
+# The collection of defaults, e.g. $Global:PSDefaultParameterValues or $Local:PSDefaultParameterValues.
+[Parameter(Position=0,Mandatory=$true)][System.Management.Automation.DefaultParameterDictionary] $Defaults,
 # The name of a cmdlet, function, script, or alias to include a default parameter value for.
-[Parameter(Position=0,Mandatory=$true)][ValidateNotNullOrEmpty()][Alias('CmdletName')][string] $CommandName,
+[Parameter(Position=1,Mandatory=$true)][ValidateNotNullOrEmpty()][Alias('CmdletName')][string] $CommandName,
 # The name or alias of the parameter to include a default value for.
-[Parameter(Position=1,Mandatory=$true)][ValidateNotNullOrEmpty()][string] $ParameterName,
+[Parameter(Position=2,Mandatory=$true)][ValidateNotNullOrEmpty()][string] $ParameterName,
 # The value to include as a default.
-[Parameter(Position=2,Mandatory=$true,ValueFromPipeline=$true)] $Value,
-# The scope of this default.
-[string] $Scope = 'Local'
+[Parameter(Position=3,Mandatory=$true,ValueFromPipeline=$true)] $Value
 )
 Begin
 {
-	$Scope = Add-ScopeLevel $Scope
 	$cmd = Get-Command $CommandName -ErrorAction Ignore
 	if(!$cmd) {Stop-ThrowError "Could not find command '$CommandName'" -Argument CommandName}
 	if($cmd.CommandType -eq 'Alias') {$cmd = Get-Command $cmd.ResolvedCommandName}
@@ -53,16 +52,11 @@ Begin
 	$name =
 		try {"$($cmd.Name):$($cmd.ResolveParameter($ParameterName).Name)"}
 		catch {Stop-ThrowError "Could not find parameter '$ParameterName' for cmdlet '$CommandName'" -Argument ParameterName}
-	$defaults = Get-Variable PSDefaultParameterValues -Scope $Scope -ErrorAction Ignore
-	if(!$defaults)
-	{
-		Set-Variable PSDefaultParameterValues @{} -Scope $Scope
-		$defaults = Get-Variable PSDefaultParameterValues -Scope $Scope -ErrorAction Ignore
-	}
 }
 Process
 {
 	Write-Verbose "Setting default parameter '$name' to '$Value'"
-	if($defaults.Value.ContainsKey($name)) {$defaults.Value[$name] += $Value}
-	else {$defaults.Value[$name] = $Value}
+	if($Defaults.ContainsKey($name)) {$Defaults[$name] += $Value}
+	else {$Defaults[$name] = $Value}
+	return $Defaults
 }

@@ -15,10 +15,7 @@ Date and time
 https://en.wikipedia.org/wiki/ISO_8601#Durations
 
 .LINK
-Import-Variables
-
-.LINK
-Test-Variable
+$names -contains
 
 .LINK
 Stop-ThrowError
@@ -73,23 +70,24 @@ Process
         {
             Stop-ThrowError "Could not parse '$o' as an ISO8601 duration." -Argument InputObject
         }
-        $Matches.GetEnumerator() |ForEach-Object {Set-Variable -Name $_.Name -Value $_.Value -Scope Local}
+        $names = $Matches.GetEnumerator().Name |Select-Object -SkipLast 1
+        $Matches.GetEnumerator() |ForEach-Object {Set-Variable -Name $_.Name -Value $_.Value}
         [timespan]$value = 0
-        if(Test-Variable Years)
+        if($names -contains 'Years')
         {
             if(!$NoWarnings) {Write-Warning "Adding year(s) as a mean number of days ($MeanYear)."}
             $value += New-Object Timespan ($MeanYear*[int]$Years),0,0,0
         }
-        if(Test-Variable Months)
+        if($names -contains 'Months')
         {
             if(!$NoWarnings) {Write-Warning "Adding month(s) as a mean number of days ($MeanMonth)."}
             $value += New-Object Timespan ($MeanMonth*[int]$Months),0,0,0
         }
-        if(Test-Variable Weeks) {$value += New-Object Timespan (7*[int]$Weeks),0,0,0}
-        if(Test-Variable Days) {$value += New-Object Timespan ([int]$Days),0,0,0}
-        if(Test-Variable Hours) {$value += New-Object Timespan ([int]$Hours),0,0}
-        if(Test-Variable Minutes) {$value += New-Object Timespan 0,([int]$Minutes),0}
-        if(Test-Variable Seconds) {$value += New-Object Timespan 0,0,([int]$Seconds)}
+        if($names -contains 'Weeks') {$value += New-Object Timespan (7*[int]$Weeks),0,0,0}
+        if($names -contains 'Days') {$value += New-Object Timespan ([int]$Days),0,0,0}
+        if($names -contains 'Hours') {$value += New-Object Timespan ([int]$Hours),0,0}
+        if($names -contains 'Minutes') {$value += New-Object Timespan 0,([int]$Minutes),0}
+        if($names -contains 'Seconds') {$value += New-Object Timespan 0,0,([int]$Seconds)}
         $value
     }
 }

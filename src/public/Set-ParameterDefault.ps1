@@ -35,13 +35,10 @@ Uses only the SVG namespace for Select-Xml when none are given explicitly.
 # The name or alias of the parameter to assign a default value to.
 [Parameter(Position=1,Mandatory=$true)][ValidateNotNullOrEmpty()][string] $ParameterName,
 # The value to assign as a default.
-[Parameter(Position=2,Mandatory=$true,ValueFromPipeline=$true)] $Value,
-# The scope of this default.
-[string] $Scope = 'Local'
+[Parameter(Position=2,Mandatory=$true,ValueFromPipeline=$true)] $Value
 )
 Begin
 {
-	$Scope = Add-ScopeLevel $Scope
 	$cmd = Get-Command $CommandName -ErrorAction Ignore
 	if(!$cmd) {Stop-ThrowError "Could not find command '$CommandName'" -Argument CommandName}
 	if($cmd.CommandType -eq 'Alias') {$cmd = Get-Command $cmd.ResolvedCommandName}
@@ -50,11 +47,11 @@ Begin
 	$name =
 		try {"$($cmd.Name):$($cmd.ResolveParameter($ParameterName).Name)"}
 		catch {Stop-ThrowError "Could not find parameter '$ParameterName' for cmdlet '$CommandName'" -Argument ParameterName}
-	$defaults = Get-Variable PSDefaultParameterValues -Scope $Scope -ErrorAction Ignore
+	$defaults = Get-Variable PSDefaultParameterValues -Scope 2 -ErrorAction Ignore
 	if(!$defaults)
 	{
-		Set-Variable PSDefaultParameterValues @{} -Scope $Scope
-		$defaults = Get-Variable PSDefaultParameterValues -Scope $Scope -ErrorAction Ignore
+		Set-Variable PSDefaultParameterValues @{} -Scope 2
+		$defaults = Get-Variable PSDefaultParameterValues -Scope 2 -ErrorAction Ignore
 	}
 }
 Process

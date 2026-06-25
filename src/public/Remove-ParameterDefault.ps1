@@ -33,19 +33,16 @@ Removes any namespaces used by Select-Xml when none are given explicitly.
 # The name of a cmdlet, function, script, or alias to remove a default parameter value from.
 [Parameter(Position=0,Mandatory=$true)][ValidateNotNullOrEmpty()][Alias('CmdletName')][string] $CommandName,
 # The name or alias of the parameter to remove a default value from.
-[Parameter(Position=1,Mandatory=$true,ValueFromPipelineByPropertyName=$true)][ValidateNotNullOrEmpty()][string] $ParameterName,
-# The scope of this default.
-[string] $Scope = 'Local'
+[Parameter(Position=1,Mandatory=$true,ValueFromPipelineByPropertyName=$true)][ValidateNotNullOrEmpty()][string] $ParameterName
 )
 Begin
 {
-	$Scope = Add-ScopeLevel $Scope
 	$cmd = Get-Command $CommandName -ErrorAction Ignore
 	if(!$cmd) {Stop-ThrowError "Could not find command '$CommandName'" -Argument CommandName}
 	if($cmd.CommandType -eq 'Alias') {$cmd = Get-Command $cmd.ResolvedCommandName}
 	if($cmd.CommandType -notin 'Cmdlet','ExternalScript','Function','Script')
 	{Stop-ThrowError "Command '$CommandName' ($($cmd.CommandType)) not supported" -Argument CommandName}
-	$defaults = Get-Variable PSDefaultParameterValues -Scope $Scope -ErrorAction Ignore
+	$defaults = Get-Variable PSDefaultParameterValues -Scope 2 -ErrorAction Ignore
 }
 Process
 {

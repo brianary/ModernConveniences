@@ -10,14 +10,13 @@ Begin
 	function Trace-DepthVariables
 	{
 		[CmdletBinding()] Param(
-		[Parameter(Position=0)][ValidateRange(1,16)][int] $Depth = 1,
-		[Parameter(Position=1)][string] $Scope = 'Local'
+		[Parameter(Position=0)][ValidateRange(1,16)][int] $Depth = 1
 		)
 		if($Depth -eq 1)
 		{
 			$guid = (New-Guid).ToString('N')
 			$object = [pscustomobject]@{ "Id_$guid" = 1; "Name_$guid" = 'VariableTesting' }
-			Import-Variables $object -Scope $Scope
+			Import-Variables $object -db
 			$callstack = @(Get-PSCallStack)
 			foreach($prop in $object.PSObject.Properties)
 			{
@@ -41,11 +40,6 @@ Begin
 				{
 					Write-Warning "Variable value does not match!"
 				}
-			}
-			for($i = $callstack.Count -1; $i -ge 0; $i--)
-			{
-				Write-Information "$($MyInvocation.MyCommand.Name) : importing '$varname' into scope $i"
-				[pscustomobject]@{ $varname = "Scope: $i" } |Import-Variables -Scope "$i"
 			}
 		}
 		else

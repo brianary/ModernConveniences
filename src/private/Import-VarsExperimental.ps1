@@ -73,14 +73,25 @@ Process
 			Select-Object -ExpandProperty Name |
 			ForEach-Object {New-Object psvariable $_,$InputObject.$_,$option})
 	if(!$variables) {return}
-	$cmdlet = $ExecutionContext.SessionState.Module.GetVariableFromCallersModule('PSCmdlet')?.Value
-	if($cmdlet.InvokeCommand -is [Management.Automation.CommandInvocationIntrinsics])
+	$limit = 32
+	for($context = $ExecutionContext; $context; $context = $context.SessionState.Module.GetVariableFromCallersModule('ExecutionContext')?.Value)
 	{
-		Write-Debug "Locally importing $($variables.Count) items: $($variables.Name -join ', ')"
-		$variables |ForEach-Object {$cmdlet.SessionState.PSVariable.Set($_)}
+		$mycmd = $context.SessionState.Module.GetVariableFromCallersModule('MyInvocation')?.Value.MyCommand
+		Write-Host "MyCommand: Name='$($mycmd.Name)', Module='$($mycmd.Module)', ScriptBlock='$($mycmd.ScriptBlock)'" -fore Cyan
+		$mycmd |Out-String |Write-Host -fore Blue
+		$cmdlet = $context.SessionState.Module.GetVariableFromCallersModule('PSCmdlet')?.Value
+		$cmdlet |Out-String |Write-Host -fore Magenta
+		if($cmdlet.InvokeCommand -is [Management.Automation.CommandInvocationIntrinsics])
+		{
+			$cmdname = $cmdlet.{MyInvocation}?.{MyCommand}?.Name
+			Write-Debug "Locally importing $($variables.Count) items into '$cmdname': $($variables.Name -join ', ')"
+			$variables |ForEach-Object {$cmdlet.SessionState.PSVariable.Set($_)}
+			break
+		}
+		if(--$limit -le 0) {$context = $null; break}
 	}
-	else
-    {
+	if(!$context)
+	{
 		Write-Debug "Globally importing $($variables.Count) items: $($variables.Name -join ', ')"
 		$variables |ForEach-Object {Set-Variable $_.Name $_.Value -Option $_.Options -Scope Global}
 	}

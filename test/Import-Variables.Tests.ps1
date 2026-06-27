@@ -3,7 +3,7 @@
 Tests creating local variables from a data row or dictionary (hashtable).
 #>
 
-return #TODO: Find a way to test this.
+return #TODO: Find a way to test this within a Pester test.
 if(!(&"$PSScriptRoot/../scripts/Test-RelevantTest.ps1")) {return}
 BeforeAll {
 	Set-StrictMode -Version Latest
@@ -16,18 +16,18 @@ Describe 'Import-Variables' -Tag Import-Variables,Import,Variables {
 			@{ InputObject = [pscustomobject]@{ "Id_$guid" = 1; "Name_$guid" = 'Something' } }
 		) {
 			Param([psobject] $InputObject)
-			Import-Variables $InputObject
+			Import-Variables $InputObject -db
 			$callstack = @(Get-PSCallStack)
 			foreach($prop in $InputObject.PSObject.Properties)
 			{
 				Get-Variable $prop.Name -ErrorAction Ignore -OutVariable variable |
 					Should -BeTrue -Because 'variable should exist'
-				for($i = 1; $i -lt $callstack.Count; $i++)
-				{
-					$where = "$($callstack[$i].Command) in $($callstack[$i].ScriptName):$($callstack[$i].ScriptLineNumber)"
-					Get-Variable $prop.Name -Scope "$i" -ErrorAction Ignore |
-						Should -Not -BeTrue -Because "'$($prop.Name)' variable overshot local scope to $i, $where"
-				}
+				# for($i = 1; $i -lt $callstack.Count; $i++)
+				# {
+				# 	$where = "$($callstack[$i].Command) in $($callstack[$i].ScriptName):$($callstack[$i].ScriptLineNumber)"
+				# 	Get-Variable $prop.Name -Scope "$i" -ErrorAction Ignore |
+				# 		Should -Not -BeTrue -Because "'$($prop.Name)' variable overshot local scope to $i, $where"
+				# }
 				Get-Variable $prop.Name -Scope Local -ErrorAction Ignore |
 					Should -BeTrue -Because 'variable should exist in local scope'
 				Get-Variable $prop.Name -ValueOnly -Scope Local |

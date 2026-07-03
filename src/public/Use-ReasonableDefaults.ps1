@@ -45,16 +45,16 @@ else
 		}
 	}
 }
-Set-ParameterDefault Out-File Width ([int]::MaxValue) -Scope Global
-Set-ParameterDefault Out-File Encoding UTF8 -Scope Global
-Set-ParameterDefault Get-ChildItem Force $true -Scope Global
-Set-ParameterDefault Export-Csv NoTypeInformation $true -Scope Global
-Set-ParameterDefault Invoke-WebRequest UseBasicParsing $true -Scope Global
+Set-ParameterDefault Out-File Width ([int]::MaxValue) -Global
+Set-ParameterDefault Out-File Encoding UTF8 -Global
+Set-ParameterDefault Get-ChildItem Force $true -Global
+Set-ParameterDefault Export-Csv NoTypeInformation $true -Global
+Set-ParameterDefault Invoke-WebRequest UseBasicParsing $true -Global
 if((Get-Command Export-Csv -ParameterName UseQuotes -ErrorAction Ignore))
 {
-	Set-ParameterDefault Export-Csv UseQuotes AsNeeded -Scope Global
+	Set-ParameterDefault Export-Csv UseQuotes AsNeeded -Global
 }
-Set-ParameterDefault Select-Xml Namespace -Scope Global -Value @{
+Set-ParameterDefault Select-Xml Namespace -Global -Value @{
 xhtml    = 'http://www.w3.org/1999/xhtml'
 svg      = 'http://www.w3.org/2000/svg'
 xsl      = 'http://www.w3.org/1999/XSL/Transform'

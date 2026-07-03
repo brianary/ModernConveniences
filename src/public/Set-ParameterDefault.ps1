@@ -36,12 +36,14 @@ Uses only the SVG namespace for Select-Xml when none are given explicitly.
 [Parameter(Position=1,Mandatory=$true)][ValidateNotNullOrEmpty()][string] $ParameterName,
 # The value to assign as a default.
 [Parameter(Position=2,Mandatory=$true,ValueFromPipeline=$true)] $Value,
-# The scope of this default.
-[string] $Scope = 'Local'
+# The SessionState object to use to access the variables.
+[Management.Automation.SessionState] $SessionState = $ExecutionContext.SessionState.Module.GetVariableFromCallersModule('PSCmdlet')?.Value?.SessionState,
+# Affects the global parameter defaults.
+[switch] $Global
 )
 Begin
 {
-	$Scope = Add-ScopeLevel $Scope
+	if(!($Global -or $SessionState)) {throw 'Missing a SessionState object.'}
 	$cmd = Get-Command $CommandName -ErrorAction Ignore
 	if(!$cmd) {Stop-ThrowError "Could not find command '$CommandName'" -Argument CommandName}
 	if($cmd.CommandType -eq 'Alias') {$cmd = Get-Command $cmd.ResolvedCommandName}
@@ -50,11 +52,23 @@ Begin
 	$name =
 		try {"$($cmd.Name):$($cmd.ResolveParameter($ParameterName).Name)"}
 		catch {Stop-ThrowError "Could not find parameter '$ParameterName' for cmdlet '$CommandName'" -Argument ParameterName}
-	$defaults = Get-Variable PSDefaultParameterValues -Scope $Scope -ErrorAction Ignore
-	if(!$defaults)
+	if($Global)
 	{
-		Set-Variable PSDefaultParameterValues @{} -Scope $Scope
-		$defaults = Get-Variable PSDefaultParameterValues -Scope $Scope -ErrorAction Ignore
+		$defaults = Get-Variable PSDefaultParameterValues -Scope Global
+		if($null -eq $defaults)
+		{
+			Set-Variable PSDefaultParameterValues @{} -Scope $Scope
+			$defaults = Get-Variable PSDefaultParameterValues -Scope Global
+		}
+	}
+	else
+	{
+		$defaults = $SessionState.PSVariable.Get('PSDefaultParameterValues')
+		if($null -eq $defaults)
+		{
+			$SessionState.PSVariable.Set('PSDefaultParameterValues', @{})
+			$defaults = $SessionState.PSVariable.Get('PSDefaultParameterValues')
+		}
 	}
 }
 Process

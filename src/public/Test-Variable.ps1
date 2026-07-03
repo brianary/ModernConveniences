@@ -52,10 +52,10 @@ True
 #>
 
 [CmdletBinding()][OutputType([bool])] Param(
-	# A variable name to test the existence of.
-	[Parameter(Position = 0, Mandatory = $true, ValueFromPipeline = $true)][AllowEmptyString()][AllowNull()][string] $Name,
-	# The scope of the variable to test, Global, Local, Script, or the number of a calling parent context.
-	[Parameter(Position = 1)][string] $Scope
+# A variable name to test the existence of.
+[Parameter(Position = 0, Mandatory = $true, ValueFromPipeline = $true)][AllowEmptyString()][AllowNull()][string] $Name,
+# The SessionState object to use to access the variables.
+[Management.Automation.SessionState] $SessionState = $ExecutionContext.SessionState.Module.GetVariableFromCallersModule('PSCmdlet')?.Value?.SessionState
 )
 Process
 {
@@ -63,17 +63,16 @@ Process
 	{
 		return $false
 	}
-	elseif (!$Scope)
+	elseif ($SessionState)
 	{
-		if (Get-Variable -Name $Name -ErrorAction Ignore) { return $true }
-		Write-Debug "$($MyInvocation.MyCommand.Name): $Name not found in default scope"
+		if ($SessionState.PSVariable.Get($Name)) { return $true }
+		Write-Debug "$($MyInvocation.MyCommand.Name): $Name not found in given scope"
 		return $false
 	}
 	else
 	{
-		$Scope = Add-ScopeLevel $Scope |Add-ScopeLevel
-		if (Get-Variable -Name $Name -Scope $Scope -ErrorAction Ignore) { return $true }
-		Write-Debug "$($MyInvocation.MyCommand.Name): $Name not found in $Scope scope"
+		if (Get-Variable -Name $Name -ErrorAction Ignore) { return $true }
+		Write-Debug "$($MyInvocation.MyCommand.Name): $Name not found in default scope"
 		return $false
 	}
 }

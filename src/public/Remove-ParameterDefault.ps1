@@ -34,18 +34,21 @@ Removes any namespaces used by Select-Xml when none are given explicitly.
 [Parameter(Position=0,Mandatory=$true)][ValidateNotNullOrEmpty()][Alias('CmdletName')][string] $CommandName,
 # The name or alias of the parameter to remove a default value from.
 [Parameter(Position=1,Mandatory=$true,ValueFromPipelineByPropertyName=$true)][ValidateNotNullOrEmpty()][string] $ParameterName,
-# The scope of this default.
-[string] $Scope = 'Local'
+# The SessionState object to use to access the variables.
+[Management.Automation.SessionState] $SessionState = $ExecutionContext.SessionState.Module.GetVariableFromCallersModule('PSCmdlet')?.Value?.SessionState,
+# Affects the global parameter defaults.
+[switch] $Global
 )
 Begin
 {
-	$Scope = Add-ScopeLevel $Scope
+	if(!($Global -or $SessionState)) {throw 'Missing a SessionState object.'}
 	$cmd = Get-Command $CommandName -ErrorAction Ignore
 	if(!$cmd) {Stop-ThrowError "Could not find command '$CommandName'" -Argument CommandName}
 	if($cmd.CommandType -eq 'Alias') {$cmd = Get-Command $cmd.ResolvedCommandName}
 	if($cmd.CommandType -notin 'Cmdlet','ExternalScript','Function','Script')
 	{Stop-ThrowError "Command '$CommandName' ($($cmd.CommandType)) not supported" -Argument CommandName}
-	$defaults = Get-Variable PSDefaultParameterValues -Scope $Scope -ErrorAction Ignore
+	$defaults = $Global ? (Get-Variable PSDefaultParameterValues -Scope Global) :
+		($SessionState.PSVariable.Get('PSDefaultParameterValues'))
 }
 Process
 {

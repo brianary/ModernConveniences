@@ -112,8 +112,11 @@ Begin
 		$dpapiwarn = " # using DPAPI, only valid for $env:UserName on $env:ComputerName as of $(Get-Date)"
 	}
 
-	function Format-PSString([string]$string)
+	function Format-PSString
 	{
+		[CmdletBinding()] Param(
+		[Parameter(Position=0)][string]$string
+		)
 		$q,$string =
 			if($string -match '[\0-\x1F\x7F]')
 			{
@@ -133,23 +136,33 @@ Begin
 
 	filter Format-WrapString
 	{
-		Write-Debug "Format-WrapString '$_' -Width $Width"
-		for($i = 0; ($i+$Width) -lt $_.Length; $i += $Width) {$_.Substring($i,$Width)}
-		if($_.Length % $Width) {$_.Substring($_.Length - ($_.Length % $Width))}
+		[CmdletBinding()] Param(
+		[Parameter(Position=0,ValueFromPipeline=$true)][string] $Value,
+		[Parameter()][int] $Width
+		)
+		Write-Debug "Format-WrapString '$Value' -Width $Width"
+		for($i = 0; ($i+$Width) -lt $Value.Length; $i += $Width) {$_.Substring($i,$Width)}
+		if($Value.Length % $Width) {$Value.Substring($Value.Length - ($Value.Length % $Width))}
 	}
 
 	$typealias = Get-TypeAccelerators -DictionaryKey TypeName
 	filter Format-ParameterType
 	{
-		$type = $_.ParameterType.FullName
+		[CmdletBinding()] Param(
+		[Parameter(ValueFromPipelineByPropertyName=$true)][type] $ParameterType
+		)
+		$type = $ParameterType.FullName
 		if($typealias.ContainsKey($type)) {$type = $typealias[$type]}
 		"[$type]"
 	}
 
 	filter Format-ParameterAttribute
 	{
-		Import-Variables $_
-		$name = $_.GetType().Name -replace 'Attribute\z',''
+		[CmdletBinding()] Param(
+		[Parameter(ValueFromPipeline=$true)][attribute] $InputObject
+		)
+		$InputObject.PSObject.Parameters |ForEach-Object {Set-Value -Name $_.Name -Value $_.Value}
+		$name = $InputObject.GetType().Name -replace 'Attribute\z',''
 		switch($name)
 		{
 			Parameter
@@ -175,8 +188,12 @@ Begin
 		}
 	}
 
-	function Format-Child($InputObject,[switch]$UseKeys)
+	function Format-Child
 	{
+		[CmdletBinding()] Param(
+		[Parameter(ValueFromPipeline=$true)] $InputObject,
+		[switch] $UseKeys
+		)
 		if($null -eq $InputObject) {return}
 		$(if($UseKeys){$InputObject.Keys}else{Get-Member -InputObject $InputObject -MemberType Properties |Select-Object -ExpandProperty Name}) |
 			Where-Object {$_ -notmatch '\W'} |

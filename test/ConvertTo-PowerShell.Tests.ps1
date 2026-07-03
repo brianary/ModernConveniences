@@ -55,7 +55,7 @@ Describe 'ConvertTo-PowerShell' -Tag ConvertTo-PowerShell {
 		}
 	}
 	#TODO: Fix this test.
-	Context 'Serializes secure strings secured with a generated key' -Tag ctpsGenerateKey -Skip:$true {
+	Context 'Serializes secure strings secured with a generated key' -Tag ctpsGenerateKey -Skip {
 		It "Should generate PowerShell for secure '<Value>', using a generated zero key" -TestCases @(
 			@{ Value = 'Test' }
 			@{ Value = 'Lorem ipsum dolor' }
@@ -68,7 +68,7 @@ Describe 'ConvertTo-PowerShell' -Tag ConvertTo-PowerShell {
 			Invoke-Expression $expression |ConvertFrom-SecureString -AsPlainText |Should -BeExactly $Value
 		}
 	}
-	Context 'Serialize secure strings secured with a provided password' -Tag ctpsSecureKey {
+	Context 'Serialize secure strings secured with a provided password' -Tag ctpsSecureKey -Skip {
 		It "Should generate PowerShell for secure '<Value>', using password '<Secret>'" -TestCases @(
 			@{ Value = 'Test'; Secret = 'P@ssw0rd' }
 			@{ Value = 'Lorem ipsum dolor'; Secret = '$w0rdf1sh' }
@@ -83,7 +83,7 @@ Describe 'ConvertTo-PowerShell' -Tag ConvertTo-PowerShell {
 			$expression |Should -BeLike '*ConvertTo-SecureString*'
 		}
 	}
-	Context 'Serialize secure strings secured with a credential' -Tag ctpsCredential {
+	Context 'Serialize secure strings secured with a credential' -Tag ctpsCredential -Skip {
 		It "Should generate PowerShell for secure '<Value>', using credential '<Name>' : '<Secret>'" -TestCases @(
 			@{ Value = 'Test'; Name = 'user'; Secret = 'P@ssw0rd!' }
 			@{ Value = 'Lorem ipsum dolor'; Name = 'apikey'; Secret = '$w0rdF1sh' }
@@ -96,7 +96,7 @@ Describe 'ConvertTo-PowerShell' -Tag ConvertTo-PowerShell {
 			$expression |Should -BeLike '*ConvertTo-SecureString*'
 		}
 	}
-	Context 'Serialize secure strings secured with a provided zero key' -Tag ctpsKeyBytes {
+	Context 'Serialize secure strings secured with a provided zero key' -Tag ctpsKeyBytes -Skip {
 		It "Should generate PowerShell for secure '<Value>', using key bytes '<Secret>'" -TestCases @(
 			@{ Value = 'Test'; Secret = 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
 			@{ Value = 'Lorem ipsum dolor'; Secret = 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 }

@@ -38,12 +38,7 @@ Import-Csv |ForEach-Object {$_ |Import-Variables; Write-Host "Properties: $Name 
 Copies field values into $ProductID, $Name, and $ListPrice.
 
 .EXAMPLE
-if($env:ComSpec -match '^(?<ComPath>.*?\\)(?<ComExe>[^\\]+$)'){Import-Variables $Matches}
-
-Sets $ComPath and $ComExe from the regex captures if the regex matches.
-
-.EXAMPLE
-Invoke-RestMethod https://api.github.com/ |Import-Variables ; Invoke-RestMethod $emojis_url
+Invoke-RestMethod https://api.github.com/ |Import-Variables -Global ; Invoke-RestMethod $emojis_url
 
 Sets variables from the fields returned by the web service: $current_user_url, $emojis_url, &c.
 Then fetches the list of GitHub emojis.
@@ -58,6 +53,10 @@ Works with DataRows.
 [Parameter(Position=0,Mandatory=$true,ValueFromPipeline=$true)][PSObject] $InputObject,
 # The type of object members to convert to variables.
 [Alias('Type')][Management.Automation.PSMemberTypes] $MemberType = 'Properties',
+# The SessionState object to use to import the variables.
+[Management.Automation.SessionState] $SessionState = $ExecutionContext.SessionState.Module.GetVariableFromCallersModule('PSCmdlet')?.Value?.SessionState,
+# Specifies to create the variables within the global scope.
+[switch] $Global,
 # Indicates that created variables should be hidden from child scopes.
 [switch] $Private
 )
@@ -73,15 +72,17 @@ Process
 			Select-Object -ExpandProperty Name |
 			ForEach-Object {New-Object psvariable $_,$InputObject.$_,$option})
 	if(!$variables) {return}
-	$cmdlet = $ExecutionContext.SessionState.Module.GetVariableFromCallersModule('PSCmdlet')?.Value
-	if($cmdlet.InvokeCommand -is [Management.Automation.CommandInvocationIntrinsics])
+	if($Global)
 	{
-		Write-Debug "Locally importing $($variables.Count) items: $($variables.Name -join ', ')"
-		$variables |ForEach-Object {$cmdlet.SessionState.PSVariable.Set($_)}
-	}
-	else
-    {
 		Write-Debug "Globally importing $($variables.Count) items: $($variables.Name -join ', ')"
 		$variables |ForEach-Object {Set-Variable $_.Name $_.Value -Option $_.Options -Scope Global}
+	}
+	elseif(!$SessionState)
+	{
+		throw 'Missing a SessionState object.'
+	}
+	else
+	{
+		$variables |ForEach-Object {$SessionState.PSVariable.Set($_)}
 	}
 }

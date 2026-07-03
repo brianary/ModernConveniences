@@ -72,15 +72,19 @@ parameter name or alias.
 #>
 [Alias('PipelineProperties','PipeName')][switch] $ValueFromPipelineByPropertyName,
 # Indicates that the parameter will include any following positional parameters.
-[Alias('RemainingArgs')][switch] $ValueFromRemainingArguments
+[Alias('RemainingArgs')][switch] $ValueFromRemainingArguments,
+# The SessionState object to use to access the variables.
+[Management.Automation.SessionState] $SessionState = $ExecutionContext.SessionState.Module.GetVariableFromCallersModule('PSCmdlet')?.Value?.SessionState
 )
 End
 {
-	$DynamicParams = Get-Variable DynamicParams -Scope 1 -ErrorAction Ignore
+	if(!$SessionState) {throw 'Missing a SessionState object.'}
+	$DynamicParams = $SessionState.PSVariable.Get('DynamicParams')
 	if($null -eq $DynamicParams)
 	{
-		$DynamicParams = New-Object Management.Automation.RuntimeDefinedParameterDictionary
-		$DynamicParams = New-Variable DynamicParams $DynamicParams -Scope 1 -PassThru
+		$DynamicParams = $SessionState.PSVariable.Set('DynamicParams',
+			(New-Object Management.Automation.RuntimeDefinedParameterDictionary))
+		$DynamicParams = $SessionState.PSVariable.Get('DynamicParams')
 	}
 	$atts = New-Object Collections.ObjectModel.Collection[System.Attribute]
 	foreach($set in $ParameterSetName)

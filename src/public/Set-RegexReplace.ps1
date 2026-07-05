@@ -53,15 +53,13 @@ A regular expression replacement string.
 )
 Begin
 {
-	Write-Verbose 'Begin'
 	$files = @{}
 }
 Process
 {
-	Write-Verbose 'Process'
 	if($InputObject.Path -eq 'InputStream')
 	{
-		Write-Verbose "Line: $($InputObject.Line)"
+		Write-Debug "Line: $($InputObject.Line)"
 		if($null -eq $InputObject.Context)
 		{
 			return ($InputObject.Line -replace $InputObject.Pattern,$Replacement)
@@ -75,25 +73,25 @@ Process
 	}
 	elseif(!$files.ContainsKey($InputObject.Path))
 	{
-		Write-Verbose "Adding '$($InputObject.Path)'"
+		Write-Debug "Adding '$($InputObject.Path)'"
 		$files.Add($InputObject.Path,$InputObject.Pattern)
 	}
 	else
 	{
-		Write-Verbose "Already added '$($InputObject.Path)'"
+		Write-Debug "Already added '$($InputObject.Path)'"
 	}
 }
 End
 {
-	Write-Verbose 'End'
 	$i,$max = 0,($files.Count/100)
-	Write-Verbose "Updating $($files.Count) files"
+	Write-Debug "Updating $($files.Count) files"
 	foreach($file in $files.Keys)
 	{
 		$pattern = $files[$file]
 		Write-Progress 'Performing file replace' "$pattern" -curr $file -percent ($i++/$max)
-		Write-Verbose "$($InputObject.Path) : -replace '$($InputObject.Pattern)','$Replacement'"
-		(Get-Content $file -Raw) -replace $pattern,$Replacement |Out-File $file #TODO: get file encoding
+		Write-Debug "$($InputObject.Path) : -replace '$($InputObject.Pattern)','$Replacement'"
+		$encoding = Read-FileEncoding $file
+		(Get-Content $file -Raw) -replace $pattern,$Replacement |Out-File $file -Encoding $encoding
 	}
 	Write-Progress 'Performing file replace' 'Complete' -Completed
 }

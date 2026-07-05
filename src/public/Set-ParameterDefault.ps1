@@ -64,7 +64,12 @@ Begin
 	else
 	{
 		$defaults = $SessionState.PSVariable.Get('PSDefaultParameterValues')
-		if($null -eq $defaults)
+		if($Global:PSDefaultParameterValues -eq $defaults.Value)
+		{
+			$SessionState.PSVariable.Set('PSDefaultParameterValues', $Global:PSDefaultParameterValues.Clone())
+			$defaults = $SessionState.PSVariable.Get('PSDefaultParameterValues')
+		}
+		elseif($null -eq $defaults)
 		{
 			$SessionState.PSVariable.Set('PSDefaultParameterValues', @{})
 			$defaults = $SessionState.PSVariable.Get('PSDefaultParameterValues')

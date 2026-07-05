@@ -3,7 +3,7 @@
 Does simple detection of a file's text encoding.
 #>
 
-[CmdletBinding()] Param(
+[CmdletBinding()][OutputType([string])] Param(
 [Parameter(Position=0,Mandatory=$true)][string] $Path
 )
 if('EFBBBF' -eq ('{0:X2}{1:X2}{2:X2}' -f  (Get-Content ./README.md -AsByteStream -TotalCount 3))) {return 'utf8BOM'}

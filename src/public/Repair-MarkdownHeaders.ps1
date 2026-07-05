@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
 Updates markdown content to replace level 1 & 2 ATX headers to Setext headers.
 
@@ -28,10 +28,6 @@ Returns markdown code that uses ATX headers.
 [CmdletBinding()][OutputType([string],ParameterSetName='InputObject')] Param(
 # Markdown file to update.
 [Parameter(ParameterSetName='Path',Position=0,Mandatory=$true)][string] $Path,
-# The text encoding to use when converting text to binary data.
-[Parameter(ParameterSetName='Path',Position=1)]
-[ValidateSet('ascii','utf16','utf16BE','utf32','utf32BE','utf7','utf8')]
-[string] $Encoding = 'utf8',
 # Markdown content to update.
 [Parameter(ParameterSetName='InputObject',ValueFromPipeline=$true)][string] $InputObject,
 # The style of headers to use.
@@ -113,8 +109,9 @@ Process
         InputObject {return $InputObject |& "Repair-$Style"}
         Path
         {
+			$encoding = Read-FileEncoding $Path
             $content = Get-Content $Path -Raw
-            $content |& "Repair-$Style" |Out-File $Path $Encoding
+            $content |& "Repair-$Style" |Out-File $Path $encoding
         }
     }
 }

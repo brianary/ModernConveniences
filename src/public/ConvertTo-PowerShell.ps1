@@ -63,7 +63,7 @@ credentials and secure strings, after encoding to UTF-8 bytes.
 )
 Begin
 {
-	$Script:OFS = "$Newline$Indent"
+	$Script:OFS = "$Newline"#$Indent"
 	$Local:PSDefaultParameterValues = @{
 		'ConvertTo-PowerShell:Indent'   = "$Indent$IndentBy"
 		'ConvertTo-PowerShell:IndentBy' = $IndentBy
@@ -197,7 +197,7 @@ Begin
 		if($null -eq $InputObject) {return}
 		$(if($UseKeys){$InputObject.Keys}else{Get-Member -InputObject $InputObject -MemberType Properties |Select-Object -ExpandProperty Name}) |
 			Where-Object {$_ -notmatch '\W'} |
-			ForEach-Object {"$IndentBy$_ = $(ConvertTo-PowerShell $InputObject.$_ -Indent "$tab$IndentBy" -SkipInitialIndent)"}
+			ForEach-Object {"$tab$IndentBy$_ = $(ConvertTo-PowerShell $InputObject.$_ -Indent "$tab$IndentBy" -SkipInitialIndent)"}
 	}
 }
 Process
@@ -308,13 +308,13 @@ $itab$($Value |Format-ParameterType) `$$($Value.Name)
 	elseif($Value -is [Collections.Specialized.OrderedDictionary])
 	{@"
 $itab[ordered]@{
-$tab$(Format-Child $Value -UseKeys)
+$(Format-Child $Value -UseKeys)
 $tab}
 "@}
 	elseif($Value -is [Hashtable])
 	{@"
 $itab@{
-$tab$(Format-Child $Value -UseKeys)
+$(Format-Child $Value -UseKeys)
 $tab}
 "@}
 	elseif($Value -is [xml])
@@ -322,13 +322,13 @@ $tab}
 	elseif($Value -is [PSObject])
 	{@"
 $itab[pscustomobject]@{
-$tab$(Format-Child $Value)
+$(Format-Child $Value)
 $tab}
 "@}
 	else
 	{@"
 $itab@{
-$tab$(Format-Child $Value)
+$(Format-Child $Value)
 $tab}
 "@}
 }

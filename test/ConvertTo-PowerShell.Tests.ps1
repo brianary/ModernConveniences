@@ -35,15 +35,15 @@ Describe 'ConvertTo-PowerShell' -Tag ConvertTo-PowerShell {
 			@{ Value = '7'; Result = '7L' }
 			@{ Value = '"Don''t Panic!"'; Result = "'Don''t Panic!'" }
 			@{ Value = '"2000-01-01T00:00:00"'; Result = "[datetime]'2000-01-01T00:00:00'" }
-			@{ Value = '[6,9,42]'; Result = "@(`r`n`t6L`r`n`t`t9L`r`n`t`t42L`r`n)" } #TODO: fix indents
+			@{ Value = '[6,9,42]'; Result = "@(`r`n`t6L`r`n`t9L`r`n`t42L`r`n)" } #TODO: fix indents
 			@{ Value = '{}'; Result = "[pscustomobject]@{`r`n`r`n}" }
 			@{ Value = '{"a":1,"b":2,"c":{"d":"2017-03-22T20:59:31","e":null}}'; Result = @'
 [pscustomobject]@{
 	a = 1L
-			b = 2L
-			c = [pscustomobject]@{
+	b = 2L
+	c = [pscustomobject]@{
 		d = [datetime]'2017-03-22T20:59:31'
-			e = $null
+		e = $null
 	}
 }
 '@ } #TODO: fix indents

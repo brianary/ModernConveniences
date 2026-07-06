@@ -20,6 +20,7 @@ A collection of general-purpose functions for objects, properties, and more.
 - [Add-NugetPackage](https://github.com/brianary/ModernConveniences/wiki/Add-NugetPackage): Loads a NuGet package DLL, downloading as needed.
 - [Add-ParameterDefault](https://github.com/brianary/ModernConveniences/wiki/Add-ParameterDefault): Appends or creates a value to use for the specified cmdlet parameter to use when one is not specified.
 - [Add-TimeSpan](https://github.com/brianary/ModernConveniences/wiki/Add-TimeSpan): Adds a timespan to DateTime values.
+- [Backup-File](https://github.com/brianary/ModernConveniences/wiki/Backup-File): Create a backup as a sibling to a file, with date and time values in the name.
 - [Compare-Hashset](https://github.com/brianary/ModernConveniences/wiki/Compare-Hashset): Returns differences between sets.
 - [Compare-Keys](https://github.com/brianary/ModernConveniences/wiki/Compare-Keys): Returns the differences between two dictionaries.
 - [Compare-Properties](https://github.com/brianary/ModernConveniences/wiki/Compare-Properties): Compares the properties of two objects.

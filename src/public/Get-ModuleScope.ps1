@@ -23,10 +23,12 @@ Detextive  CurrentUser
 .EXAMPLE
 Get-ModuleScope Pester
 
-ModuleName Scope
----------- -----
-Pester     CurrentUser
-Pester     AllUsers
+ModuleName      Version Scope      	 Source
+----------      ------- -----      	 ------
+Pester          6.0.0   CurrentUser	 PSGallery
+platyPS         0.14.2  CurrentUser	 PSGallery
+powershell-yaml 0.4.12  CurrentUser	 PSGallery
+PSReadLine      2.4.5   AllUsers
 #>
 
 [CmdletBinding()][OutputType([string])] Param(
@@ -35,19 +37,24 @@ Pester     AllUsers
 )
 Begin
 {
-    $UserRoot = Join-Path $HOME Documents PowerShell Modules
+	$Script:Source = @{}
+	Get-PSRepository |ForEach-Object {$Source[$_.Uri] = $_.Name}
 }
 Process
 {
     foreach($moduleName in Get-Module $Name -ListAvailable |Select-Object -ExpandProperty Name -Unique)
     {
-        Get-Module $moduleName -ListAvailable |
+        Get-Module $moduleName -ListAvailable -pv module |
             Select-Object -ExpandProperty ModuleBase |
             Split-Path |
-            Split-Path |
             Select-Object -Unique |
-            ForEach-Object {$_ -eq $UserRoot ? 'CurrentUser' : 'AllUsers'} |
+            ForEach-Object {$_.StartsWith($HOME) ? 'CurrentUser' : 'AllUsers'} |
             Select-Object -Unique |
-            ForEach-Object {[pscustomobject]@{ModuleName=$moduleName;Scope=$_}}
+            ForEach-Object {[pscustomobject]@{
+				ModuleName = $moduleName
+				Version    = $module.Version
+				Scope      = $_
+				Source     = $module.RepositorySourceLocation ? $Source[$module.RepositorySourceLocation] : $null
+			}}
     }
 }

@@ -18,14 +18,19 @@ ThreadJob  AllUsers 2.0.7           2.1.0
 #>
 
 [CmdletBinding()] Param()
+
 Get-Module -ListAvailable |
     Group-Object Name |
     ForEach-Object -Parallel {
         $name, $group = $_.Name, $_.Group
+		$module = $_.Group |Sort-Object Version -Descending |Select-Object -First 1
         try
         {[pscustomobject]@{
             Name             = $name
-            Scope            = Get-ModuleScope $name |Select-Object -ExpandProperty Scope
+            Scope            = $module.ModuleBase.StartsWith($HOME) ? 'CurrentUser' : 'AllUsers'
+			Source           = Get-PSRepository |
+				Where-Object Uri -eq $module.RepositorySourceLocation |
+				Select-Object -ExpandProperty Name
             CurrentVersion   = $group |Measure-Object Version -Maximum |Select-Object -ExpandProperty Maximum
             AvailableVersion = Find-Module $name -infa Ignore -ErrorAction Stop |
 				Measure-Object -Maximum Version |

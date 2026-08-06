@@ -11,10 +11,10 @@ Get-ModuleScope
 .EXAMPLE
 Get-OutdatedModules
 
-Name       Scope    CurrentVersion  AvailableVersion
----------- -------- --------------- ----------------
-PSReadLine AllUsers 2.3.6           2.4.5
-ThreadJob  AllUsers 2.0.7           2.1.0
+Name       Scope       Source    CurrentVersion AvailableVersion
+----       -----       ------    -------------- ----------------
+Pester     CurrentUser PSGallery 6.0.0          6.0.1
+SelectHtml CurrentUser PSGallery 1.0.15         1.1.16
 #>
 
 [CmdletBinding()] Param()

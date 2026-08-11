@@ -102,6 +102,7 @@ A collection of general-purpose functions for objects, properties, and more.
 - [Uninstall-OldModules](https://github.com/brianary/ModernConveniences/wiki/Uninstall-OldModules): Uninstalls old module versions (ignoring old Windows PowerShell modules).
 - [Update-Files](https://github.com/brianary/ModernConveniences/wiki/Update-Files): Copies specified source files that exist in the destination directory.
 - [Update-Modules](https://github.com/brianary/ModernConveniences/wiki/Update-Modules): Cleans up old modules.
+- [Update-OutdatedModules](https://github.com/brianary/ModernConveniences/wiki/Update-OutdatedModules): Updates modules that have new versions available.
 - [Use-ProgressView](https://github.com/brianary/ModernConveniences/wiki/Use-ProgressView): Sets the progress bar display view.
 - [Use-ReasonableDefaults](https://github.com/brianary/ModernConveniences/wiki/Use-ReasonableDefaults): Sets certain cmdlet parameter defaults to rational, useful values.
 - [Write-CallInfo](https://github.com/brianary/ModernConveniences/wiki/Write-CallInfo): Prints caller name and parameters to the host for debugging purposes.

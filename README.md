@@ -76,6 +76,7 @@ A collection of general-purpose functions for objects, properties, and more.
 - [Remove-ParameterDefault](https://github.com/brianary/ModernConveniences/wiki/Remove-ParameterDefault): Removes a value that would have been used for a parameter if none was specified, if one existed.
 - [Repair-MarkdownHeaders](https://github.com/brianary/ModernConveniences/wiki/Repair-MarkdownHeaders): Updates markdown content to replace level 1 & 2 ATX headers to Setext headers.
 - [Select-CapturesFromMatches](https://github.com/brianary/ModernConveniences/wiki/Select-CapturesFromMatches): Selects named capture group values as note properties from Select-String MatchInfo objects.
+- [Select-Each](https://github.com/brianary/ModernConveniences/wiki/Select-Each): Returns each element from a collection for the next process in the pipeline, individually.
 - [Select-ScriptCommands](https://github.com/brianary/ModernConveniences/wiki/Select-ScriptCommands): Returns the commands used by the specified script.
 - [Set-Clip](https://github.com/brianary/ModernConveniences/wiki/Set-Clip): Sets the contents of the clipboard with formatted HTML support (cross-platform, and more reliably on Linux Wayland).
 - [Set-ParameterDefault](https://github.com/brianary/ModernConveniences/wiki/Set-ParameterDefault): Assigns a value to use for the specified cmdlet parameter to use when one is not specified.

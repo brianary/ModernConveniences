@@ -91,7 +91,8 @@ End
 		Write-Progress 'Performing file replace' "$pattern" -curr $file -percent ($i++/$max)
 		Write-Debug "$($InputObject.Path) : -replace '$($InputObject.Pattern)','$Replacement'"
 		$encoding = Read-FileEncoding $file
-		(Get-Content $file -Raw) -replace $pattern,$Replacement |Out-File $file -Encoding $encoding
+		(Get-Content $file -Raw) -replace $pattern,$Replacement |
+			Out-File $file -Encoding $encoding -NoNewline
 	}
 	Write-Progress 'Performing file replace' 'Complete' -Completed
 }

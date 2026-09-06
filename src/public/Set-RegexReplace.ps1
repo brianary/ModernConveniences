@@ -93,6 +93,7 @@ End
 		$encoding = Read-FileEncoding $file
 		(Get-Content $file -Raw) -replace $pattern,$Replacement |
 			Out-File $file -Encoding $encoding -NoNewline
+		Write-Info "Updated '$file'" -fg DarkGray
 	}
 	Write-Progress 'Performing file replace' 'Complete' -Completed
 }

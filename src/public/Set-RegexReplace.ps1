@@ -91,9 +91,11 @@ End
 		Write-Progress 'Performing file replace' "$pattern" -curr $file -percent ($i++/$max)
 		Write-Debug "$($InputObject.Path) : -replace '$($InputObject.Pattern)','$Replacement'"
 		$encoding = Read-FileEncoding $file
-		(Get-Content $file -Raw) -replace $pattern,$Replacement |
-			Out-File $file -Encoding $encoding -NoNewline
-		Write-Info "Updated '$file'" -fg DarkGray
+		$content = Get-Content $file -Raw
+		$content = $content -replace $pattern,$Replacement
+		try {$content |Out-File $file -Encoding $encoding -NoNewline}
+		catch {$content |Out-File "$file.$(Get-Date -f yyyyMMddHHmmssfffff)" -Encoding $encoding -NoNewline}
+		Write-Info "Updated '$file'" -fg Gray
 	}
 	Write-Progress 'Performing file replace' 'Complete' -Completed
 }

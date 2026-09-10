@@ -24,10 +24,14 @@ Collection
 )
 Process
 {
-	if($InputObject |Get-Member -Type Method -Name GetEnumerator -ErrorAction Ignore) {return $InputObject.GetEnumerator()}
+	if(Get-Member -InputObject $InputObject -Type Method -Name GetEnumerator -ErrorAction Ignore)
+	{
+		return $InputObject.GetEnumerator()
+	}
 	else
 	{
-		Write-Warning "Unable to reliably return each item from type '$($null -eq $InputObject ? '(null)' : $InputObject.GetType().FullName)'."
+		Write-Warning "Unable to reliably return each item from type '$($null -eq $InputObject ?
+			'(null)' : $InputObject.GetType().FullName)'."
 		return ($InputObject)
 	}
 }

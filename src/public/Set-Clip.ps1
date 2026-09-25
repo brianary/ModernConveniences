@@ -48,19 +48,28 @@ End
 {
 	[string[]] $data = @($input)
 	if(!$data) {$data = $Value}
-	if(!$IsLinux)
+	if($IsWindows)
 	{
 		if($AsHtml)
 		{
-			if($PSVersionTable.PSEdition -ne 'Desktop')
-			{
-				Invoke-WindowsPowerShell { Set-Clipboard -Value $data -Append:$Append -AsHtml }.GetNewClosure()
-			}
-			else
+			if(Get-Command Set-Clipboard -ParameterName AsHtml -EA Ignore)
 			{
 				Set-Clipboard -Value $data -AsHtml -Append:$Append
 			}
-			if($PassThru) {return $data}
+			elseif(Get-Command powershell.exe -Type Application -EA Ignore)
+			{
+				$data |powershell.exe -c "[console]::In.ReadToEnd() |Set-Clipboard -AsHtml"
+			}
+			else
+			{
+				try{[void][Windows.Forms.Clipboard]}
+				catch{Add-Type -AN System.Windows.Forms}
+				[Windows.Forms.Clipboard]::SetData([Windows.Forms.DataFormats]::Html, "$data")
+			}
+		}
+		else
+		{
+			Set-Clipboard -Value $data -Append:$Append
 		}
 	}
 	elseif(Get-Command wl-copy -Type Application -ErrorAction Ignore)
@@ -68,14 +77,13 @@ End
 		if($Append) {$data = @(Get-Clip)+$data}
 		if($AsHtml) {$data |wl-copy -t text/html -n}
 		else {$data |wl-copy -n}
-		if($PassThru) {return $data}
 	}
 	elseif(Get-Command xclip -Type Application -ErrorAction Ignore)
 	{
 		if($Append) {$data = @(Get-Clip)+$data}
 		if($AsHtml) {$data |xclip -t text/html -r}
 		else {$data |xclip -r}
-		if($PassThru) {return $data}
 	}
 	else {Write-Warning "Unable to find wl-copy or xclip!"}
+	if($PassThru) {return $data}
 }

@@ -86,9 +86,18 @@ Begin
     {
         if(Get-Module Microsoft.WinGet.Client -ListAvailable)
         {{
-            if(Get-WinGetPackage |
-                Where-Object IsUpdateAvailable |
-                Select-Object -First 1) {'winget'}
+			try
+			{
+				if(Get-WinGetPackage |
+					Where-Object IsUpdateAvailable |
+					Select-Object -First 1) {'winget'}
+			}
+			catch
+			{
+				if(winget list --upgrade-available --disable-interactivity |
+					Select-String '^\d+ upgrades? available.$' |
+					Select-Object -First 1) {'winget'}
+			}
         }}
         elseif(Get-Command winget -CommandType Application -ErrorAction Ignore)
         {{
